@@ -1,4 +1,7 @@
 package javax.microedition.rms;
 
-public class RecordFilter {
+
+public interface RecordFilter {
+
+	public abstract boolean matches(byte abyte0[]);
 }

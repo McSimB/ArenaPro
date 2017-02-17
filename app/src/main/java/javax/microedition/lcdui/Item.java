@@ -1,4 +1,9 @@
 package javax.microedition.lcdui;
 
-public class Item {
+
+public abstract class Item {
+
+	Item(String label) {
+	}
+
 }
