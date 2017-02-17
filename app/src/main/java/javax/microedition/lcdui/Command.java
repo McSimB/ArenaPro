@@ -29,20 +29,8 @@ public class Command {
 		return shortLabel;
 	}
 
-	public String getLongLabel() {
-		return longLabel;
-	}
-
 	public int getCommandType() {
 		return commandType;
-	}
-
-	public int getPriority() {
-		return priority;
-	}
-
-	int getID() {
-		return id;
 	}
 
 	void setInternalID(int num) {
@@ -55,17 +43,15 @@ public class Command {
 		} else {
 			this.shortLabel = shortLabel;
 			this.longLabel = longLabel;
-			return;
 		}
 	}
 
-	private final void initialize(int commandType, int priority) {
+	private void initialize(int commandType, int priority) {
 		if (commandType < 1 || commandType > 8) {
 			throw new IllegalArgumentException();
 		} else {
 			this.commandType = commandType;
 			this.priority = priority;
-			return;
 		}
 	}
 

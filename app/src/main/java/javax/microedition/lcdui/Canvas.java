@@ -1,80 +1,8 @@
 package javax.microedition.lcdui;
 
+import com.elkware.midp.games.colorng.arena.high.ArenaMidlet;
+
 public abstract class Canvas extends Displayable {
-
-	protected Canvas() {
-	}
-
-	public int getGameAction(int keyCode) {
-		int n = Display.getGameAction(keyCode);
-		if (n == -1)
-			throw new IllegalArgumentException();
-		else
-			return n;
-	}
-
-	public void setFullScreenMode(boolean mode) {
-		if (mode == super.fullScreenMode)
-			return;
-		super.grabFullScreen(mode);
-		synchronized (Display.LCDUILock) {
-			super.fullScreenMode(mode);
-		}
-	}
-
-	protected void keyPressed(int i) {
-	}
-
-	protected void keyRepeated(int i) {
-	}
-
-	protected void keyReleased(int i) {
-	}
-
-	protected void pointerPressed(int i, int j) {
-	}
-
-	protected void pointerReleased(int i, int j) {
-	}
-
-	protected void pointerDragged(int i, int j) {
-	}
-
-	public final void repaint() {
-		synchronized (Display.LCDUILock) {
-			callRepaint(viewport[0], viewport[1], viewport[2], viewport[3], null);
-		}
-	}
-
-	public final void serviceRepaints() {
-	}
-
-	protected void showNotify() {
-	}
-
-	protected void hideNotify() {
-	}
-
-	protected abstract void paint(Graphics g);
-
-	protected void sizeChanged(int i, int j) {
-	}
-
-	void callShowNotify(Display d) {
-		super.callShowNotify(d);
-		super.layout();
-	}
-
-	void callPaint(Graphics g, Object target) {
-		super.callPaint(g, target);
-		if (g.getClipY() + g.getClipHeight() <= viewport[1])
-			return;
-		g.clipRect(viewport[0], viewport[1], viewport[2], viewport[3]);
-	}
-
-	void callSizeChanged(int w, int h) {
-		super.callSizeChanged(w, h);
-	}
 
 	public static final int UP = 1;
 	public static final int DOWN = 6;
@@ -97,5 +25,36 @@ public abstract class Canvas extends Displayable {
 	public static final int KEY_NUM9 = 57;
 	public static final int KEY_STAR = 42;
 	public static final int KEY_POUND = 35;
+
+	public ArenaMidlet arena;
+
+	public Canvas(ArenaMidlet var1) {
+		this.arena = var1;
+	}
+
+	protected void keyPressed(int i) {
+	}
+
+	protected void keyReleased(int i) {
+	}
+
+	protected abstract void paint(Graphics g);
+
+	public final void repaint() {
+	}
+
+	public final void serviceRepaints() {
+		arena.arenaView.postInvalidate();
+	}
+
+	protected void showNotify() {
+	}
+
+	protected void hideNotify() {
+	}
+
+	void callShowNotify(Display d) {
+		super.callShowNotify(d);
+	}
 
 }

@@ -1,29 +1,27 @@
 package javax.microedition.lcdui;
 
-import javax.microedition.midlet.MIDlet;
+import android.app.Activity;
 
 public class Display {
 
 	public static final int WIDTH = 0;
 	public static final int HEIGHT = 0;
-	public static final Object LCDUILock = new Object();
-	public static int ERASE_COLOR;
-	public static int FG_COLOR;
-	public static int ADORNEDHEIGHT;
+	private Displayable current;
 
 
-	Display(MIDlet m) {
+	Display(Activity m) {
 	}
 
-	public static Display getDisplay(MIDlet m) {
-		return null;
+	public static Display getDisplay(Activity m) {
+		return new Display(m);
 	}
 
 	public void setCurrent(Displayable nextDisplayable) {
+		current = nextDisplayable;
 	}
 
 	public Displayable getCurrent() {
-		return null;
+		return current;
 	}
 
 	public void setCurrent(Alert alert, Displayable nextDisplayable) {
@@ -40,16 +38,11 @@ public class Display {
 		return false;
 	}
 
-	public void repaintImpl(Displayable paintDelegate, int x, int y, int width, int height, Object target) {
-	}
-
-	public void setVerticalScroll(int scrollPosition, int scrollProportion) {
-	}
-
 	public void updateCommandSet() {
+		Command screenCommands[] = current.getCommands();
+		int screenComCount = current.getCommandCount();
+		for (int i = 0; i < screenComCount; i++)
+			screenCommands[i].setInternalID(i);
 	}
 
-	public static int getGameAction(int keyCode) {
-		return 0;
-	}
 }

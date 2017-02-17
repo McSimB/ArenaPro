@@ -13,14 +13,14 @@ public class Class_27a {
 	int var_29d;
 	int var_2e9;
 	Class_3a var_314;
-	Class_c6 var_375;
+	CanvasView var_375;
 	int var_3bc = 0;
 	int var_407 = 0;
 	public boolean var_41b = false;
 	int var_429 = 0;
 	int var_43a;
 
-	public Class_27a(int var1, int var2, int var3, Class_c6 var4, int var5) {
+	public Class_27a(int var1, int var2, int var3, CanvasView var4, int var5) {
 		this.var_219 = var1;
 		var4.getClass();
 		this.var_29d = var2 * 15;

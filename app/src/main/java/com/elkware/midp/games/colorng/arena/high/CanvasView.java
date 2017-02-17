@@ -1,10 +1,9 @@
 package com.elkware.midp.games.colorng.arena.high;
 
-import com.elkware.midp.games.a;
+import com.elkware.midp.games.Arena2;
 import com.elkware.midp.games.colorng.Class_151;
 import com.elkware.midp.games.colorng.Class_3a;
-import com.elkware.midp.games.colorng.arena.Class_5c;
-import com.elkware.midp.games.colorng.j;
+import com.elkware.midp.games.colorng.arena.CanvasView5;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -23,7 +22,7 @@ import javax.microedition.rms.RecordFilter;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
 
-public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
+public class CanvasView extends CanvasView5 implements Runnable, PlayerListener {
 
 	public final int var_c = 15;
 	public final int var_20 = 20;
@@ -90,7 +89,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 	public String[] var_b2f;
 	public int[] var_b57;
 	public int var_ba9 = 0;
-	private Image var_bdf;
+	private Image logoImage;
 	public Image var_c21;
 	public Image var_c5d = null;
 	public Image var_c8a = null;
@@ -280,13 +279,12 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 	private long var_3882 = 0L;
 	private boolean var_38d3 = true;
 
-	public Class_c6(j var1) {
+	public CanvasView(ArenaMidlet var1) {
 		super(var1);
-		this.var_11b = (ArenaMidlet) var1;
+		this.var_11b = var1;
 		this.var_fa2 = this.sub_160();
 		Class_2b8.sub_1d(this, this.var_fa2);
 		this.var_eb = 20;
-		this.setFullScreenMode(true);
 	}
 
 	public void sub_54() {
@@ -316,8 +314,8 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 		this.sub_630();
 	}
 
-	public int getHeight() {
-		return super.getHeight() - 20;
+	public int getheight() {
+		return super.getheight() - 20;
 	}
 
 	public void sub_110() {
@@ -329,7 +327,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 				this.var_62c[var1] = this.var_11b.sub_383(262 + var1);
 			}
 
-			this.var_686 = this.sub_11be(173);
+			this.var_686 = this.openImage(173);
 		}
 
 		this.var_844 = 2;
@@ -380,7 +378,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 
 	}
 
-	private final void sub_1e2() {
+	private void sub_1e2() {
 		int var6;
 		if (this.var_844 == 1) {
 			if (this.var_2976) {
@@ -412,7 +410,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 					try {
 						this.var_b57[var6] = this.var_373b[var6];
 					} catch (Exception var5) {
-						;
+						var5.printStackTrace();
 					}
 				}
 			}
@@ -423,7 +421,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 			try {
 				Thread.sleep(50L);
 			} catch (Exception var4) {
-				;
+				var4.printStackTrace();
 			}
 
 			this.sub_737(this.var_8f4);
@@ -484,7 +482,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 
 	}
 
-	private final void sub_1ef(long var1) {
+	private void sub_1ef(long var1) {
 		this.var_ba9 = (this.var_ba9 + 1) % 100;
 
 		int var3;
@@ -514,7 +512,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 				}
 			}
 		} catch (Exception var14) {
-			;
+			var14.printStackTrace();
 		}
 
 		this.var_1fa2 = this.var_1fa2 % (this.var_1efb.length - 1) + 1;
@@ -1040,7 +1038,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 			System.gc();
 			var1.setClip(0, 0, this.var_1d77, this.var_1d81 + 20);
 			if (this.var_70c == null) {
-				this.var_70c = this.sub_11be(33);
+				this.var_70c = this.openImage(33);
 			}
 
 			var1.drawImage(this.var_70c, 0, 0, 0);
@@ -1070,7 +1068,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 		} else if (this.var_c5d == null || this.var_2c1c < 75) {
 			System.gc();
 			if (this.var_c5d == null) {
-				this.var_c5d = this.sub_11be(32);
+				this.var_c5d = this.openImage(32);
 			}
 
 			var1.setClip(0, 0, this.var_1d77, this.var_1d81 + 20);
@@ -1231,11 +1229,11 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 
 	}
 
-	private final synchronized void sub_3d4(Graphics var1) {
+	private synchronized void paintLogo(Graphics var1) {
 		var1.setClip(0, 0, this.var_1d77, this.var_1d81 + 20);
 		var1.setFont(this.var_2d3f);
 		if (this.var_34fd != 0 && this.var_3559) {
-			var1.setClip(0, 0, this.getWidth(), this.getHeight());
+			var1.setClip(0, 0, this.getwidth(), this.getheight());
 			var1.setColor(0, 0, 0);
 			var1.fillRect(0, 100, this.var_1d77, 20);
 			var1.setColor(200, 200, 200);
@@ -1245,11 +1243,11 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 					Math.max(
 							(this.var_1d77 - this.var_498[1].stringWidth(var3)) / 2,
 							0), 102, 0);
-			if (this.var_34fd == 100) {
+			/*if (this.var_34fd == 100) {
 				;
-			}
+			}*/
 		} else {
-			var1.drawImage(this.var_bdf, 0, 0, 0);
+			var1.drawImage(this.logoImage, 0, 0, 0);
 			var1.setColor(250, 250, 250);
 			int var2 = this.var_498[1].stringWidth(this.var_2acf);
 			this.sub_1068(var1, this.var_2acf, (this.var_1d77 - var2) / 2, 70,
@@ -1541,9 +1539,9 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 						} else if (this.var_d15 != null) {
 							if (this.var_11c8 > this.var_1d77) {
 								this.var_e7f = Math.min(
-										(this.getHeight() - this.var_e7f) / 2
+										(this.getheight() - this.var_e7f) / 2
 												+ this.var_e7f + 1,
-										this.getHeight());
+										this.getheight());
 							}
 
 							var1.setClip(0, 0, this.var_1d77, this.var_e7f);
@@ -1614,7 +1612,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 						} else if (this.var_844 == 2) {
 							this.sub_3a3(var1);
 						} else if (!this.var_3124) {
-							this.sub_3d4(var1);
+							this.paintLogo(var1);
 						} else if (this.var_844 != 0 && this.var_9dd != 0L) {
 							this.sub_50d(var1);
 						}
@@ -1653,11 +1651,11 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 		this.var_498[6] = Font.getFont(32, this.var_11b.sub_dc(413) == 0 ? 0
 				: 1, this.sub_587(this.var_11b.sub_dc(412)));
 		System.gc();
-		this.var_bdf = this.sub_11be(2);
+		this.logoImage = this.openImage(2);
 		this.var_844 = 5;
 		this.var_2acf = this.var_11b.sub_383(250);
-		this.var_1d77 = this.getWidth();
-		this.var_1d81 = this.getHeight();
+		this.var_1d77 = this.getwidth();
+		this.var_1d81 = this.getheight();
 		this.sub_630();
 	}
 
@@ -1675,7 +1673,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 		this.var_2e63.start();
 	}
 
-	public void sub_679(Class_c6 var1) {
+	public void sub_679(CanvasView var1) {
 		synchronized (this.var_2fa5) {
 			this.var_2e22 = 2;
 			this.var_2eb2 = new Thread(var1);
@@ -1683,7 +1681,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 		}
 	}
 
-	public void sub_6a1(Class_c6 var1) {
+	public void sub_6a1(CanvasView var1) {
 		synchronized (this.var_2fa5) {
 			this.var_2e22 = 1;
 			this.var_2eb2 = new Thread(var1);
@@ -1691,7 +1689,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 		}
 	}
 
-	public void sub_6b4(Class_c6 var1) {
+	public void sub_6b4(CanvasView var1) {
 		synchronized (this.var_2fa5) {
 			this.var_2e22 = 3;
 			this.var_2eb2 = new Thread(var1);
@@ -1810,7 +1808,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 		this.var_33e = -3;
 		this.var_30a = 0;
 		if (this.var_2097 == null) {
-			this.var_2097 = this.sub_11be(209);
+			this.var_2097 = this.openImage(209);
 		}
 
 		this.var_2717 = this.var_2039 = false;
@@ -1841,14 +1839,14 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 		this.var_a89 = 0;
 		this.sub_b71(16);
 		if (this.var_ced == null) {
-			this.var_ced = this.sub_11be(164);
+			this.var_ced = this.openImage(164);
 		}
 
 		System.gc();
 		System.gc();
 		this.sub_b71(20);
 		if (this.var_c21 == null) {
-			this.var_c21 = this.sub_11be(163);
+			this.var_c21 = this.openImage(163);
 		}
 
 		this.sub_f23();
@@ -2153,7 +2151,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 			this.var_9b6 = 120000L * (long) (var22 ? 2 : 1);
 			System.gc();
 			if (this.var_d92 == null) {
-				this.var_d92 = this.sub_11be(171);
+				this.var_d92 = this.openImage(171);
 			}
 		} else if (this.var_891 == 5) {
 			this.var_1462 = 5;
@@ -2170,8 +2168,8 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 
 	public void sub_769(int var1, int var2, int var3, boolean var4) {
 		if (ArenaMidlet.var_24) {
-			super.var_96.var_166 = true;
-			super.var_96.var_b4 = true;
+			super.arena.var_166 = true;
+			super.arena.var_b4 = true;
 			this.var_3180.sub_53(var1, var2, var3, var4);
 		}
 	}
@@ -2211,7 +2209,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 			this.sub_f23();
 
 			try {
-				this.var_3180 = new Class_114(super.var_96);
+				this.var_3180 = new Class_114(super.arena);
 				this.var_3180.start();
 			} catch (Exception var23) {
 				;
@@ -2226,7 +2224,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 			System.gc();
 			this.sub_b50(10);
 			System.gc();
-			this.var_c21 = this.sub_11be(163);
+			this.var_c21 = this.openImage(163);
 			this.sub_b50(15);
 			System.gc();
 			this.sub_b50(20);
@@ -2244,8 +2242,8 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 			this.var_1074 = this.sub_160();
 			this.sub_b50(55);
 			System.gc();
-			this.var_de4 = this.sub_11be(166);
-			this.var_e3e = this.sub_11be(169);
+			this.var_de4 = this.openImage(166);
+			this.var_e3e = this.openImage(169);
 			this.sub_b50(60);
 			String[] var29 = null;
 			int[][] var2 = (int[][]) null;
@@ -2337,7 +2335,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 				System.gc();
 
 				for (var7 = 0; var7 < 4; ++var7) {
-					this.var_f45[var7] = this.sub_11be(177 + var7);
+					this.var_f45[var7] = this.openImage(177 + var7);
 				}
 
 				for (var7 = 0; var7 < var32; ++var7) {
@@ -2352,7 +2350,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 			System.gc();
 
 			for (int var31 = 0; var31 < 4; ++var31) {
-				this.var_f8e[var31] = this.sub_11be(16 + var31);
+				this.var_f8e[var31] = this.openImage(16 + var31);
 			}
 
 			this.sub_b50(80);
@@ -2421,7 +2419,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 			}
 
 			this.var_eb += this.var_733;
-			this.var_d74 = this.sub_11be(168);
+			this.var_d74 = this.openImage(168);
 			this.sub_b50(100);
 			this.var_11b.sub_371();
 			this.sub_107d();
@@ -2429,7 +2427,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 			this.sub_8ab();
 			this.sub_ffe();
 			System.gc();
-			a.sub_3ee();
+			Arena2.sub_3ee();
 		}
 	}
 
@@ -2742,7 +2740,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 			try {
 				System.gc();
 				this.var_d15 = Image.createImage(this.var_1d77,
-						this.getHeight());
+						this.getheight());
 				Graphics var11 = this.var_d15.getGraphics();
 				var11.setClip(0, 0, this.var_1d77, this.var_1d81);
 				var11.drawImage(this.var_d74, 0, 0, 0);
@@ -2822,9 +2820,9 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 					} else {
 						var11.setColor(0, 0, 0);
 						var11.setFont(this.var_498[0]);
-						var11.drawString(super.var_96.sub_383(287), 15, 44, 0);
+						var11.drawString(super.arena.sub_383(287), 15, 44, 0);
 						var11.setColor(200, 200, 200);
-						var11.drawString(super.var_96.sub_383(287), 16, 45, 0);
+						var11.drawString(super.arena.sub_383(287), 16, 45, 0);
 					}
 
 					var6.closeRecordStore();
@@ -3106,7 +3104,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 		System.gc();
 		this.sub_704(20);
 		this.var_30a2 = true;
-		this.var_c8a = this.sub_11be(210);
+		this.var_c8a = this.openImage(210);
 		this.sub_704(50);
 		if (this.var_3601) {
 			this.var_3601 = false;
@@ -3807,21 +3805,21 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 	private final void sub_107d() {
 		this.sub_704(0);
 		if (this.var_2097 == null) {
-			this.var_2097 = this.sub_11be(209);
+			this.var_2097 = this.openImage(209);
 		}
 
 		this.sub_704(5);
 		if (this.var_ced == null) {
-			this.var_ced = this.sub_11be(164);
+			this.var_ced = this.openImage(164);
 		}
 
 		this.sub_704(25);
-		this.var_1139 = this.sub_11be(205);
-		this.var_1174 = this.sub_11be(203);
-		this.var_11ab = this.sub_11be(204);
+		this.var_1139 = this.openImage(205);
+		this.var_1174 = this.openImage(203);
+		this.var_11ab = this.openImage(204);
 		this.sub_704(35);
 		if (this.var_1c8d == null) {
-			Image var1 = this.sub_11be(211);
+			Image var1 = this.openImage(211);
 			this.sub_704(45);
 
 			try {
@@ -3846,7 +3844,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 
 		int var7;
 		for (var7 = 0; var7 < this.var_22ea.length; ++var7) {
-			this.var_22ea[var7] = new Class_3a(this.sub_11be(198 + var7),
+			this.var_22ea[var7] = new Class_3a(this.openImage(198 + var7),
 					this.var_11b.sub_dc(223 + var7 * 2),
 					this.var_11b.sub_dc(224 + var7 * 2));
 		}
@@ -3866,7 +3864,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 		System.gc();
 
 		for (var7 = 0; var7 < this.var_1dec.length; ++var7) {
-			this.var_1dec[var7] = new Class_3a(this.sub_11be(192 + var7), 17,
+			this.var_1dec[var7] = new Class_3a(this.openImage(192 + var7), 17,
 					17);
 		}
 
@@ -3879,7 +3877,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 			System.gc();
 
 			for (var7 = 0; var7 < Class_24e.var_19.length; ++var7) {
-				this.var_1ff8[var7] = this.sub_11be(48 + var7);
+				this.var_1ff8[var7] = this.openImage(48 + var7);
 				this.var_ec4[var7] = this.var_1ff8[var7].getWidth();
 				this.var_ef3[var7] = this.var_1ff8[var7].getHeight() / 2;
 			}
@@ -3893,7 +3891,7 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 		for (var7 = 0; var7 < this.var_254a.length; ++var7) {
 			try {
 				System.gc();
-				this.var_254a[var7] = new Class_3a(this.sub_11be(224 + var7),
+				this.var_254a[var7] = new Class_3a(this.openImage(224 + var7),
 						this.var_11b.sub_dc(250 + var7 * 2),
 						this.var_11b.sub_dc(251 + var7 * 2));
 			} catch (Exception var4) {
@@ -3902,11 +3900,11 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 		}
 
 		this.sub_704(85);
-		this.var_3133 = this.sub_11be(167);
+		this.var_3133 = this.openImage(167);
 		this.sub_704(95);
 		System.gc();
 		if (this.var_10fc == null) {
-			this.var_10fc = this.sub_11be(165);
+			this.var_10fc = this.openImage(165);
 		}
 
 		this.sub_704(100);
@@ -3923,7 +3921,8 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 		return var2;
 	}
 
-	public void sub_1131(Graphics var1) {
+	@Override
+	public void draw(Graphics var1) {
 		this.sub_564(var1);
 	}
 
@@ -3935,10 +3934,10 @@ public class Class_c6 extends Class_5c implements Runnable, PlayerListener {
 		this.sub_1e0(0, var1);
 	}
 
-	public Image sub_11be(int var1) {
+	@Override
+	public Image openImage(int var1) {
 		try {
-			Image var2 = super.sub_11be(var1);
-			return var2;
+			return super.openImage(var1);
 		} catch (IOException var3) {
 			return null;
 		}

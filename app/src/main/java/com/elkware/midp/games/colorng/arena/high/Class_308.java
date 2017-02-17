@@ -16,12 +16,12 @@ public class Class_308 {
 	int var_1cd = 0;
 	int var_1f0;
 	int var_242 = 0;
-	Class_c6 var_274;
+	CanvasView var_274;
 	byte[] var_298;
 	byte[] var_2ed;
 
 	public Class_308(int var1, int var2, int var3, int var4, int var5,
-			int var6, int var7, Class_c6 var8, int var9) {
+					 int var6, int var7, CanvasView var8, int var9) {
 		this.var_e = var1;
 		this.var_38 = var2;
 		this.var_72 = var3;

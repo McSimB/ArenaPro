@@ -13,7 +13,7 @@ public class Class_24e {
 	int var_1bf;
 	int var_1ee;
 	int var_21d;
-	Class_c6 var_258;
+	CanvasView var_258;
 	int var_2ab = 0;
 	int var_2e6;
 	int var_31c;
@@ -22,12 +22,12 @@ public class Class_24e {
 	Class_2b8 var_3ab;
 
 	public Class_24e(int var1, int var2, int var3, int var4, int var5,
-			Class_2b8 var6, Class_c6 var7) {
+			Class_2b8 var6, CanvasView var7) {
 		this.sub_33(var1, var2, var3, var4, var5, var6, var7);
 	}
 
 	public void sub_33(int var1, int var2, int var3, int var4, int var5,
-			Class_2b8 var6, Class_c6 var7) {
+			Class_2b8 var6, CanvasView var7) {
 		int var10001;
 		if (this.var_95 == 0) {
 			var10001 = var7.var_1d77;

@@ -1,5 +1,7 @@
 package com.elkware.midp.games;
 
+import android.app.Activity;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,23 +9,16 @@ import java.io.InputStream;
 import javax.microedition.io.Connector;
 import javax.microedition.io.HttpConnection;
 import javax.microedition.lcdui.Alert;
-import javax.microedition.lcdui.AlertType;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
-import javax.microedition.lcdui.Image;
-import javax.microedition.midlet.MIDlet;
 
-public abstract class b extends MIDlet {
+public abstract class Arena1 extends Activity {
 
 	private int var_ad = -1577856450;
 	public String var_153 = null;
 	private String var_198 = null;
-
-	public final boolean sub_b9() {
-		return true;
-	}
 
 	public boolean sub_485() {
 		return true;
@@ -38,25 +33,24 @@ public abstract class b extends MIDlet {
 		byte[] var3 = new byte[var2.length * 2];
 
 		for (int var4 = 0; var4 < var2.length; ++var4) {
-			var3[var4 * 2 + 0] = (byte) (var2[var4] >> 8 & 255);
+			var3[var4 * 2] = (byte) (var2[var4] >> 8 & 255);
 			var3[var4 * 2 + 1] = (byte) (var2[var4] & 255);
 		}
-
 		return var3;
 	}
 
 	public String sub_137(byte[] var1) {
-		StringBuffer var2 = new StringBuffer();
+		StringBuilder var2 = new StringBuilder();
 
-		for (int var3 = 0; var3 < var1.length; ++var3) {
-			var2.append(Integer.toHexString((var1[var3] & 240) >> 4));
-			var2.append(Integer.toHexString(var1[var3] & 15));
+		for (byte aVar1 : var1) {
+			var2.append(Integer.toHexString((aVar1 & 240) >> 4));
+			var2.append(Integer.toHexString(aVar1 & 15));
 		}
 
 		return var2.toString();
 	}
 
-	private final String sub_149(String var1) throws IOException {
+	private String sub_149(String var1) throws IOException {
 		System.out.println(var1);
 		InputStream var2 = null;
 		HttpConnection var3 = (HttpConnection) Connector.open(var1);
@@ -218,8 +212,7 @@ public abstract class b extends MIDlet {
 							var12 = var6;
 						}
 
-						var2 = !this.sub_4af(new Alert("Nickname", var12,
-								(Image) null, (AlertType) null));
+						var2 = !this.sub_4af(new Alert("Nickname", var12, null, null));
 					} else {
 						var1 ^= this.var_ad;
 						var5 = new StringBuffer("http://139.23.38.140/hs/");
@@ -258,18 +251,17 @@ public abstract class b extends MIDlet {
 			}
 		} catch (Exception var11) {
 			var11.printStackTrace();
-			Display.getDisplay(this).setCurrent(
-					new Alert("Info", "" + var11, (Image) null,
-							(AlertType) null));
+			//TODO Alert
+			Display.getDisplay(this).setCurrent(new Alert("Info", "" + var11, null, null));
 
 			try {
 				Thread.currentThread();
 				Thread.sleep(5000L);
 			} catch (Exception var9) {
-				;
+				var9.printStackTrace();
 			}
 
-			Display.getDisplay(this).setCurrent((Displayable) null);
+			Display.getDisplay(this).setCurrent(null);
 			return false;
 		}
 	}
@@ -281,10 +273,6 @@ public abstract class b extends MIDlet {
 	}
 
 	public void commandAction(Command var1, Displayable var2) {
-		if (var1.getCommandType() == 4) {
-		} else if (var1.getCommandType() == 2) {
-		}
-
 	}
 
 	public boolean sub_331() {
@@ -317,4 +305,22 @@ public abstract class b extends MIDlet {
 	abstract int sub_5af();
 
 	abstract void sub_5de(boolean var1);
+
+
+	public void startApp() {
+	}
+
+	public void destroyApp(boolean b) {
+	}
+
+	public void notifyDestroyed() {
+	}
+
+	public void notifyPaused() {
+	}
+
+	public String getAppProperty(String s) {
+		return "";
+	}
+
 }

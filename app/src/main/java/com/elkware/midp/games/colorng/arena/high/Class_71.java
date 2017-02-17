@@ -84,7 +84,7 @@ class Class_71 extends Thread {
 		}
 	}
 
-	Class_71(ArenaMidlet var1, CommandListener var2, int var3, Class_1bb var4) {
+	Class_71(ArenaMidlet var1, CommandListener var2, int var3, CanvView var4) {
 		this(var1, var2, var3);
 	}
 }

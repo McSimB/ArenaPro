@@ -4,7 +4,7 @@ android {
     compileSdkVersion 21
     buildToolsVersion '21.1.0'
     defaultConfig {
-        applicationId "com.mcsimb.arenapro"
+        applicationId "com.elkware.midp.games.colorng.arena.high"
         minSdkVersion 9
         targetSdkVersion 21
         versionCode 1

@@ -65,6 +65,6 @@ public class Class_3a extends Class_77 {
 	}
 
 	public void sub_90(Graphics var1, int var2, int var3) {
-		this.sub_eb((Class_1e8) null, var1, var2, var3);
+		this.sub_eb((CanvasView1) null, var1, var2, var3);
 	}
 }

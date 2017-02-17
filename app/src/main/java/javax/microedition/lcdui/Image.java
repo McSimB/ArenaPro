@@ -32,10 +32,6 @@ public class Image {
 		}
 	}
 
-	public static Image createImage(String s) {
-		return null;
-	}
-
 	public static Image createImage(int width, int height) {
 		if(width <= 0 || height <= 0)
 			throw new IllegalArgumentException();

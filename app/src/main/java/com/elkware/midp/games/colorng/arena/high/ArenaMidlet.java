@@ -1,7 +1,9 @@
 package com.elkware.midp.games.colorng.arena.high;
 
-import com.elkware.midp.games.colorng.Class_12b;
-import com.elkware.midp.games.colorng.arena.b;
+import android.os.Bundle;
+
+import com.elkware.midp.games.colorng.Arena3;
+import com.elkware.midp.games.colorng.CanvasView3;
 
 import java.io.DataInputStream;
 import java.util.Enumeration;
@@ -22,7 +24,7 @@ import javax.wireless.messaging.MessageConnection;
 import javax.wireless.messaging.MessagePart;
 import javax.wireless.messaging.MultipartMessage;
 
-public class ArenaMidlet extends b implements CommandListener {
+public class ArenaMidlet extends Arena3 implements CommandListener {
 
 	public static boolean var_24 = true;
 	private List var_85;
@@ -31,7 +33,6 @@ public class ArenaMidlet extends b implements CommandListener {
 	private List var_144;
 	private List var_185;
 	private List var_1cc;
-	private Command var_230;
 	private Command var_267;
 	private Command var_2b9;
 	private Command var_2f6;
@@ -49,7 +50,6 @@ public class ArenaMidlet extends b implements CommandListener {
 	private Command var_52c;
 	private Form var_573;
 	private Form var_5bd;
-	private Form var_604;
 	private Form var_62f = null;
 	private List var_644;
 	private List var_670;
@@ -57,9 +57,8 @@ public class ArenaMidlet extends b implements CommandListener {
 	private List var_6ea;
 	private List var_730;
 	private List var_787;
-	private Class_c6 var_7eb;
+	private CanvasView canvasView;
 	private int var_845;
-	private String var_88a = "033751AD";
 	private int var_8c5;
 	private String var_91e;
 	private TextBox var_940;
@@ -84,40 +83,49 @@ public class ArenaMidlet extends b implements CommandListener {
 	public Image var_d78;
 	public int var_de1 = 18;
 	public boolean var_e61 = false;
-	private static int var_ebf = 6;
 	private TextBox var_f23 = null;
 
+	public ArenaView arenaView;
+
 	public ArenaMidlet() {
-		this.sub_291(this.var_88a);
+		String var_88a = "033751AD";
+		this.sub_291(var_88a);
 	}
 
 	private synchronized void sub_11(Displayable var1) {
-		this.var_9d2 = var1 != this.var_7eb;
-		this.var_9f3 = var1 == this.var_7eb;
+		this.var_9d2 = var1 != this.canvasView;
+		this.var_9f3 = var1 == this.canvasView;
 
 		try {
 			Thread.currentThread();
 			Thread.sleep(50L);
 		} catch (Exception var3) {
-			;
+			var3.printStackTrace();
 		}
 
 		super.var_52.setCurrent(var1);
 	}
 
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		arenaView = new ArenaView(this);
+		setContentView(arenaView);
+		startApp();
+	}
+
+	@Override
 	public void startApp() {
 		if (!this.var_a44) {
 			this.var_a44 = true;
 			super.startApp();
-			this.var_7eb.sub_5d4();
+			this.canvasView.sub_5d4();
 			this.var_2f6 = new Command(this.sub_383(215), 2, 0);
-
 			this.var_353 = new Command(this.sub_383(220), 1, 0);
 			this.var_37e = new Command(this.sub_383(220), 1, 0);
 			this.var_394 = new Command(this.sub_383(222), 2, 0);
-
 			this.var_2b9 = new Command("", 2, 0);
-			this.var_230 = new Command("", 2, 0);
+			Command var_230 = new Command("", 2, 0);
 			this.var_267 = new Command("", 2, 0);
 			this.var_3c4 = new Command(this.sub_383(215), 2, 0);
 			this.var_41a = new Command(this.sub_383(459), 2, 0);
@@ -126,26 +134,23 @@ public class ArenaMidlet extends b implements CommandListener {
 			this.var_46d = new Command(this.sub_383(400), 1, 0);
 			this.var_491 = new Command(this.sub_383(400), 1, 0);
 			this.var_4a4 = new Command(this.sub_383(12), 2, 0);
-
 			this.var_52c = new Command(this.sub_383(523), 2, 0);
 			this.var_4e2 = new Command(this.sub_383(522), 1, 0);
 
 			this.var_670 = new List(this.sub_383(208), 3);
-
 			for (int var1 = 0; var1 < 5; ++var1) {
-				this.var_670.append(this.sub_383(209 + var1), (Image) null);
+				this.var_670.append(this.sub_383(209 + var1), null);
 			}
 
 			this.var_670.addCommand(this.var_2f6);
 			this.var_670.setCommandListener(this);
 			this.var_644 = new List(this.sub_383(206), 2);
-			this.var_644.append(this.sub_383(231), (Image) null);
-			this.var_644.append(this.sub_383(233), (Image) null);
-			this.var_644.append(this.sub_383(230), (Image) null);
+			this.var_644.append(this.sub_383(231), null);
+			this.var_644.append(this.sub_383(233), null);
+			this.var_644.append(this.sub_383(230), null);
 			this.var_644.addCommand(this.var_394);
 			this.var_644.setCommandListener(this);
-			this.var_940 = new TextBox(this.sub_383(219), this.var_7eb.var_2f0,
-					12, 0);
+			this.var_940 = new TextBox(this.sub_383(219), this.canvasView.var_2f0, 12, 0);
 			this.var_940.addCommand(this.var_37e);
 			this.var_940.addCommand(this.var_3c4);
 			this.var_940.setCommandListener(this);
@@ -159,17 +164,16 @@ public class ArenaMidlet extends b implements CommandListener {
 				var4 = "";
 			}
 
-			this.var_573
-					.append("(c) 2003/2004\nelkware &\nSiemens mobile\n\ndeveloped by\nelkware GmbH\n\nwww.elkware.com\n\nVersion "
+			this.var_573.append("(c) 2003/2004\nelkware &\nSiemens mobile\n\ndeveloped by\nelkware GmbH\n\nwww.elkware.com\n\nVersion "
 							+ var4 + "\nDate " + "02.06.04");
 			this.var_573.addCommand(this.var_52c);
 			this.var_573.setCommandListener(this);
 			this.var_6ea = new List(this.sub_383(285), 3, new String[]{
-					this.sub_383(283), this.sub_383(284)}, (Image[]) null);
+					this.sub_383(283), this.sub_383(284)}, null);
 			this.var_6ea.setCommandListener(this);
 			this.var_6ea.addCommand(this.var_2f6);
 			this.var_730 = new List(this.sub_383(285), 3,
-					new String[]{this.sub_383(281)}, (Image[]) null);
+					new String[]{this.sub_383(281)}, null);
 			this.var_730.setCommandListener(this);
 			this.var_a8d = this.sub_dc(472) == 1;
 			String[] var2;
@@ -184,31 +188,31 @@ public class ArenaMidlet extends b implements CommandListener {
 						this.sub_383(217), this.sub_383(207)};
 			}
 
-			this.var_85 = new List("Contest Arena Pro", 3, var2, (Image[]) null);
+			this.var_85 = new List("Contest Arena Pro", 3, var2, null);
 			this.var_85.setCommandListener(this);
 			this.var_85.addCommand(this.var_267);
 			String[] var3 = new String[]{this.sub_383(520)};
-			this.var_144 = new List(this.sub_383(286), 3, var3, (Image[]) null);
-			this.var_144.addCommand(this.var_230);
+			this.var_144 = new List(this.sub_383(286), 3, var3, null);
+			this.var_144.addCommand(var_230);
 			this.var_144.setCommandListener(this);
 			this.var_114 = new List(this.sub_383(282), 3, new String[]{
 					this.sub_383(201), this.sub_383(216), this.sub_383(521),
 					this.sub_383(205), this.sub_383(206), this.sub_383(218),
-					this.sub_383(217), this.sub_383(207)}, (Image[]) null);
-			this.var_114.addCommand(this.var_230);
+					this.sub_383(217), this.sub_383(207)}, null);
+			this.var_114.addCommand(var_230);
 			this.var_114.setCommandListener(this);
 			this.var_be = new List("", 3, new String[]{this.sub_383(240),
 					this.sub_383(241), this.sub_383(242), this.sub_383(243),
-					this.sub_383(222)}, (Image[]) null);
-			this.var_be.addCommand(this.var_230);
+					this.sub_383(222)}, null);
+			this.var_be.addCommand(var_230);
 			this.var_be.setCommandListener(this);
-			this.var_185 = new List("", 3, new String[]{this.sub_383(226),
-					this.sub_383(215)}, (Image[]) null);
-			this.var_185.addCommand(this.var_230);
+			this.var_185  = new List("", 3, new String[]{this.sub_383(226),
+					this.sub_383(215)}, null);
+			this.var_185.addCommand(var_230);
 			this.var_185.setCommandListener(this);
 			this.var_1cc = new List("", 3, new String[]{this.sub_383(226),
-					this.sub_383(215)}, (Image[]) null);
-			this.var_1cc.addCommand(this.var_230);
+					this.sub_383(215)}, null);
+			this.var_1cc.addCommand(var_230);
 			this.var_1cc.setCommandListener(this);
 		}
 	}
@@ -228,43 +232,41 @@ public class ArenaMidlet extends b implements CommandListener {
 	}
 
 	public void sub_df() {
-		this.var_7eb.sub_af9();
+		this.canvasView.sub_af9();
 		this.var_af2 = true;
 		this.sub_327(14);
 	}
 
 	private void sub_fa(boolean var1) {
 		if (var1 && this.var_a8d) {
-			Image var2 = this.var_7eb.sub_11be(230);
-			Class_1bb var3 = new Class_1bb(this, var2);
-			var3.setFullScreenMode(true);
+			Image downloadMoreImage = this.canvasView.openImage(230);
+			CanvView var3 = new CanvView(this, downloadMoreImage);
 			super.var_52.setCurrent(var3);
 			this.var_ab2.start();
 		} else {
 			this.destroyApp(true);
 		}
-
 	}
 
 	public void sub_14a() {
-		this.var_7eb.sub_8ab();
-		this.var_7eb.var_c5d = null;
+		this.canvasView.sub_8ab();
+		this.canvasView.var_c5d = null;
 		System.gc();
-		if (this.var_7eb.var_270a) {
-			this.var_7eb.sub_769(0, 64, -1, true);
+		if (this.canvasView.var_270a) {
+			this.canvasView.sub_769(0, 64, -1, true);
 		}
 
-		this.var_7eb.sub_ffe();
+		this.canvasView.sub_ffe();
 		this.var_af2 = true;
 		this.sub_327(10);
 	}
 
 	public void sub_16b() {
-		this.var_7eb.sub_8ab();
-		this.var_7eb.var_92a = false;
-		this.var_7eb.var_c8a = null;
-		this.var_7eb.sub_54();
-		this.var_7eb.sub_ffe();
+		this.canvasView.sub_8ab();
+		this.canvasView.var_92a = false;
+		this.canvasView.var_c8a = null;
+		this.canvasView.sub_54();
+		this.canvasView.sub_ffe();
 		this.var_af2 = true;
 		this.sub_327(10);
 	}
@@ -272,7 +274,7 @@ public class ArenaMidlet extends b implements CommandListener {
 	public void sub_1b1() {
 		this.var_d78 = null;
 		System.gc();
-		this.var_7eb.var_535 = false;
+		this.canvasView.var_535 = false;
 		this.sub_327(14);
 	}
 
@@ -292,41 +294,41 @@ public class ArenaMidlet extends b implements CommandListener {
 
 				switch (var5) {
 					case 0:
-						this.var_7eb.var_91b = this.var_7eb.var_92a = false;
+						this.canvasView.var_91b = this.canvasView.var_92a = false;
 						this.sub_327(11);
 						break;
 					case 1:
-						this.var_7eb.var_91b = true;
-						this.var_7eb.var_92a = false;
-						if (this.var_7eb.var_270a) {
-							this.var_7eb.sub_7c4();
-							this.var_7eb.sub_769(0, 67, 1, true);
+						this.canvasView.var_91b = true;
+						this.canvasView.var_92a = false;
+						if (this.canvasView.var_270a) {
+							this.canvasView.sub_7c4();
+							this.canvasView.sub_769(0, 67, 1, true);
 						}
 
-						if (this.var_7eb.sub_ddd()) {
+						if (this.canvasView.sub_ddd()) {
 							this.sub_327(22);
 						} else {
-							this.var_7eb.var_35e9 = true;
+							this.canvasView.var_35e9 = true;
 							this.sub_327(11);
 						}
 
-						this.var_7eb.sub_1035();
+						this.canvasView.sub_1035();
 						break;
 					case 2:
-						this.var_7eb.sub_704(0);
-						this.sub_11(this.var_7eb);
-						this.var_7eb.var_30a2 = true;
-						this.var_7eb.sub_6c0();
-						this.var_7eb.var_92a = true;
-						this.var_7eb.var_91b = false;
-						this.var_7eb.var_a17 = true;
-						this.var_7eb.sub_704(10);
+						this.canvasView.sub_704(0);
+						this.sub_11(this.canvasView);
+						this.canvasView.var_30a2 = true;
+						this.canvasView.sub_6c0();
+						this.canvasView.var_92a = true;
+						this.canvasView.var_91b = false;
+						this.canvasView.var_a17 = true;
+						this.canvasView.sub_704(10);
 						this.sub_327(29);
 						break;
 					case 3:
-						this.var_7eb.sub_a65();
+						this.canvasView.sub_a65();
 						this.sub_327(14);
-						this.var_7eb.sub_1035();
+						this.canvasView.sub_1035();
 						break;
 					case 4:
 						this.sub_327(15);
@@ -348,11 +350,11 @@ public class ArenaMidlet extends b implements CommandListener {
 					var5 = this.var_be.getSelectedIndex();
 					switch (var5) {
 						case 0:
-							this.var_7eb.var_4c6 = true;
+							this.canvasView.var_4c6 = true;
 							this.sub_327(18);
 							break;
 						case 1:
-							this.var_7eb.var_4c6 = false;
+							this.canvasView.var_4c6 = false;
 							this.sub_327(19);
 							break;
 						case 2:
@@ -362,7 +364,7 @@ public class ArenaMidlet extends b implements CommandListener {
 							this.sub_327(23);
 							break;
 						case 4:
-							this.sub_11(this.var_7eb);
+							this.sub_11(this.canvasView);
 					}
 
 				}
@@ -373,7 +375,7 @@ public class ArenaMidlet extends b implements CommandListener {
 					var5 = this.var_185.getSelectedIndex();
 					switch (var5) {
 						case 0:
-							this.var_7eb.sub_a65();
+							this.canvasView.sub_a65();
 							this.var_af2 = true;
 							this.sub_327(14);
 							break;
@@ -389,7 +391,7 @@ public class ArenaMidlet extends b implements CommandListener {
 					var5 = this.var_1cc.getSelectedIndex();
 					switch (var5) {
 						case 0:
-							(new Class_71(this, this, 3, (Class_1bb) null)).start();
+							(new Class_71(this, this, 3, null)).start();
 							break;
 						case 1:
 							this.sub_1b1();
@@ -398,37 +400,37 @@ public class ArenaMidlet extends b implements CommandListener {
 				}
 			} else if (var2 == this.var_114) {
 				if (var1.getCommandType() == 2) {
-					this.var_7eb.sub_9e4();
+					this.canvasView.sub_9e4();
 				} else {
 					var5 = this.var_114.getSelectedIndex();
 					switch (var5) {
 						case 0:
-							this.var_7eb.sub_9e4();
+							this.canvasView.sub_9e4();
 							break;
 						case 1:
-							this.var_7eb.var_2de8 = false;
-							this.var_7eb.sub_704(0);
-							this.var_7eb.sub_7c4();
-							this.var_7eb.sub_8ab();
+							this.canvasView.var_2de8 = false;
+							this.canvasView.sub_704(0);
+							this.canvasView.sub_7c4();
+							this.canvasView.sub_8ab();
 							break;
 						case 2:
-							this.var_7eb.var_2de8 = false;
+							this.canvasView.var_2de8 = false;
 							this.sub_63b();
 							break;
 						case 3:
-							this.var_7eb.var_2de8 = true;
-							this.sub_11(this.var_7eb);
+							this.canvasView.var_2de8 = true;
+							this.sub_11(this.canvasView);
 							break;
 						case 4:
-							this.var_7eb.var_2de8 = false;
+							this.canvasView.var_2de8 = false;
 							this.sub_327(15);
 							break;
 						case 5:
-							this.var_7eb.var_2de8 = false;
+							this.canvasView.var_2de8 = false;
 							this.sub_327(17);
 							break;
 						case 6:
-							this.var_7eb.var_2de8 = false;
+							this.canvasView.var_2de8 = false;
 							this.sub_327(16);
 							break;
 						case 7:
@@ -441,38 +443,38 @@ public class ArenaMidlet extends b implements CommandListener {
 				switch (var5) {
 					case 0:
 						this.var_730.removeCommand(this.var_2b9);
-						this.var_7eb.var_2976 = false;
-						this.var_7eb.var_35b0 = false;
-						if (this.var_7eb.var_37be) {
-							this.var_7eb.sub_8ab();
+						this.canvasView.var_2976 = false;
+						this.canvasView.var_35b0 = false;
+						if (this.canvasView.var_37be) {
+							this.canvasView.sub_8ab();
 						} else {
-							if (this.var_7eb.var_3706 == 0) {
-								this.var_7eb.var_891 = Class_2b8.sub_62(4) + 1;
+							if (this.canvasView.var_3706 == 0) {
+								this.canvasView.var_891 = Class_2b8.sub_62(4) + 1;
 							}
 
-							this.var_7eb.var_8f4 = Class_2b8
-									.sub_62(Class_c6.var_154[this.var_7eb.var_891]) + 1;
+							this.canvasView.var_8f4 = Class_2b8
+									.sub_62(CanvasView.var_154[this.canvasView.var_891]) + 1;
 						}
 
-						this.var_7eb.sub_171(0);
-						this.sub_11(this.var_7eb);
+						this.canvasView.sub_171(0);
+						this.sub_11(this.canvasView);
 					default:
 				}
 			} else if (var2 == this.var_6ea) {
 				if (var1 == this.var_2f6) {
-					this.var_7eb.sub_8ab();
-					this.var_7eb.var_92a = false;
-					this.var_7eb.var_c8a = null;
-					this.var_7eb.sub_54();
-					this.var_7eb.sub_ffe();
+					this.canvasView.sub_8ab();
+					this.canvasView.var_92a = false;
+					this.canvasView.var_c8a = null;
+					this.canvasView.sub_54();
+					this.canvasView.sub_ffe();
 					this.var_af2 = true;
 					this.sub_327(10);
 				} else {
-					this.var_7eb.var_35e9 = this.var_6ea.getSelectedIndex() == 1;
-					if (this.var_7eb.var_35e9) {
+					this.canvasView.var_35e9 = this.var_6ea.getSelectedIndex() == 1;
+					if (this.canvasView.var_35e9) {
 						this.sub_327(11);
 					} else {
-						this.var_7eb.sub_704(0);
+						this.canvasView.sub_704(0);
 						this.sub_327(13);
 					}
 
@@ -484,15 +486,15 @@ public class ArenaMidlet extends b implements CommandListener {
 					var5 = this.var_144.getSelectedIndex();
 					switch (var5) {
 						case 0:
-							this.var_7eb.var_891 = 5;
-							this.var_7eb.var_8f4 = 1;
-							this.var_7eb.var_35b0 = this.var_7eb.var_a17 = false;
-							this.sub_11(this.var_7eb);
+							this.canvasView.var_891 = 5;
+							this.canvasView.var_8f4 = 1;
+							this.canvasView.var_35b0 = this.canvasView.var_a17 = false;
+							this.sub_11(this.canvasView);
 							return;
 						case 1:
-							this.var_7eb.sub_ffe();
-							this.var_7eb.var_2f12 = new Thread(this.var_7eb);
-							this.var_7eb.var_2f12.start();
+							this.canvasView.sub_ffe();
+							this.canvasView.var_2f12 = new Thread(this.canvasView);
+							this.canvasView.var_2f12.start();
 							return;
 						default:
 					}
@@ -516,18 +518,18 @@ public class ArenaMidlet extends b implements CommandListener {
 				}
 
 				if (var1.getCommandType() == 2 && this.var_845 == 15) {
-					this.var_7eb.var_395[0] = this.var_644.isSelected(2);
-					this.var_7eb.var_395[1] = this.var_644.isSelected(0);
-					this.var_7eb.var_395[2] = false;
-					this.var_7eb.var_395[3] = this.var_644.isSelected(1);
-					this.var_7eb.var_395[4] = false;
-					this.var_7eb.sub_ec7();
-					this.var_7eb.sub_7c4();
-					if (this.var_7eb.var_270a) {
-						this.var_7eb.sub_769(0, 64, 10, true);
+					this.canvasView.var_395[0] = this.var_644.isSelected(2);
+					this.canvasView.var_395[1] = this.var_644.isSelected(0);
+					this.canvasView.var_395[2] = false;
+					this.canvasView.var_395[3] = this.var_644.isSelected(1);
+					this.canvasView.var_395[4] = false;
+					this.canvasView.sub_ec7();
+					this.canvasView.sub_7c4();
+					if (this.canvasView.var_270a) {
+						this.canvasView.sub_769(0, 64, 10, true);
 					}
 
-					this.var_7eb.sub_116d(this.var_7eb.var_395[1]);
+					this.canvasView.sub_116d(this.canvasView.var_395[1]);
 					this.sub_327(10);
 				} else {
 					if (var1 == this.var_46d) {
@@ -545,53 +547,53 @@ public class ArenaMidlet extends b implements CommandListener {
 						this.var_af2 = true;
 						this.sub_327(10);
 					} else if (var1 == this.var_442) {
-						this.sub_11(this.var_7eb);
-						this.var_7eb.sub_704(0);
-						this.var_7eb.sub_679(this.var_7eb);
+						this.sub_11(this.canvasView);
+						this.canvasView.sub_704(0);
+						this.canvasView.sub_679(this.canvasView);
 					} else if (var1 != this.var_2f6 && var1 != this.var_394
 							&& var1 != this.var_52c) {
 						if (var1.getCommandType() == 1 && this.var_845 == 11) {
-							this.var_7eb.var_891 = this.var_670
+							this.canvasView.var_891 = this.var_670
 									.getSelectedIndex();
-							if (this.var_7eb.var_91b) {
-								this.var_7eb.sub_704(0);
-								this.sub_11(this.var_7eb);
-								this.var_7eb.sub_704(0);
+							if (this.canvasView.var_91b) {
+								this.canvasView.sub_704(0);
+								this.sub_11(this.canvasView);
+								this.canvasView.sub_704(0);
 								this.sub_327(13);
 							} else {
 								this.sub_327(12);
 							}
 						} else if (var1.getCommandType() == 1
 								&& this.var_845 == 12) {
-							this.var_7eb.var_8f4 = this.var_6a4
+							this.canvasView.var_8f4 = this.var_6a4
 									.getSelectedIndex() + 1;
 							this.sub_327(13);
 						} else if (var1 == this.var_3c4) {
 							this.var_af2 = true;
-							this.var_7eb.var_4c6 = false;
-							this.var_7eb.var_4ee = false;
+							this.canvasView.var_4c6 = false;
+							this.canvasView.var_4ee = false;
 							this.sub_327(14);
-							this.var_7eb.var_4c6 = false;
-							this.var_7eb.var_4ee = false;
+							this.canvasView.var_4c6 = false;
+							this.canvasView.var_4ee = false;
 						} else {
 							String var3;
 							if (var1 == this.var_37e) {
-								this.var_7eb.sub_a84(false);
+								this.canvasView.sub_a84(false);
 								var3 = this.var_940.getString().replace('\n',
 										' ');
-								this.var_7eb.var_2f0 = var3.substring(0,
+								this.canvasView.var_2f0 = var3.substring(0,
 										Math.min(var3.length(), 10));
 								this.sub_327(19);
 							} else if (var1 == this.var_353) {
-								this.var_7eb.var_4ee = false;
-								this.sub_11(this.var_7eb);
-								this.var_7eb.sub_6c0();
+								this.canvasView.var_4ee = false;
+								this.sub_11(this.canvasView);
+								this.canvasView.sub_6c0();
 							} else if (this.var_845 == 23) {
-								this.sub_11(this.var_7eb);
+								this.sub_11(this.canvasView);
 								this.sub_327(24);
 							} else if (var1 == this.var_460) {
-								this.sub_11(this.var_7eb);
-								this.var_7eb.sub_6a1(this.var_7eb);
+								this.sub_11(this.canvasView);
+								this.canvasView.sub_6a1(this.canvasView);
 							} else if (var1 == this.var_4e2) {
 								var3 = this.var_f23.getString();
 								Form var4 = new Form(this.sub_383(19));
@@ -599,35 +601,35 @@ public class ArenaMidlet extends b implements CommandListener {
 								var4.addCommand(this.var_394);
 								var4.setCommandListener(this);
 								this.sub_11(var4);
-								(new Class_236(this, var3, (Class_1bb) null))
+								(new Class_236(this, var3, null))
 										.start();
 							}
 						}
 					} else {
-						this.var_7eb.sub_704(0);
-						if (this.var_7eb.var_92a) {
-							this.var_7eb.sub_8ab();
-							this.var_7eb.var_92a = false;
-							this.var_7eb.var_c8a = null;
+						this.canvasView.sub_704(0);
+						if (this.canvasView.var_92a) {
+							this.canvasView.sub_8ab();
+							this.canvasView.var_92a = false;
+							this.canvasView.var_c8a = null;
 						}
 
-						this.var_7eb.sub_704(25);
-						this.var_7eb.sub_704(50);
-						if (this.var_7eb.var_91b && this.var_7eb.var_37be) {
-							this.var_7eb.var_35b0 = false;
-							this.var_7eb.sub_8ab();
-							this.var_7eb.var_c5d = null;
+						this.canvasView.sub_704(25);
+						this.canvasView.sub_704(50);
+						if (this.canvasView.var_91b && this.canvasView.var_37be) {
+							this.canvasView.var_35b0 = false;
+							this.canvasView.sub_8ab();
+							this.canvasView.var_c5d = null;
 							System.gc();
 						}
 
-						this.var_7eb.sub_704(75);
-						this.var_7eb.sub_704(100);
-						this.var_7eb.sub_54();
-						this.var_7eb.repaint();
-						this.var_7eb.serviceRepaints();
+						this.canvasView.sub_704(75);
+						this.canvasView.sub_704(100);
+						this.canvasView.sub_54();
+						this.canvasView.repaint();
+						this.canvasView.serviceRepaints();
 						this.var_af2 = true;
 						this.sub_327(10);
-						this.var_7eb.sub_ffe();
+						this.canvasView.sub_ffe();
 					}
 
 				}
@@ -636,7 +638,7 @@ public class ArenaMidlet extends b implements CommandListener {
 	}
 
 	public void sub_1fb() {
-		this.var_7eb.sub_704(0);
+		this.canvasView.sub_704(0);
 		boolean var1 = false;
 		byte var2 = -1;
 		String var3 = this.var_9a1.getString();
@@ -647,7 +649,7 @@ public class ArenaMidlet extends b implements CommandListener {
 		try {
 			byte[] var7 = this.sub_5a0();
 			int var8 = 0;
-			this.var_7eb.sub_704(90);
+			this.canvasView.sub_704(90);
 			var6 = (MessageConnection) Connector.open(var5);
 
 			for (int var13 = 0; var13 < 3; ++var13) {
@@ -664,23 +666,23 @@ public class ArenaMidlet extends b implements CommandListener {
 					var10.setAddress(var5);
 					var10.setPayloadData(var9);
 					var6.send(var10);
-					this.var_7eb.sub_704(90 + (var13 + 1) * 2);
+					this.canvasView.sub_704(90 + (var13 + 1) * 2);
 				}
 			}
 
 			var6.close();
-			this.var_7eb.sub_704(100);
+			this.canvasView.sub_704(100);
 		} catch (Exception var12) {
 			var1 = true;
 			if (var6 != null) {
 				try {
 					var6.close();
 				} catch (Exception var11) {
-					;
+					var11.printStackTrace();
 				}
 			}
 
-			this.var_7eb.sub_704(100);
+			this.canvasView.sub_704(100);
 			this.sub_24e("sendSMS: " + var12 + ", sms #" + var2);
 		}
 
@@ -698,7 +700,7 @@ public class ArenaMidlet extends b implements CommandListener {
 			Thread.currentThread();
 			Thread.sleep(5000L);
 		} catch (Exception var3) {
-			;
+			var3.printStackTrace();
 		}
 
 	}
@@ -717,8 +719,8 @@ public class ArenaMidlet extends b implements CommandListener {
 	}
 
 	public void sub_2ec() {
-		if (this.var_7eb.var_2a7b != null && this.var_144.size() == 1) {
-			this.var_144.append(this.sub_383(292), (Image) null);
+		if (this.canvasView.var_2a7b != null && this.var_144.size() == 1) {
+			this.var_144.append(this.sub_383(292), null);
 		}
 
 		this.sub_11(this.var_144);
@@ -731,24 +733,24 @@ public class ArenaMidlet extends b implements CommandListener {
 			int var6;
 			switch (var1) {
 				case 10:
-					this.var_7eb.var_70c = null;
-					this.var_7eb.sub_ffe();
+					this.canvasView.var_70c = null;
+					this.canvasView.sub_ffe();
 					System.gc();
-					if (this.var_7eb.var_3463) {
+					if (this.canvasView.var_3463) {
 						this.sub_27c();
 					} else {
 						if (this.var_d38) {
-							this.var_604 = new Form(this.sub_383(457));
-							this.var_604.append(this.sub_383(458) + " "
+							Form var_604 = new Form(this.sub_383(457));
+							var_604.append(this.sub_383(458) + " "
 									+ this.var_d05);
 							if (this.var_b9f) {
-								this.var_604.append("\n" + this.sub_383(460));
+								var_604.append("\n" + this.sub_383(460));
 							}
 
-							this.var_604.addCommand(this.var_442);
-							this.var_604.addCommand(this.var_41a);
-							this.var_604.setCommandListener(this);
-							this.sub_11(this.var_604);
+							var_604.addCommand(this.var_442);
+							var_604.addCommand(this.var_41a);
+							var_604.setCommandListener(this);
+							this.sub_11(var_604);
 							this.var_d38 = false;
 							return;
 						}
@@ -760,15 +762,15 @@ public class ArenaMidlet extends b implements CommandListener {
 					this.sub_11(this.var_670);
 					break;
 				case 12:
-					if (this.var_7eb.var_891 != 0) {
+					if (this.canvasView.var_891 != 0) {
 						this.var_6a4 = new List(this.sub_383(300), 3);
-						var4 = Math.max(2, this.var_7eb.var_891);
+						var4 = Math.max(2, this.canvasView.var_891);
 
-						for (var6 = 0; var6 < Class_c6.var_154[this.var_7eb.var_891]; ++var6) {
+						for (var6 = 0; var6 < CanvasView.var_154[this.canvasView.var_891]; ++var6) {
 							this.var_6a4.append(
-									this.sub_383(Class_c6.var_1a6[var4 + var6 / 5
+									this.sub_383(CanvasView.var_1a6[var4 + var6 / 5
 											% 5]
-											+ var6 % 5), (Image) null);
+											+ var6 % 5), null);
 						}
 
 						this.var_6a4.addCommand(this.var_2f6);
@@ -779,22 +781,22 @@ public class ArenaMidlet extends b implements CommandListener {
 					}
 					break;
 				case 13:
-					this.sub_11(this.var_7eb);
-					this.var_7eb.sub_6b4(this.var_7eb);
+					this.sub_11(this.canvasView);
+					this.canvasView.sub_6b4(this.canvasView);
 					break;
 				case 14:
-					this.var_7eb.var_4ee = false;
-					if (this.var_7eb.sub_a8()) {
-						this.var_7eb.sub_110();
+					this.canvasView.var_4ee = false;
+					if (this.canvasView.sub_a8()) {
+						this.canvasView.sub_110();
 					}
 
-					this.sub_11(this.var_7eb);
-					this.var_7eb.sub_6c0();
+					this.sub_11(this.canvasView);
+					this.canvasView.sub_6c0();
 					break;
 				case 15:
 					this.var_644.setSelectedFlags(new boolean[]{
-							this.var_7eb.var_395[1], this.var_7eb.var_395[3],
-							this.var_7eb.var_395[0]});
+							this.canvasView.var_395[1], this.canvasView.var_395[3],
+							this.canvasView.var_395[0]});
 					this.sub_11(this.var_644);
 					break;
 				case 16:
@@ -805,11 +807,9 @@ public class ArenaMidlet extends b implements CommandListener {
 						this.var_5bd = new Form(this.sub_383(218));
 						String var5 = this.sub_383(200);
 
-						for (; (var6 = var5.indexOf("\nn")) != -1; var5 = var5
-								.substring(0, var6)
-								+ '\n'
-								+ var5.substring(var6 + 2, var5.length() - var6 - 2)) {
-							;
+						while ((var6 = var5.indexOf("\nn")) != -1) {
+							var5 = var5.substring(0, var6) + '\n'
+									+ var5.substring(var6 + 2, var5.length() - var6 - 2);
 						}
 
 						this.var_5bd.append(var5);
@@ -823,20 +823,20 @@ public class ArenaMidlet extends b implements CommandListener {
 					this.sub_11(this.var_940);
 					break;
 				case 19:
-					this.var_7eb.var_535 = false;
-					this.var_7eb.var_5fb = null;
+					this.canvasView.var_535 = false;
+					this.canvasView.var_5fb = null;
 
 					for (var4 = 0; var4 < 4; ++var4) {
-						this.var_7eb.var_295[var4] = this.var_7eb.var_234[var4 + 2];
+						this.canvasView.var_295[var4] = this.canvasView.var_234[var4 + 2];
 					}
 
-					this.var_7eb.var_4ee = true;
-					this.var_7eb.sub_aad();
-					this.sub_11(this.var_7eb);
-					this.var_7eb.sub_6c0();
+					this.canvasView.var_4ee = true;
+					this.canvasView.sub_aad();
+					this.sub_11(this.canvasView);
+					this.canvasView.sub_6c0();
 					break;
 				case 20:
-					this.sub_11(this.var_7eb);
+					this.sub_11(this.canvasView);
 				case 21:
 				case 26:
 				case 27:
@@ -846,10 +846,10 @@ public class ArenaMidlet extends b implements CommandListener {
 					this.sub_11(this.var_6ea);
 					break;
 				case 23:
-					(new Class_71(this, this, 1, (Class_1bb) null)).start();
+					(new Class_71(this, this, 1, null)).start();
 					break;
 				case 24:
-					(new Class_71(this, this, 2, (Class_1bb) null)).start();
+					(new Class_71(this, this, 2, null)).start();
 					break;
 				case 25:
 					Form var2 = new Form(this.sub_383(404));
@@ -863,8 +863,8 @@ public class ArenaMidlet extends b implements CommandListener {
 					this.sub_11(this.var_62f);
 					break;
 				case 29:
-					this.sub_11(this.var_7eb);
-					this.var_7eb.var_92a = true;
+					this.sub_11(this.canvasView);
+					this.canvasView.var_92a = true;
 					this.sub_327(13);
 			}
 
@@ -881,20 +881,21 @@ public class ArenaMidlet extends b implements CommandListener {
 
 	}
 
-	public void sub_3d5(String var1, String var2) {
+	public void sub_3d5() {
 	}
 
-	public void sub_41d(byte[] var1, String var2) {
+	public void sub_41d(byte[] var1) {
 		this.sub_4ab(var1);
 	}
 
+	@Override
 	public boolean sub_447() {
 		return false;
 	}
 
 	public void sub_47a(int var1, String var2) {
 		this.sub_3f3(var2);
-		boolean var3 = false;
+		boolean var3;
 
 		try {
 			var3 = this.sub_29e(var1);
@@ -906,24 +907,24 @@ public class ArenaMidlet extends b implements CommandListener {
 				&& super.var_64d[0] != null && super.var_64d[1] != null
 				&& super.var_64d[2] != null;
 		if (var4) {
-			this.var_7eb.var_20cb = new String[3];
-			this.var_7eb.var_20f8 = new int[3];
+			this.canvasView.var_20cb = new String[3];
+			this.canvasView.var_20f8 = new int[3];
 
 			for (int var5 = 0; var5 < 3; ++var5) {
 				if (super.var_64d[var5] == null) {
-					this.var_7eb.var_20cb[var5] = "- - -";
+					this.canvasView.var_20cb[var5] = "- - -";
 				} else {
-					this.var_7eb.var_20cb[var5] = super.var_64d[var5];
+					this.canvasView.var_20cb[var5] = super.var_64d[var5];
 				}
 
-				this.var_7eb.var_20f8[var5] = super.var_666[var5];
+				this.canvasView.var_20f8[var5] = super.var_666[var5];
 			}
 
 			try {
-				this.var_7eb.sub_c65(var1, this.var_7eb.var_20cb,
-						this.var_7eb.var_20f8);
+				this.canvasView.sub_c65(var1, this.canvasView.var_20cb,
+						this.canvasView.var_20f8);
 			} catch (Exception var6) {
-				;
+				var6.printStackTrace();
 			}
 		} else {
 			String var8 = this.sub_309();
@@ -935,11 +936,11 @@ public class ArenaMidlet extends b implements CommandListener {
 		}
 
 		if (var4) {
-			this.var_7eb.sub_c2e();
+			this.canvasView.sub_c2e();
 		}
 
 		this.sub_327(29);
-		this.var_7eb.var_2f12 = null;
+		this.canvasView.var_2f12 = null;
 	}
 
 	public boolean sub_485() {
@@ -983,7 +984,7 @@ public class ArenaMidlet extends b implements CommandListener {
 			var3 += this.var_cb0[var4].length;
 		}
 
-		this.var_cb0 = (byte[][]) null;
+		this.var_cb0 = null;
 		this.var_cf4 = null;
 		System.gc();
 		this.var_bd9 = -1;
@@ -995,23 +996,16 @@ public class ArenaMidlet extends b implements CommandListener {
 
 		this.var_b9f = false;
 
-		for (var4 = 0; var4 < this.var_7eb.var_733; ++var4) {
+		for (var4 = 0; var4 < this.canvasView.var_733; ++var4) {
 			if (this.var_d05
-					.compareTo(this.var_7eb.var_b2f[this.var_7eb.var_b2f.length
-							- this.var_7eb.var_733 + var4]) == 0) {
+					.compareTo(this.canvasView.var_b2f[this.canvasView.var_b2f.length
+							- this.canvasView.var_733 + var4]) == 0) {
 				this.var_bd9 = var4;
 				this.var_b9f = true;
 			}
 		}
 
 		this.var_d38 = true;
-	}
-
-	public void pauseApp() {
-		if (this.var_7eb.sub_b6() && this.var_7eb.var_29c3) {
-			this.var_7eb.sub_9bf();
-		}
-
 	}
 
 	private boolean sub_4f0() {
@@ -1021,10 +1015,10 @@ public class ArenaMidlet extends b implements CommandListener {
 		try {
 			FileConnection var1 = (FileConnection) Connector.open(
 					"file:///0:/Pictures", 3);
-			this.var_7eb.sub_704(35);
+			this.canvasView.sub_704(35);
 			Enumeration var2 = var1.list("*.jpg", false);
 			System.gc();
-			this.var_7eb.sub_704(40);
+			this.canvasView.sub_704(40);
 
 			while (var2.hasMoreElements()) {
 				String var3 = (String) var2.nextElement();
@@ -1038,13 +1032,13 @@ public class ArenaMidlet extends b implements CommandListener {
 			}
 
 			var1.close();
-			this.var_7eb.sub_704(80);
+			this.canvasView.sub_704(80);
 		} catch (Exception var4) {
 			this.var_d64 = false;
 			this.sub_24e(var4.toString());
 		}
 
-		this.var_7eb.sub_704(100);
+		this.canvasView.sub_704(100);
 		this.var_787.addCommand(this.var_3c4);
 		this.var_787.setCommandListener(this);
 		return this.var_787.size() > 0;
@@ -1116,11 +1110,11 @@ public class ArenaMidlet extends b implements CommandListener {
 
 	private boolean sub_552(String var1) {
 		try {
-			this.var_7eb.sub_704(10);
+			this.canvasView.sub_704(10);
 			this.var_d78 = null;
-			this.var_7eb.var_c21 = null;
+			this.canvasView.var_c21 = null;
 			System.gc();
-			this.var_7eb.sub_704(20);
+			this.canvasView.sub_704(20);
 			if (this.var_de1 == 18) {
 				this.var_d78 = com.siemens.mp.lcdui.Image.createImageFromFile(
 						"0:/pictures/headTmp.bmp", this.var_de1, this.var_de1);
@@ -1128,23 +1122,23 @@ public class ArenaMidlet extends b implements CommandListener {
 			} else {
 				this.var_d78 = com.siemens.mp.lcdui.Image.createImageFromFile(
 						"0:/pictures/" + var1, 64, 48);
-				this.var_7eb.sub_704(30);
+				this.canvasView.sub_704(30);
 				Image var2 = Image.createImage(this.var_de1, this.var_de1);
-				this.var_7eb.sub_704(40);
+				this.canvasView.sub_704(40);
 				var2.getGraphics().drawImage(this.var_d78, -9, -2, 0);
-				this.var_7eb.sub_704(50);
+				this.canvasView.sub_704(50);
 				this.sub_532(var2, -1);
-				this.var_7eb.sub_704(60);
+				this.canvasView.sub_704(60);
 				com.siemens.mp.lcdui.Image.writeBmpToFile(var2,
 						"0:/pictures/headTmp.bmp");
-				this.var_7eb.sub_704(70);
+				this.canvasView.sub_704(70);
 				this.var_d78 = var2;
 				var2 = null;
-				this.var_7eb.sub_704(80);
+				this.canvasView.sub_704(80);
 			}
 
 			System.gc();
-			this.var_7eb.sub_704(90);
+			this.canvasView.sub_704(90);
 			return true;
 		} catch (Exception var3) {
 			this.sub_4e9("computeImage: " + var3);
@@ -1153,26 +1147,27 @@ public class ArenaMidlet extends b implements CommandListener {
 	}
 
 	private byte[] sub_5a0() {
-		String var1 = this.var_7eb.var_2f0.substring(0,
-				Math.min(50, this.var_7eb.var_2f0.length()));
+		String var1 = this.canvasView.var_2f0.substring(0,
+				Math.min(50, this.canvasView.var_2f0.length()));
 		byte[] var2 = var1.getBytes();
-		byte var3 = (byte) this.var_7eb.var_234[0];
+		byte var3 = (byte) this.canvasView.var_234[0];
 		byte[] var4 = new byte[1];
-		this.var_7eb.getClass();
+		this.canvasView.getClass();
 		if (var3 >= 4) {
 			var4 = new byte[307];
 		}
 
 		var4[0] = var3;
+		int var_ebf = 6;
 		byte[] var5 = new byte[7 + var2.length + var4.length + var_ebf];
-		this.var_7eb.sub_704(20);
+		this.canvasView.sub_704(20);
 		if (var4.length > 1) {
 			Image var6 = null;
 
 			try {
-				var6 = this.var_7eb.var_f45[var3];
+				var6 = this.canvasView.var_f45[var3];
 			} catch (Exception var13) {
-				;
+				var13.printStackTrace();
 			}
 
 			byte[] var7 = new byte[3];
@@ -1197,7 +1192,7 @@ public class ArenaMidlet extends b implements CommandListener {
 							| var7[1] << 2 | var7[0]);
 				}
 
-				this.var_7eb.sub_704(20 + var10 * 3);
+				this.canvasView.sub_704(20 + var10 * 3);
 			}
 		}
 
@@ -1210,33 +1205,36 @@ public class ArenaMidlet extends b implements CommandListener {
 			var5[var15++] = var2[var16];
 		}
 
-		this.var_7eb.sub_704(80);
+		this.canvasView.sub_704(80);
 
 		for (var16 = 0; var16 < 6; ++var16) {
-			var5[var15++] = (byte) this.var_7eb.var_234[var16];
+			var5[var15++] = (byte) this.canvasView.var_234[var16];
 		}
 
 		for (var16 = 0; var16 < var4.length; ++var16) {
 			var5[var15++] = var4[var16];
 		}
 
-		this.var_7eb.sub_704(85);
+		this.canvasView.sub_704(85);
 		return var5;
 	}
 
 	public void sub_5c4() {
-		this.var_7eb.sub_704(0);
-		this.var_7eb.sub_f85(this.var_c76, this.var_d05, this.var_b9f);
+		this.canvasView.sub_704(0);
+		this.canvasView.sub_f85(this.var_c76, this.var_d05, this.var_b9f);
 		this.var_c76 = null;
 		this.var_af2 = true;
-		this.var_7eb.sub_704(100);
+		this.canvasView.sub_704(100);
 		this.sub_327(10);
 	}
 
-	public Class_12b sub_5da() {
+	public CanvasView3 getCanvasView() {
 		try {
-			return this.var_7eb = new Class_c6(this);
+			this.canvasView = new CanvasView(this);
+			arenaView.canvasView = this.canvasView;
+			return this.canvasView;
 		} catch (Exception var2) {
+			var2.printStackTrace();
 			return null;
 		}
 	}
@@ -1253,8 +1251,7 @@ public class ArenaMidlet extends b implements CommandListener {
 				try {
 					MessageConnection var5 = (MessageConnection) Connector
 							.open(var2);
-					MultipartMessage var6 = (MultipartMessage) var5
-							.newMessage("multipart");
+					MultipartMessage var6 = (MultipartMessage) var5.newMessage("multipart");
 					var6.setSubject(var3);
 					var6.addAddress("to", var2);
 					var6.addMessagePart(var4);
@@ -1296,7 +1293,7 @@ public class ArenaMidlet extends b implements CommandListener {
 			this.var_f23.setCommandListener(this);
 			this.sub_11(this.var_f23);
 		} catch (Exception var2) {
-			;
+			var2.printStackTrace();
 		}
 
 	}
@@ -1307,7 +1304,7 @@ public class ArenaMidlet extends b implements CommandListener {
 			this.var_b43 = null;
 		}
 
-		this.var_7eb.sub_267();
+		this.canvasView.sub_267();
 		this.notifyDestroyed();
 	}
 
@@ -1319,8 +1316,8 @@ public class ArenaMidlet extends b implements CommandListener {
 		return var0.var_aa0;
 	}
 
-	static Class_c6 sub_6af(ArenaMidlet var0) {
-		return var0.var_7eb;
+	static CanvasView sub_6af(ArenaMidlet var0) {
+		return var0.canvasView;
 	}
 
 	static boolean sub_6eb(ArenaMidlet var0, Image var1, String var2) {

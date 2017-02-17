@@ -8,24 +8,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Locale;
 
 import javax.microedition.lcdui.Alert;
-import javax.microedition.lcdui.AlertType;
-import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
-import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.TextBox;
-import javax.microedition.rms.RecordComparator;
 import javax.microedition.rms.RecordEnumeration;
-import javax.microedition.rms.RecordFilter;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
 
-public abstract class a extends b implements CommandListener {
+public abstract class Arena2 extends Arena1 implements CommandListener {
 
 	private final String[] var_43 = new String[] { "RSF6", "RSHS7", "RSAD8" };
 	public Display var_52;
@@ -38,7 +34,7 @@ public abstract class a extends b implements CommandListener {
 	public Command var_20a;
 	Hashtable var_247 = new Hashtable();
 	Alert var_2a5;
-	public String[] var_2cd = new String[0];
+	public String[] stringResources = new String[0];
 	byte[] var_310;
 	byte[] var_33f;
 	static Object var_359;
@@ -65,9 +61,8 @@ public abstract class a extends b implements CommandListener {
 	private TextBox var_83e;
 	private int var_859;
 
-	public void sub_1c(String var1, String var2) throws IOException {
-		DataInputStream var3 = new DataInputStream(this.getClass()
-				.getResourceAsStream(var1));
+	public void readStringResources(String fileName, String var2) throws IOException {
+		DataInputStream var3 = new DataInputStream(getAssets().open(fileName));
 		int var4 = var3.readInt();
 		int var5 = 0;
 		int var7 = 4;
@@ -84,47 +79,46 @@ public abstract class a extends b implements CommandListener {
 		var3.skip((long) (var6 - var7));
 		int var9 = var3.readInt();
 		int var10 = var3.readInt();
-		if (var10 > this.var_2cd.length - 1) {
-			String[] var12 = this.var_2cd;
-			this.var_2cd = new String[var10 + 1];
-			System.arraycopy(var12, 0, this.var_2cd, 0, var12.length);
+		if (var10 > this.stringResources.length - 1) {
+			String[] var12 = this.stringResources;
+			this.stringResources = new String[var10 + 1];
+			System.arraycopy(var12, 0, this.stringResources, 0, var12.length);
 		}
 
 		for (var5 = 0; var5 < var9; ++var5) {
 			int var11 = var3.readInt();
-			this.var_2cd[var11] = var3.readUTF();
+			this.stringResources[var11] = var3.readUTF();
 		}
-
 	}
 
-	void sub_51() {
+	void checkLocale() {
 		String var1;
-		if ((var1 = System.getProperty("microedition.locale")) == null) {
+		if ((var1 = Locale.getDefault().getLanguage()) == null) {
 			var1 = "";
 		}
 
 		try {
-			this.sub_1c("/sr_" + var1 + ".ini", var1);
+			this.readStringResources("sr_" + var1 + ".ini", var1);
 		} catch (Exception var7) {
 			try {
-				this.sub_1c("/sr_en.ini", var1);
+				this.readStringResources("sr_en.ini", var1);
 			} catch (Exception var6) {
 				try {
-					this.sub_1c("/sr.ini", var1);
+					this.readStringResources("sr.ini", var1);
 				} catch (Exception var5) {
 					System.out.println("ERROR: loadStrings: " + var5);
 				}
 			}
 		}
-
 	}
 
+	@Override
 	public String sub_383(int var1) {
-		if (this.var_2cd.length == 0) {
-			this.sub_51();
+		if (this.stringResources.length == 0) {
+			this.checkLocale();
 		}
 
-		return this.var_2cd[var1];
+		return this.stringResources[var1];
 	}
 
 	public void sub_a3(int var1) {
@@ -152,17 +146,17 @@ public abstract class a extends b implements CommandListener {
 	}
 
 	public void startApp() {
-		this.sub_51();
+		this.checkLocale();
 		if (this.var_64d == null) {
 			this.sub_1ea();
 		}
 
-		this.var_310 = sub_32f("/_FF.ini");
+		this.var_310 = sub_32f("_FF.ini");
 		if (this.var_310 != null) {
 			var_562 = this.sub_dc(5050) == 1;
 		}
 
-		sub_38f(this, "/res.raw");
+		sub_38f(this, "res.raw");
 		this.sub_a3(255);
 	}
 
@@ -187,8 +181,7 @@ public abstract class a extends b implements CommandListener {
 		try {
 			RecordStore var2 = null;
 			var2 = RecordStore.openRecordStore(var1, false);
-			RecordEnumeration var3 = var2.enumerateRecords((RecordFilter) null,
-					(RecordComparator) null, false);
+			RecordEnumeration var3 = var2.enumerateRecords(null, null, false);
 			if (var3.hasNextElement()) {
 				byte[] var4 = var3.nextRecord();
 				System.out.println("loadRecordStore " + var1 + ": "
@@ -240,8 +233,7 @@ public abstract class a extends b implements CommandListener {
 			var3 = RecordStore.openRecordStore(var1, true);
 			int var4 = -1;
 			if (var3.getNumRecords() > 0) {
-				RecordEnumeration var5 = var3.enumerateRecords(
-						(RecordFilter) null, (RecordComparator) null, false);
+				RecordEnumeration var5 = var3.enumerateRecords(null, null, false);
 				var4 = var5.nextRecordId();
 			}
 
@@ -298,6 +290,7 @@ public abstract class a extends b implements CommandListener {
 
 	}
 
+	@Override
 	public void sub_571() {
 		try {
 			ByteArrayOutputStream var1 = new ByteArrayOutputStream();
@@ -343,7 +336,7 @@ public abstract class a extends b implements CommandListener {
 
 	}
 
-	private final void sub_255(byte[] var1) {
+	private void sub_255(byte[] var1) {
 		if (this.var_1d6 != null) {
 			this.var_33f = this.var_1d6.getBytes();
 			this.var_1d6 = null;
@@ -360,10 +353,11 @@ public abstract class a extends b implements CommandListener {
 		super.var_153 = var1;
 	}
 
+	@Override
 	public void sub_4e9(String var1) {
-		this.var_2a5 = new Alert(this.sub_383(25), var1, (Image) null,
-				(AlertType) null);
+		this.var_2a5 = new Alert(this.sub_383(25), var1, null, null);
 		this.var_2a5.setTimeout('\uea60');
+		//TODO Alert
 		Display.getDisplay(this).setCurrent(this.var_2a5);
 	}
 
@@ -401,7 +395,7 @@ public abstract class a extends b implements CommandListener {
 				var11.writeLong(var3);
 				var11.writeLong(var7);
 			} catch (Exception var12) {
-				;
+				var12.printStackTrace();
 			}
 
 			this.sub_201(this.sub_383(201) + "TS", var10.toByteArray());
@@ -409,14 +403,10 @@ public abstract class a extends b implements CommandListener {
 		}
 	}
 
-	public boolean sub_2e6(Canvas var1) {
+	public boolean sub_2e6() {
 		this.var_52 = Display.getDisplay(this);
 		String var2 = null;
-		if (!this.sub_b9()) {
-			if ((var2 = this.sub_309()) == null) {
-				var2 = this.sub_383(16) + " " + this.sub_383(17);
-			}
-		} else if (this.sub_2a7()) {
+		if (this.sub_2a7()) {
 			var2 = this.sub_383(99);
 		} else if (this.var_188) {
 			var2 = this.sub_383(26);
@@ -438,10 +428,9 @@ public abstract class a extends b implements CommandListener {
 		}
 	}
 
-	public static byte[] sub_32f(String var0) {
+	public byte[] sub_32f(String var0) {
 		try {
-			DataInputStream var1 = new DataInputStream(var0.getClass()
-					.getResourceAsStream(var0));
+			DataInputStream var1 = new DataInputStream(getAssets().open(var0));
 			ByteArrayOutputStream var2 = new ByteArrayOutputStream();
 
 			int var3;
@@ -457,10 +446,9 @@ public abstract class a extends b implements CommandListener {
 		}
 	}
 
-	public static byte[] sub_370(Object var0, String var1) {
+	public byte[] sub_370(String var1) {
 		try {
-			DataInputStream var2 = new DataInputStream(var0.getClass()
-					.getResourceAsStream(var1));
+			DataInputStream var2 = new DataInputStream(getAssets().open(var1));
 			int var3 = var2.readInt();
 			System.gc();
 			byte[] var4 = new byte[var3];
@@ -477,16 +465,15 @@ public abstract class a extends b implements CommandListener {
 		return var_3ed;
 	}
 
-	public static void sub_38f(Object var0, String var1) {
+	public void sub_38f(Object var0, String var1) {
 		sub_3ee();
 		var_359 = var0;
 		var_391 = var1;
 		if (var_562) {
-			var_43e = sub_370(var1, var1);
-			System.out
-					.println("Caching res.raw (" + var_43e.length + " bytes)");
+			var_43e = sub_370(var1);
+			System.out.println(
+					"Caching res.raw (" + (var_43e != null ? var_43e.length : 0) + " bytes)");
 		}
-
 	}
 
 	public static void sub_3ee() {
@@ -496,14 +483,13 @@ public abstract class a extends b implements CommandListener {
 			try {
 				var_541.closeRecordStore();
 			} catch (Exception var1) {
-				;
+				var1.printStackTrace();
 			}
 		}
-
 		System.gc();
 	}
 
-	public static InputStream sub_439(int var0) {
+	public InputStream sub_439(int var0) {
 		try {
 			DataInputStream var1;
 			int var2;
@@ -511,9 +497,9 @@ public abstract class a extends b implements CommandListener {
 				var1 = new DataInputStream(new ByteArrayInputStream(var_43e));
 			} else {
 				if (var_541 != null) {
-					for (var2 = 0; (var_4e6[var2] & 255) != var0
-							&& var2 < var_4e6.length; var2 += 3) {
-						;
+					var2 = 0;
+					while ((var_4e6[var2] & 255) != var0 && var2 < var_4e6.length) {
+						var2 += 3;
 					}
 
 					if (var2 >= var_4e6.length) {
@@ -525,8 +511,9 @@ public abstract class a extends b implements CommandListener {
 							var_541.getRecord(var_4e6[var2 + 2] & 255)));
 				}
 
-				var1 = new DataInputStream(var_359.getClass()
-						.getResourceAsStream(var_391));
+				//var1 = new DataInputStream(var_359.getClass()
+				//		.getResourceAsStream(var_391));
+				var1 = new DataInputStream(getAssets().open(var_391));
 				var1.skip(4L);
 			}
 
@@ -560,15 +547,14 @@ public abstract class a extends b implements CommandListener {
 		}
 	}
 
-	public static synchronized byte[] sub_499(int var0) {
+	public synchronized byte[] sub_499(int var0) {
 		try {
 			int var1;
 			if (var_541 != null) {
-				for (var1 = 0; (var_4e6[var1] & 255) != var0
-						&& var1 < var_4e6.length; var1 += 3) {
-					;
+				var1 = 0;
+				while ((var_4e6[var1] & 255) != var0 && var1 < var_4e6.length) {
+					var1 += 3;
 				}
-
 				if (var1 >= var_4e6.length) {
 					return null;
 				} else {
@@ -578,8 +564,10 @@ public abstract class a extends b implements CommandListener {
 			} else if (var_43e == null) {
 				DataInputStream var10 = (DataInputStream) sub_439(var0);
 				byte[] var11 = new byte[var_3ae];
-				var10.readFully(var11);
-				var10.close();
+				if (var10 != null) {
+					var10.readFully(var11);
+					var10.close();
+				}
 				return var11;
 			} else {
 				var1 = var_43e[0] & 255;
@@ -645,18 +633,22 @@ public abstract class a extends b implements CommandListener {
 		return true;
 	}
 
+	@Override
 	public String sub_3e1() {
 		return this.var_590;
 	}
 
+	@Override
 	public void sub_3f3(String var1) {
 		this.var_590 = var1;
 	}
 
+	@Override
 	public void sub_448(int var1) {
 		this.var_675 = var1;
 	}
 
+	@Override
 	public void sub_45b() {
 		this.var_64d = new String[this.var_5c8];
 		this.var_666 = new int[this.var_5c8];
@@ -664,23 +656,28 @@ public abstract class a extends b implements CommandListener {
 		this.var_5ee = System.currentTimeMillis();
 	}
 
+	@Override
 	public final boolean sub_53f(int var1) {
 		return var1 > this.var_68e;
 	}
 
+	@Override
 	public void sub_28a(int var1) {
 		this.var_68e = var1;
 		this.var_6b2 = false;
 	}
 
+	@Override
 	public int sub_5af() {
 		return this.var_859;
 	}
 
+	@Override
 	public void sub_5de(boolean var1) {
 		this.var_6b2 = var1;
 	}
 
+	@Override
 	public boolean sub_4af(Alert var1) {
 		this.var_859 = 0;
 		this.var_83e.setString(this.var_590 != null ? this.var_590 : "");
@@ -701,6 +698,7 @@ public abstract class a extends b implements CommandListener {
 		return this.var_859 < 3;
 	}
 
+	@Override
 	public void commandAction(Command var1, Displayable var2) {
 		if (var1 != this.var_706 && var1 != this.var_75b) {
 			if (var1 == this.var_78b) {
@@ -710,7 +708,7 @@ public abstract class a extends b implements CommandListener {
 					this.destroyApp(true);
 					this.notifyDestroyed();
 				} catch (Exception var4) {
-					;
+					var4.printStackTrace();
 				}
 			} else {
 				super.commandAction(var1, var2);
@@ -718,29 +716,29 @@ public abstract class a extends b implements CommandListener {
 		} else {
 			this.var_590 = this.sub_4c6(this.var_83e.getString());
 			if (this.var_590.length() < 3) {
-				this.var_52.setCurrent(new Alert("Info", this.sub_383(23),
-						(Image) null, (AlertType) null));
+				//TODO Alert
+				//this.var_52.setCurrent(new Alert("Info", this.sub_383(23), null, null));
 			} else if (var1 == this.var_75b) {
 				this.var_859 = 2;
 			} else {
 				this.var_859 = 1;
 			}
 		}
-
 	}
 
 	public String sub_4c6(String var1) {
 		if (var1.length() > 12) {
 			var1 = var1.substring(0, 12);
 		}
-
 		return var1;
 	}
 
+	@Override
 	public boolean sub_486(int var1, String var2) {
 		int var3;
-		for (var3 = 0; var3 < this.var_5db && var1 <= this.var_666[var3]; ++var3) {
-			;
+		var3 = 0;
+		while (var3 < this.var_5db && var1 <= this.var_666[var3]) {
+			++var3;
 		}
 
 		if (var3 == this.var_5c8) {
@@ -765,4 +763,5 @@ public abstract class a extends b implements CommandListener {
 		System.gc();
 		var_585 = System.currentTimeMillis();
 	}
+
 }

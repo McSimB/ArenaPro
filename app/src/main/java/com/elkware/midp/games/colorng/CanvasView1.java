@@ -1,12 +1,13 @@
 package com.elkware.midp.games.colorng;
 
+import com.elkware.midp.games.colorng.arena.high.ArenaMidlet;
+
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Graphics;
 
-public abstract class Class_1e8 extends Canvas {
-	
-	public j var_96;
+public abstract class CanvasView1 extends Canvas {
+
 	public int[] var_ab;
 	public int[] var_12f;
 	public int var_16c;
@@ -16,27 +17,27 @@ public abstract class Class_1e8 extends Canvas {
 	public boolean var_24f;
 	public boolean var_292 = true;
 
-	public Class_1e8(j var1) {
-		this.var_96 = var1;
-		//this.setFullScreenMode(true);
-		this.sub_44(0, 0, this.getWidth(), this.getHeight());
+	public CanvasView1(ArenaMidlet var1) {
+		super(var1);
+		this.sub_44(0, 0, this.getwidth(), this.getheight());
 	}
 
-	public void sub_38() {
+	public void redraw() {
 		this.repaint();
 		this.serviceRepaints();
 	}
 
+	@Override
 	public void paint(Graphics var1) {
 		try {
-			this.sub_1131(var1);
+			this.draw(var1);
 		} catch (Exception var3) {
-			this.var_96.sub_4e9("paintFrame: " + var3);
+			this.arena.sub_4e9("paintFrame: " + var3);
 		}
 
 	}
 
-	public abstract void sub_1131(Graphics var1);
+	public abstract void draw(Graphics var1);
 
 	public void sub_44(int var1, int var2, int var3, int var4) {
 		this.var_1fb = var1;
@@ -443,12 +444,13 @@ public abstract class Class_1e8 extends Canvas {
 		}
 	}
 
-	public int getHeight() {
+	@Override
+	public int getheight() {
 		return 176;
 	}
 
 	public void sub_196(long var1) {
-		Display.getDisplay(this.var_96).vibrate((int) var1);
+		Display.getDisplay(this.arena).vibrate((int) var1);
 	}
 
 	public void sub_1e0(int var1, boolean var2) {
@@ -460,4 +462,5 @@ public abstract class Class_1e8 extends Canvas {
 			}
 		}
 	}
+
 }

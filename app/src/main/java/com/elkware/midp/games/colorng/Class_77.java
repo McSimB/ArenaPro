@@ -91,8 +91,8 @@ public class Class_77 extends Sprite {
 		return this.var_ac[this.var_1d];
 	}
 
-	public synchronized void sub_eb(Class_1e8 var1, Graphics var2, int var3,
-			int var4) {
+	public synchronized void sub_eb(CanvasView1 var1, Graphics var2, int var3,
+									int var4) {
 		if (this.isVisible()) {
 			int var5 = var2.getClipX();
 			int var6 = var2.getClipY();

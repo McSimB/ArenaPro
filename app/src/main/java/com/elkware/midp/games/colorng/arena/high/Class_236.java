@@ -17,7 +17,7 @@ class Class_236 extends Thread {
 		this.var_d2.sub_327(10);
 	}
 
-	Class_236(ArenaMidlet var1, String var2, Class_1bb var3) {
+	Class_236(ArenaMidlet var1, String var2, CanvView var3) {
 		this(var1, var2);
 	}
 }

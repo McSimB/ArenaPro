@@ -13,9 +13,9 @@ public class Class_202 {
 	int var_169;
 	int var_182;
 	Class_3a var_18c = null;
-	Class_c6 var_1e1;
+	CanvasView var_1e1;
 
-	static void sub_2c(Class_c6 var0) {
+	static void sub_2c(CanvasView var0) {
 		try {
 			var_55 = new int[5];
 
@@ -37,11 +37,11 @@ public class Class_202 {
 
 	}
 
-	public Class_202(int var1, int var2, int var3, Class_c6 var4) {
+	public Class_202(int var1, int var2, int var3, CanvasView var4) {
 		this.sub_6f(var1, var2, var3, var4);
 	}
 
-	public void sub_6f(int var1, int var2, int var3, Class_c6 var4) {
+	public void sub_6f(int var1, int var2, int var3, CanvasView var4) {
 		try {
 			this.var_116 = var1;
 			this.var_134 = var2;

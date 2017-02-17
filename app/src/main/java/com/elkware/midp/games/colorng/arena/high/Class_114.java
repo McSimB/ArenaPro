@@ -1,7 +1,6 @@
 package com.elkware.midp.games.colorng.arena.high;
 
-import com.elkware.midp.games.a;
-import com.elkware.midp.games.colorng.j;
+import com.elkware.midp.games.colorng.Arena3;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,7 +13,7 @@ import javax.microedition.media.PlayerListener;
 public class Class_114 extends Thread implements PlayerListener {
 
 	boolean var_d = false;
-	j var_63;
+	Arena3 arena3;
 	private int var_c1 = -1;
 	private int var_f6 = -1;
 	private int var_152 = 1;
@@ -25,8 +24,8 @@ public class Class_114 extends Thread implements PlayerListener {
 	short var_297;
 	Object var_2b6 = new Object();
 
-	public Class_114(j var1) {
-		this.var_63 = var1;
+	public Class_114(Arena3 var1) {
+		this.arena3 = var1;
 		int var2 = var1.sub_dc(5034);
 		if (var2 < 0) {
 			try {
@@ -70,8 +69,8 @@ public class Class_114 extends Thread implements PlayerListener {
 	}
 
 	private void sub_9e(int var1, int var2, int var3, boolean var4) {
-		if ((var1 != 0 || this.var_63.var_166)
-				&& (var1 < 1 || this.var_63.var_b4)) {
+		if ((var1 != 0 || this.arena3.var_166)
+				&& (var1 < 1 || this.arena3.var_b4)) {
 			try {
 				int var5 = this.sub_142(var2);
 				if (this.sub_ab()) {
@@ -140,11 +139,11 @@ public class Class_114 extends Thread implements PlayerListener {
 			return var2;
 		}
 
-		InputStream var3 = a.sub_439(var1);
+		InputStream var3 = arena3.sub_439(var1);
 		int var4;
 		String[] var5;
 		if (var3 != null) {
-			var4 = this.var_63.sub_37b() - 3;
+			var4 = this.arena3.sub_37b() - 3;
 		} else {
 			var5 = new String[] { "mid", "wav", "mmf", "spf", "mp3" };
 

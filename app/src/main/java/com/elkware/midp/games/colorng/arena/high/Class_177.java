@@ -84,10 +84,10 @@ class Class_177 extends Thread {
 					this.var_8a = var1.getAddress();
 					if (var1 instanceof TextMessage) {
 						this.var_1b = ((TextMessage) var1).getPayloadText();
-						this.var_fa.sub_3d5(this.var_1b, this.var_8a);
+						this.var_fa.sub_3d5();
 					} else {
 						this.var_4a = ((BinaryMessage) var1).getPayloadData();
-						this.var_fa.sub_41d(this.var_4a, this.var_8a);
+						this.var_fa.sub_41d(this.var_4a);
 					}
 				}
 			}

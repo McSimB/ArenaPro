@@ -17,7 +17,7 @@ public class Class_2b8 {
 	static final int[] var_2f8 = new int[] { 4, 12, 0, 8, 5, 13, 6, 14, 7, 15 };
 	int var_30b = 0;
 	int var_36c = 0;
-	public static Class_c6 var_3a3;
+	public static CanvasView var_3a3;
 	public static int var_3f5;
 	static int var_452 = 0;
 	int var_48e;
@@ -155,7 +155,7 @@ public class Class_2b8 {
 		this.var_e26 = new boolean[var_3a3.var_1efb.length];
 	}
 
-	public static void sub_1d(Class_c6 var0, int var1) {
+	public static void sub_1d(CanvasView var0, int var1) {
 		var_3a3 = var0;
 		var_3f5 = var1;
 	}
