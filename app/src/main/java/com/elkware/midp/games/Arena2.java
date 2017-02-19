@@ -24,7 +24,6 @@ import javax.microedition.rms.RecordStoreException;
 public abstract class Arena2 extends Arena1 implements CommandListener {
 
 	private final String[] var_43 = new String[] { "RSF6", "RSHS7", "RSAD8" };
-	public Display display;
 	public boolean var_b4 = true;
 	public boolean var_e8 = true;
 	public boolean var_105 = true;
@@ -148,6 +147,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 	@Override
 	public void startApp() {
 		super.startApp();
+
 		this.checkLocale();
 		if (this.var_64d == null) {
 			this.sub_1ea();

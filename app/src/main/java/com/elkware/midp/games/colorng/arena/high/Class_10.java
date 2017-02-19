@@ -2,9 +2,9 @@ package com.elkware.midp.games.colorng.arena.high;
 
 class Class_10 extends Thread {
 
-	private final ArenaMidlet var_16;
+	private final Arena var_16;
 
-	Class_10(ArenaMidlet var1) {
+	Class_10(Arena var1) {
 		this.var_16 = var1;
 	}
 
@@ -12,7 +12,7 @@ class Class_10 extends Thread {
 		long var1 = System.currentTimeMillis();
 
 		while (System.currentTimeMillis() - var1 < 20000L
-				&& !ArenaMidlet.sub_690(this.var_16)) {
+				&& !Arena.sub_690(this.var_16)) {
 			try {
 				Thread.currentThread();
 				Thread.sleep(100L);

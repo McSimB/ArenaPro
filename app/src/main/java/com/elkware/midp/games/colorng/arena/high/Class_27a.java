@@ -1,6 +1,6 @@
 package com.elkware.midp.games.colorng.arena.high;
 
-import com.elkware.midp.games.colorng.Class_3a;
+import com.elkware.midp.games.colorng.MySprite;
 
 public class Class_27a {
 
@@ -12,15 +12,15 @@ public class Class_27a {
 	int var_219;
 	int var_29d;
 	int var_2e9;
-	Class_3a var_314;
-	CanvasView var_375;
+	MySprite var_314;
+	MyCanvas var_375;
 	int var_3bc = 0;
 	int var_407 = 0;
 	public boolean var_41b = false;
 	int var_429 = 0;
 	int var_43a;
 
-	public Class_27a(int var1, int var2, int var3, CanvasView var4, int var5) {
+	public Class_27a(int var1, int var2, int var3, MyCanvas var4, int var5) {
 		this.var_219 = var1;
 		var4.getClass();
 		this.var_29d = var2 * 15;
@@ -40,7 +40,7 @@ public class Class_27a {
 					var4.getClass();
 					this.var_3bc = var10001 * 15;
 					this.var_407 = 9;
-					this.var_314 = new Class_3a(var4.var_1dec[var1 - 1]);
+					this.var_314 = new MySprite(var4.var_1dec[var1 - 1]);
 					var4.sub_16c(var4.var_fb7, this.var_314);
 					this.var_314.setPosition(var2, var3);
 					return;

@@ -10,13 +10,13 @@ import javax.microedition.lcdui.List;
 
 public abstract class Arena3 extends Arena2 implements CommandListener {
 
-	CanvasView3 canvasView3;
+	Canvas3 canvasView3;
 	boolean bool_81;
 	int int_c5;
 	private List list;
 	private boolean bool_148 = true;
 
-	public abstract CanvasView3 getCanvasView();
+	public abstract Canvas3 getMyCanvas();
 
 	@Override
 	public void startApp() {
@@ -32,7 +32,7 @@ public abstract class Arena3 extends Arena2 implements CommandListener {
 			this.bool_81 = this.sub_dc(5035) != 0;
 
 			try {
-				this.canvasView3 = this.getCanvasView();
+				this.canvasView3 = this.getMyCanvas();
 			} catch (Exception var2) {
 				this.sub_4e9("getGameCanvas: " + var2);
 				return;

@@ -1,11 +1,11 @@
 package com.elkware.midp.games.colorng.arena;
 
-import com.elkware.midp.games.colorng.CanvasView4;
-import com.elkware.midp.games.colorng.arena.high.ArenaMidlet;
+import com.elkware.midp.games.colorng.Canvas4;
+import com.elkware.midp.games.colorng.arena.high.Arena;
 
-public abstract class CanvasView5 extends CanvasView4 {
+public abstract class Canvas5 extends Canvas4 {
 
-	public CanvasView5(ArenaMidlet var1) {
+	public Canvas5(Arena var1) {
 		super(var1);
 	}
 

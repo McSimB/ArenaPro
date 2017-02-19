@@ -3,11 +3,12 @@ package com.elkware.midp.games;
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.elkware.midp.games.colorng.arena.high.ArenaView;
+import com.elkware.midp.games.colorng.arena.high.CanvasView;
 import com.elkware.midp.games.colorng.arena.high.R;
 
 import java.io.ByteArrayOutputStream;
@@ -22,29 +23,40 @@ import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
+import javax.microedition.lcdui.List;
 
 public abstract class Arena1 extends Activity {
 
+	public Display display;
 	public String var_153 = null;
 	private String var_198 = null;
-	public ArenaView arenaView;
+	public CanvasView canvasView;
 	public View menuView;
 	private TextView title;
-	private ListView listView;
 	private ArrayAdapter<String> adapter;
 
 	public void startApp() {
-		arenaView = new ArenaView(this);
+		display = new Display(this);
+		canvasView = new CanvasView(this);
 		LayoutInflater inflater = getLayoutInflater();
 		menuView = inflater.inflate(R.layout.list, null, false);
 		title = (TextView) menuView.findViewById(R.id.title);
-		listView = (ListView) menuView.findViewById(R.id.listView);
-		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+		ListView listView = (ListView) menuView.findViewById(R.id.listView);
+		adapter = new ArrayAdapter<String>(this, R.layout.list_item);
 		listView.setAdapter(adapter);
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				List list = (List) display.getCurrent();
+				list.setSelectedIndex(position);
+				list.callKeyPressed();
+			}
+		});
 	}
 
 	public void initMenuView(String title, ArrayList<String> items) {
 		this.title.setText(title);
+		adapter.clear();
 		for (String s : items) {
 			adapter.add(s);
 		}

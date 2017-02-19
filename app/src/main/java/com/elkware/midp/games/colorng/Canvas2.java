@@ -1,6 +1,6 @@
 package com.elkware.midp.games.colorng;
 
-import com.elkware.midp.games.colorng.arena.high.ArenaMidlet;
+import com.elkware.midp.games.colorng.arena.high.Arena;
 
 import java.io.IOException;
 import java.util.Vector;
@@ -12,7 +12,7 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 
-public abstract class CanvasView2 extends CanvasView1 implements Runnable, CommandListener {
+public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListener {
 
 	private static final int[] var_2b = new int[]{1, 2, 4, 8, 16, 32, 64,
 			128, 256, 512, 1024, 2048, 4096, 8192, 16384, '\u8000', 65536,
@@ -61,7 +61,7 @@ public abstract class CanvasView2 extends CanvasView1 implements Runnable, Comma
 	protected long var_933;
 	private boolean var_970;
 
-	public CanvasView2(ArenaMidlet var1) {
+	public Canvas2(Arena var1) {
 		super(var1);
 		int var2;
 		if ((var2 = this.sub_462(5036)) != -1) {
@@ -288,8 +288,8 @@ public abstract class CanvasView2 extends CanvasView1 implements Runnable, Comma
 
 		for (int var7 = var5.size() - 1; var7 >= 0; --var7) {
 			Object var6 = var5.elementAt(var7);
-			if (var6 instanceof Class_3a) {
-				((Class_3a) var6).sub_90(var2, var3, var4);
+			if (var6 instanceof MySprite) {
+				((MySprite) var6).sub_90(var2, var3, var4);
 			} else if (var6 instanceof Class_151) {
 				((Class_151) var6).sub_3d(var2, var3, var4);
 			}

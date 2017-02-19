@@ -1,12 +1,12 @@
 package com.elkware.midp.games.colorng;
 
-import com.elkware.midp.games.colorng.arena.high.ArenaMidlet;
+import com.elkware.midp.games.colorng.arena.high.Arena;
 
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Graphics;
 
-public abstract class CanvasView1 extends Canvas {
+public abstract class Canvas1 extends Canvas {
 
 	public int[] var_ab;
 	public int[] var_12f;
@@ -17,7 +17,7 @@ public abstract class CanvasView1 extends Canvas {
 	public boolean var_24f;
 	public boolean var_292 = true;
 
-	public CanvasView1(ArenaMidlet var1) {
+	public Canvas1(Arena var1) {
 		super(var1);
 		this.sub_44(0, 0, this.getwidth(), this.getheight());
 	}

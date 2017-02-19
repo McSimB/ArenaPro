@@ -4,12 +4,12 @@ import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 
-class CanvView extends Canvas {
+class MoreCanvas extends Canvas {
 
 	private final Image downloadMoreImage;
-	private final ArenaMidlet var_b8;
+	private final Arena var_b8;
 
-	CanvView(ArenaMidlet var1, Image var2) {
+	MoreCanvas(Arena var1, Image var2) {
 		super(var1);
 		this.var_b8 = var1;
 		this.downloadMoreImage = var2;
@@ -17,7 +17,7 @@ class CanvView extends Canvas {
 
 	@Override
 	protected void keyPressed(int var1) {
-		ArenaMidlet.sub_64f(this.var_b8, true);
+		Arena.sub_64f(this.var_b8, true);
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package com.elkware.midp.games.colorng;
 
-import com.elkware.midp.games.colorng.arena.high.ArenaMidlet;
+import com.elkware.midp.games.colorng.arena.high.Arena;
 
 import java.util.Vector;
 
@@ -10,7 +10,7 @@ import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.List;
 
-public abstract class CanvasView4 extends CanvasView3 {
+public abstract class Canvas4 extends Canvas3 {
 
 	public Command var_5c;
 	public Command var_90;
@@ -35,7 +35,7 @@ public abstract class CanvasView4 extends CanvasView3 {
 	Thread var_47b;
 	int var_4a5;
 
-	public CanvasView4(ArenaMidlet var1) {
+	public Canvas4(Arena var1) {
 		super(var1);
 		this.var_428 = var1.sub_dc(5033) == 1;
 		int var2 = this.sub_462(5047);
@@ -66,24 +66,24 @@ public abstract class CanvasView4 extends CanvasView3 {
 		this.var_301.addCommand(this.var_1ad);
 		this.var_384 = new List(var1.getStr(19), 3, arena);
 		if (super.var_6fb != -1) {
-			this.var_384.append(var1.getStr(3), null);
+			this.var_384.append(var1.getStr(3));
 		}
 
 		if (super.var_75e != -1) {
-			this.var_384.append(var1.getStr(4), null);
+			this.var_384.append(var1.getStr(4));
 		}
 
 		if (super.var_7c0 != -1) {
-			this.var_384.append(var1.getStr(5), null);
+			this.var_384.append(var1.getStr(5));
 		}
 
 		if (super.var_813 != -1) {
-			this.var_384.append(var1.getStr(6), null);
+			this.var_384.append(var1.getStr(6));
 		}
 
 		if (super.var_87b != null) {
 			for (var3 = 0; var3 < super.var_87b.length; ++var3) {
-				this.var_384.append(super.var_87b[var3], null);
+				this.var_384.append(super.var_87b[var3]);
 			}
 		}
 
@@ -124,9 +124,9 @@ public abstract class CanvasView4 extends CanvasView3 {
 		this.var_39a = new List(super.arena.getStr(201), 3, arena);
 		this.var_5c = new Command(super.arena.getStr(super.var_401 ? 0
 				: (var1 ? 13 : 31)), 1, 0);
-		this.var_39a.append(this.var_5c.getLabel(), this.var_3cb[0]);
+		this.var_39a.append(this.var_5c.getLabel());
 		if (var1 || super.var_401) {
-			this.var_39a.append(this.var_90.getLabel(), this.var_3cb[0]);
+			this.var_39a.append(this.var_90.getLabel());
 		}
 
 		Vector var2 = this.sub_d3();
@@ -135,26 +135,26 @@ public abstract class CanvasView4 extends CanvasView3 {
 				int var4 = (Integer) var2.elementAt(var3 * 3 + 2);
 				if (!super.var_401 && (var4 & 1) == 1 || super.var_401
 						&& (var4 & 2) == 2) {
-					this.var_39a.append((String) var2.elementAt(var3 * 3),
-							(Image) var2.elementAt(var3 * 3 + 1));
+					this.var_39a.append((String) var2.elementAt(var3 * 3)
+					);
 				}
 			}
 		}
 
-		this.var_39a.append(this.var_f4.getLabel(), this.var_3cb[1]);
+		this.var_39a.append(this.var_f4.getLabel());
 		if (super.var_6d4) {
-			this.var_39a.append(this.var_21c.getLabel(), this.var_3cb[2]);
+			this.var_39a.append(this.var_21c.getLabel());
 		}
 
 		if (this.var_453) {
-			this.var_39a.append(this.var_26a.getLabel(), this.var_3cb[3]);
+			this.var_39a.append(this.var_26a.getLabel());
 		}
 
 		if (this.var_3e2) {
-			this.var_39a.append(this.var_181.getLabel(), this.var_3cb[1]);
+			this.var_39a.append(this.var_181.getLabel());
 		}
 
-		this.var_39a.append(this.var_2a9.getLabel(), this.var_3cb[4]);
+		this.var_39a.append(this.var_2a9.getLabel());
 		this.var_39a.setCommandListener(this);
 		if (this.var_2d8 != null) {
 			this.var_39a.addCommand(this.var_2d8);
@@ -223,8 +223,8 @@ public abstract class CanvasView4 extends CanvasView3 {
 	@Override
 	public void sub_2e9(int var1, boolean var2) {
 		super.sub_2e9(var1, var2);
-		this.var_384.set(var1, this.var_384.getString(var1),
-				var2 ? this.var_3cb[6] : this.var_3cb[5]);
+		this.var_384.set(var1, this.var_384.getString(var1)
+		);
 	}
 
 	public void sub_2fb() {

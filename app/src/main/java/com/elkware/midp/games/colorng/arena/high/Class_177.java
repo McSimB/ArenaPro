@@ -15,11 +15,11 @@ class Class_177 extends Thread {
 	private byte[] var_4a;
 	private String var_8a;
 	private MessageConnection var_af;
-	private ArenaMidlet var_fa;
+	private Arena var_fa;
 	private String var_115 = "0";
 	private boolean var_130 = false;
 
-	public Class_177(ArenaMidlet var1, String var2) {
+	public Class_177(Arena var1, String var2) {
 		this.var_fa = var1;
 		this.var_115 = var2;
 	}

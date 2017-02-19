@@ -2,7 +2,7 @@ package javax.microedition.lcdui;
 
 import android.view.View;
 
-import com.elkware.midp.games.colorng.arena.high.ArenaMidlet;
+import com.elkware.midp.games.colorng.arena.high.Arena;
 
 public abstract class Canvas extends Displayable {
 
@@ -28,9 +28,9 @@ public abstract class Canvas extends Displayable {
 	public static final int KEY_STAR = 42;
 	public static final int KEY_POUND = 35;
 
-	public ArenaMidlet arena;
+	public Arena arena;
 
-	public Canvas(ArenaMidlet var1) {
+	public Canvas(Arena var1) {
 		this.arena = var1;
 	}
 
@@ -46,7 +46,7 @@ public abstract class Canvas extends Displayable {
 	}
 
 	public final void serviceRepaints() {
-		arena.arenaView.postInvalidate();
+		arena.canvasView.postInvalidate();
 	}
 
 	protected void showNotify() {
@@ -61,7 +61,7 @@ public abstract class Canvas extends Displayable {
 
 	@Override
 	public View getView() {
-		return arena.arenaView;
+		return arena.canvasView;
 	}
 
 }

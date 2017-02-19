@@ -11,6 +11,8 @@ public class List extends Displayable {
 
 	public static final Command SELECT_COMMAND = new Command("", 1, 0);
 	private Command selectCommand;
+	private boolean[] selectedArray;
+	private int selectedIndex;
 	private int listType;
 	private ArrayList<String> items;
 	private String title;
@@ -40,25 +42,34 @@ public class List extends Displayable {
 		return items.get(elementNum);
 	}
 
-	public int append(String stringPart, Image imagePart) {
+	public int append(String stringPart) {
 		items.add(stringPart);
 		return 0;
 	}
 
-	public void set(int elementNum, String stringPart, Image imagePart) {
+	public void set(int elementNum, String stringPart) {
 		items.set(elementNum, stringPart);
 	}
 
 	public boolean isSelected(int elementNum) {
-		return false;
+		return elementNum == selectedIndex;
+	}
+
+	public void setSelectedIndex(int elementNum) {
+		selectedIndex = elementNum;
 	}
 
 	public int getSelectedIndex() {
-		return 0;
+		return selectedIndex;
 	}
 
 	public void setSelectedFlags(boolean selectedArray[]) {
-		//items.setSelectedFlags(selectedArray);
+		this.selectedArray = selectedArray;
+	}
+
+	 public  void callKeyPressed() {
+		if (listener != null && listType == 3)
+			listener.commandAction(selectCommand, this);
 	}
 
 	@Override

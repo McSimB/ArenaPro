@@ -25,7 +25,7 @@ public class Graphics {
 		return Font.getDefaultFont();
 	}
 
-	public void setFont(Font font) {
+	public void setFont() {
 	}
 
 	public int getClipX() {

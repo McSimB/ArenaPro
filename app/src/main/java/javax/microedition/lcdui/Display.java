@@ -1,33 +1,34 @@
 package javax.microedition.lcdui;
 
-import android.app.Activity;
 import android.view.ViewGroup;
+
+import com.elkware.midp.games.Arena1;
 
 public class Display {
 
 	public static final int WIDTH = 132;
 	public static final int HEIGHT = 176;
 	private Displayable current;
-	private Activity activity;
+	private Arena1 arena;
 
-	Display(Activity activity) {
-		this.activity = activity;
+	public Display(Arena1 arena) {
+		this.arena = arena;
 	}
 
-	public static Display getDisplay(Activity activity) {
-		return new Display(activity);
+	public static Display getDisplay(Arena1 arena) {
+		return arena.display;
 	}
 
 	public void setCurrent(final Displayable nextDisplayable) {
 		current = nextDisplayable;
+		final ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(WIDTH, HEIGHT);
 		if (Thread.currentThread().getName().equals("main")){
-			activity.setContentView(nextDisplayable.getView());
+			arena.setContentView(nextDisplayable.getView(), params);
 		} else {
-			activity.runOnUiThread(new Runnable() {
+			arena.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(WIDTH, HEIGHT);
-					activity.setContentView(nextDisplayable.getView(), params);
+					arena.setContentView(nextDisplayable.getView(), params);
 				}
 			});
 		}

@@ -1,6 +1,6 @@
 package com.elkware.midp.games.colorng;
 
-import com.elkware.midp.games.colorng.arena.high.ArenaMidlet;
+import com.elkware.midp.games.colorng.arena.high.Arena;
 
 import java.io.IOException;
 
@@ -8,13 +8,13 @@ import javax.microedition.media.MediaException;
 import javax.microedition.media.Player;
 import javax.microedition.media.PlayerListener;
 
-public abstract class CanvasView3 extends CanvasView2 implements PlayerListener {
+public abstract class Canvas3 extends Canvas2 implements PlayerListener {
 
 	Player[] var_22;
 	short[] var_6e;
 	boolean[] var_103;
 
-	public CanvasView3(ArenaMidlet var1) {
+	public Canvas3(Arena var1) {
 		super(var1);
 		super.arena = var1;
 		int var2 = var1.sub_dc(5034);

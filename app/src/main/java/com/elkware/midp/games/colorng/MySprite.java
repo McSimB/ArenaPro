@@ -3,7 +3,7 @@ package com.elkware.midp.games.colorng;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 
-public class Class_3a extends Class_77 {
+public class MySprite extends MySprite1 {
 
 	boolean[] var_36 = new boolean[0];
 	boolean[][] var_57;
@@ -17,14 +17,11 @@ public class Class_3a extends Class_77 {
 	int var_22a;
 	int var_276;
 
-	Class_3a() {
-	}
-
-	public Class_3a(Image var1, int var2, int var3) {
+	public MySprite(Image var1, int var2, int var3) {
 		super(var1, var2, var3);
 	}
 
-	public Class_3a(Class_3a var1) {
+	public MySprite(MySprite var1) {
 		super(var1);
 		this.var_36 = var1.var_36;
 		this.var_cc = var1.var_cc;
@@ -65,6 +62,7 @@ public class Class_3a extends Class_77 {
 	}
 
 	public void sub_90(Graphics var1, int var2, int var3) {
-		this.sub_eb((CanvasView1) null, var1, var2, var3);
+		this.sub_eb(null, var1, var2, var3);
 	}
+
 }

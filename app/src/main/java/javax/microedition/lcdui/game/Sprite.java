@@ -1,5 +1,6 @@
 package javax.microedition.lcdui.game;
 
+import android.graphics.Paint;
 import android.graphics.Rect;
 
 import javax.microedition.lcdui.Graphics;
@@ -8,13 +9,14 @@ import javax.microedition.lcdui.Image;
 public class Sprite extends Layer {
 
 	Image sourceImage;
-	int numberFrames;
+	int sc = 1;
+	int numFrames;
 	int frameCoordsX[];
 	int frameCoordsY[];
 	int srcFrameWidth;
 	int srcFrameHeight;
-	int frameSequence[];
-	private int sequenceIndex;
+	int frameSeq[];
+	private int seqIndex;
 	private boolean customSequenceDefined;
 	int dRefX;
 	int dRefY;
@@ -47,22 +49,22 @@ public class Sprite extends Layer {
 	}
 
 	public void setFrame(int sequenceIndex) {
-		if (sequenceIndex < 0 || sequenceIndex >= frameSequence.length) {
+		if (sequenceIndex < 0 || sequenceIndex >= frameSeq.length) {
 			throw new IndexOutOfBoundsException();
 		} else {
-			this.sequenceIndex = sequenceIndex;
+			this.seqIndex = sequenceIndex;
 		}
 	}
 
+	@Override
 	public final void paint(Graphics g) {
 		if (g == null)
 			throw new NullPointerException();
 		if (visible) {
-			//g.drawRegion(sourceImage, frameCoordsX[frameSequence[sequenceIndex]], frameCoordsY[frameSequence[sequenceIndex]], srcFrameWidth, srcFrameHeight, t_currentTransformation, x, y, 20);
-			Rect dst = new Rect(x * 4, y * 4, (x + srcFrameWidth) * 4, (y + srcFrameHeight) * 4);
-			Rect src = new Rect(frameCoordsX[frameSequence[sequenceIndex]] * 4, frameCoordsY[frameSequence[sequenceIndex]] * 4,
-					(frameCoordsX[frameSequence[sequenceIndex]] + srcFrameWidth) * 4, (frameCoordsY[frameSequence[sequenceIndex]] + srcFrameHeight) * 4);
-			//g.canvas.drawBitmap(sourceImage.getBitmap(), src, dst, new Paint());
+			Rect dst = new Rect(x * sc, y * sc, (x + srcFrameWidth) * sc, (y + srcFrameHeight) * sc);
+			Rect src = new Rect(frameCoordsX[frameSeq[seqIndex]] * sc, frameCoordsY[frameSeq[seqIndex]] * sc,
+					(frameCoordsX[frameSeq[seqIndex]] + srcFrameWidth) * sc, (frameCoordsY[frameSeq[seqIndex]] + srcFrameHeight) * sc);
+			g.canvas.drawBitmap(sourceImage.getBitmap(), src, dst, new Paint());
 		}
 	}
 
@@ -71,7 +73,7 @@ public class Sprite extends Layer {
 			throw new IllegalArgumentException();
 		int noOfFrames = (img.getWidth() / frameWidth) * (img.getHeight() / frameHeight);
 		boolean maintainCurFrame = true;
-		if (noOfFrames < numberFrames) {
+		if (noOfFrames < numFrames) {
 			maintainCurFrame = false;
 			customSequenceDefined = false;
 		}
@@ -163,20 +165,20 @@ public class Sprite extends Layer {
 		sourceImage = image;
 		srcFrameWidth = fWidth;
 		srcFrameHeight = fHeight;
-		numberFrames = numHorizontalFrames * numVerticalFrames;
-		frameCoordsX = new int[numberFrames];
-		frameCoordsY = new int[numberFrames];
+		numFrames = numHorizontalFrames * numVerticalFrames;
+		frameCoordsX = new int[numFrames];
+		frameCoordsY = new int[numFrames];
 		if (!maintainCurFrame)
-			sequenceIndex = 0;
+			seqIndex = 0;
 		if (!customSequenceDefined)
-			frameSequence = new int[numberFrames];
+			frameSeq = new int[numFrames];
 		int currentFrame = 0;
 		for (int yy = 0; yy < imageH; yy += fHeight) {
 			for (int xx = 0; xx < imageW; xx += fWidth) {
 				frameCoordsX[currentFrame] = xx;
 				frameCoordsY[currentFrame] = yy;
 				if (!customSequenceDefined)
-					frameSequence[currentFrame] = currentFrame;
+					frameSeq[currentFrame] = currentFrame;
 				currentFrame++;
 			}
 
@@ -218,7 +220,7 @@ public class Sprite extends Layer {
 			} else {
 				yIncr1 = 1;
 			}
-			//image1.getRGB(argbData1, 0, height, image1XOffset, image1YOffset, height, width);
+			image1.getRGB(argbData1, 0, height, image1XOffset, image1YOffset, height, width);
 		} else {
 			if (0 != (transform1 & 1)) {
 				startY1 = numPixels - width;
@@ -233,7 +235,7 @@ public class Sprite extends Layer {
 			} else {
 				xIncr1 = 1;
 			}
-			//image1.getRGB(argbData1, 0, width, image1XOffset, image1YOffset, width, height);
+			image1.getRGB(argbData1, 0, width, image1XOffset, image1YOffset, width, height);
 		}
 		int startY2;
 		int xIncr2;
@@ -252,7 +254,7 @@ public class Sprite extends Layer {
 			} else {
 				yIncr2 = 1;
 			}
-			//image2.getRGB(argbData2, 0, height, image2XOffset, image2YOffset, height, width);
+			image2.getRGB(argbData2, 0, height, image2XOffset, image2YOffset, height, width);
 		} else {
 			if (0 != (transform2 & 1)) {
 				startY2 = numPixels - width;
@@ -267,7 +269,7 @@ public class Sprite extends Layer {
 			} else {
 				xIncr2 = 1;
 			}
-			//image2.getRGB(argbData2, 0, width, image2XOffset, image2YOffset, width, height);
+			image2.getRGB(argbData2, 0, width, image2XOffset, image2YOffset, width, height);
 		}
 		int numIterRows = 0;
 		int xLocalBegin1 = startY1;
@@ -293,54 +295,54 @@ public class Sprite extends Layer {
 	private int getImageTopLeftX(int x1, int y1, int x2, int y2) {
 		int retX = 0;
 		switch (t_currentTransformation) {
-			case 0: // '\0'
-			case 1: // '\001'
+			case 0:
+			case 1:
 				retX = x1 - x;
 				break;
 
-			case 2: // '\002'
-			case 3: // '\003'
+			case 2:
+			case 3:
 				retX = (x + width) - x2;
 				break;
 
-			case 4: // '\004'
-			case 5: // '\005'
+			case 4:
+			case 5:
 				retX = y1 - y;
 				break;
 
-			case 6: // '\006'
-			case 7: // '\007'
+			case 6:
+			case 7:
 				retX = (y + height) - y2;
 				break;
 		}
-		retX += frameCoordsX[frameSequence[sequenceIndex]];
+		retX += frameCoordsX[frameSeq[seqIndex]];
 		return retX;
 	}
 
 	private int getImageTopLeftY(int x1, int y1, int x2, int y2) {
 		int retY = 0;
 		switch (t_currentTransformation) {
-			case 0: // '\0'
-			case 2: // '\002'
+			case 0:
+			case 2:
 				retY = y1 - y;
 				break;
 
-			case 1: // '\001'
-			case 3: // '\003'
+			case 1:
+			case 3:
 				retY = (y + height) - y2;
 				break;
 
-			case 4: // '\004'
-			case 6: // '\006'
+			case 4:
+			case 6:
 				retY = x1 - x;
 				break;
 
-			case 5: // '\005'
-			case 7: // '\007'
+			case 5:
+			case 7:
 				retY = (x + width) - x2;
 				break;
 		}
-		retY += frameCoordsY[frameSequence[sequenceIndex]];
+		retY += frameCoordsY[frameSeq[seqIndex]];
 		return retY;
 	}
 
@@ -358,7 +360,7 @@ public class Sprite extends Layer {
 
 	private void computeTransformedBounds(int transform) {
 		switch (transform) {
-			case 0: // '\0'
+			case 0:
 				t_collisionRectX = collisionRectX;
 				t_collisionRectY = collisionRectY;
 				t_collisionRectWidth = collisionRectWidth;
@@ -367,7 +369,7 @@ public class Sprite extends Layer {
 				height = srcFrameHeight;
 				break;
 
-			case 2: // '\002'
+			case 2:
 				t_collisionRectX = srcFrameWidth - (collisionRectX + collisionRectWidth);
 				t_collisionRectY = collisionRectY;
 				t_collisionRectWidth = collisionRectWidth;
@@ -376,7 +378,7 @@ public class Sprite extends Layer {
 				height = srcFrameHeight;
 				break;
 
-			case 1: // '\001'
+			case 1:
 				t_collisionRectY = srcFrameHeight - (collisionRectY + collisionRectHeight);
 				t_collisionRectX = collisionRectX;
 				t_collisionRectWidth = collisionRectWidth;
@@ -385,7 +387,7 @@ public class Sprite extends Layer {
 				height = srcFrameHeight;
 				break;
 
-			case 5: // '\005'
+			case 5:
 				t_collisionRectX = srcFrameHeight - (collisionRectHeight + collisionRectY);
 				t_collisionRectY = collisionRectX;
 				t_collisionRectHeight = collisionRectWidth;
@@ -394,7 +396,7 @@ public class Sprite extends Layer {
 				height = srcFrameWidth;
 				break;
 
-			case 3: // '\003'
+			case 3:
 				t_collisionRectX = srcFrameWidth - (collisionRectWidth + collisionRectX);
 				t_collisionRectY = srcFrameHeight - (collisionRectHeight + collisionRectY);
 				t_collisionRectWidth = collisionRectWidth;
@@ -403,7 +405,7 @@ public class Sprite extends Layer {
 				height = srcFrameHeight;
 				break;
 
-			case 6: // '\006'
+			case 6:
 				t_collisionRectX = collisionRectY;
 				t_collisionRectY = srcFrameWidth - (collisionRectWidth + collisionRectX);
 				t_collisionRectHeight = collisionRectWidth;
@@ -412,7 +414,7 @@ public class Sprite extends Layer {
 				height = srcFrameWidth;
 				break;
 
-			case 7: // '\007'
+			case 7:
 				t_collisionRectX = srcFrameHeight - (collisionRectHeight + collisionRectY);
 				t_collisionRectY = srcFrameWidth - (collisionRectWidth + collisionRectX);
 				t_collisionRectHeight = collisionRectWidth;
@@ -421,7 +423,7 @@ public class Sprite extends Layer {
 				height = srcFrameWidth;
 				break;
 
-			case 4: // '\004'
+			case 4:
 				t_collisionRectY = collisionRectX;
 				t_collisionRectX = collisionRectY;
 				t_collisionRectHeight = collisionRectWidth;
@@ -436,37 +438,37 @@ public class Sprite extends Layer {
 	}
 
 	private int getTransformedPtX(int x, int y, int transform) {
-		int t_x = 0;
+		int t_x;
 		switch (transform) {
-			case 0: // '\0'
+			case 0:
 				t_x = x;
 				break;
 
-			case 2: // '\002'
+			case 2:
 				t_x = srcFrameWidth - x - 1;
 				break;
 
-			case 1: // '\001'
+			case 1:
 				t_x = x;
 				break;
 
-			case 5: // '\005'
+			case 5:
 				t_x = srcFrameHeight - y - 1;
 				break;
 
-			case 3: // '\003'
+			case 3:
 				t_x = srcFrameWidth - x - 1;
 				break;
 
-			case 6: // '\006'
+			case 6:
 				t_x = y;
 				break;
 
-			case 7: // '\007'
+			case 7:
 				t_x = srcFrameHeight - y - 1;
 				break;
 
-			case 4: // '\004'
+			case 4:
 				t_x = y;
 				break;
 
@@ -477,37 +479,37 @@ public class Sprite extends Layer {
 	}
 
 	private int getTransformedPtY(int x, int y, int transform) {
-		int t_y = 0;
+		int t_y;
 		switch (transform) {
-			case 0: // '\0'
+			case 0:
 				t_y = y;
 				break;
 
-			case 2: // '\002'
+			case 2:
 				t_y = y;
 				break;
 
-			case 1: // '\001'
+			case 1:
 				t_y = srcFrameHeight - y - 1;
 				break;
 
-			case 5: // '\005'
+			case 5:
 				t_y = x;
 				break;
 
-			case 3: // '\003'
+			case 3:
 				t_y = srcFrameHeight - y - 1;
 				break;
 
-			case 6: // '\006'
+			case 6:
 				t_y = srcFrameWidth - x - 1;
 				break;
 
-			case 7: // '\007'
+			case 7:
 				t_y = srcFrameWidth - x - 1;
 				break;
 
-			case 4: // '\004'
+			case 4:
 				t_y = x;
 				break;
 
@@ -516,4 +518,5 @@ public class Sprite extends Layer {
 		}
 		return t_y;
 	}
+
 }

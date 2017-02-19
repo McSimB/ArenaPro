@@ -4,7 +4,7 @@ import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.Sprite;
 
-public class Class_77 extends Sprite {
+public class MySprite1 extends Sprite {
 
 	int var_1d;
 	int var_33;
@@ -29,17 +29,13 @@ public class Class_77 extends Sprite {
 	int var_4ff;
 	int var_528;
 
-	Class_77() {
-		super(Image.createImage(1, 1));
-	}
-
-	public Class_77(Image var1, int var2, int var3) {
-		super(Image.createImage(1, 1));
+	public MySprite1(Image var1, int var2, int var3) {
+		super(var1);
 		this.sub_37(1);
 		this.sub_56(0, var1, var2, var1.getWidth() / var2, var3);
 	}
 
-	public Class_77(Class_3a var1) {
+	public MySprite1(MySprite var1) {
 		super(var1.var_24b[0], var1.var_62[0], var1.var_ac[0]);
 		this.var_24b = var1.var_24b;
 		this.var_62 = var1.var_62;
@@ -91,7 +87,7 @@ public class Class_77 extends Sprite {
 		return this.var_ac[this.var_1d];
 	}
 
-	public synchronized void sub_eb(CanvasView1 var1, Graphics var2, int var3,
+	public synchronized void sub_eb(Canvas1 var1, Graphics var2, int var3,
 									int var4) {
 		if (this.isVisible()) {
 			int var5 = var2.getClipX();
@@ -199,7 +195,7 @@ public class Class_77 extends Sprite {
 		this.var_528 = var4;
 	}
 
-	public boolean sub_1cc(Class_3a var1, boolean var2) {
+	public boolean sub_1cc(MySprite var1, boolean var2) {
 		int var3;
 		int var4;
 		int var5;

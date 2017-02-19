@@ -8,9 +8,9 @@ class Class_71 extends Thread {
 
 	private CommandListener var_30;
 	private int var_56;
-	private final ArenaMidlet var_91;
+	private final Arena var_91;
 
-	private Class_71(ArenaMidlet var1, CommandListener var2, int var3) {
+	private Class_71(Arena var1, CommandListener var2, int var3) {
 		this.var_91 = var1;
 		this.var_30 = var2;
 		this.var_56 = var3;
@@ -19,20 +19,20 @@ class Class_71 extends Thread {
 	public void run() {
 		switch (this.var_56) {
 		case 1:
-			ArenaMidlet.sub_6af(this.var_91).sub_ffe();
-			ArenaMidlet.sub_6f7(this.var_91, ArenaMidlet.sub_6af(this.var_91));
-			ArenaMidlet.sub_6af(this.var_91).sub_704(0);
-			if (ArenaMidlet.sub_865(this.var_91)) {
-				ArenaMidlet.sub_6f7(this.var_91,
-						ArenaMidlet.sub_814(this.var_91));
-			} else if (ArenaMidlet.sub_884(this.var_91)) {
-				ArenaMidlet.sub_8c9(this.var_91, (List) null);
+			Arena.sub_6af(this.var_91).sub_ffe();
+			Arena.sub_6f7(this.var_91, Arena.sub_6af(this.var_91));
+			Arena.sub_6af(this.var_91).sub_704(0);
+			if (Arena.sub_865(this.var_91)) {
+				Arena.sub_6f7(this.var_91,
+						Arena.sub_814(this.var_91));
+			} else if (Arena.sub_884(this.var_91)) {
+				Arena.sub_8c9(this.var_91, (List) null);
 				Form var1 = new Form(this.var_91.getStr(401));
 				var1.append(this.var_91.getStr(403));
 				var1.setCommandListener(this.var_30);
-				var1.addCommand(ArenaMidlet.sub_8f2(this.var_91));
-				ArenaMidlet.sub_6af(this.var_91).sub_704(100);
-				ArenaMidlet.sub_6f7(this.var_91, var1);
+				var1.addCommand(Arena.sub_8f2(this.var_91));
+				Arena.sub_6af(this.var_91).sub_704(100);
+				Arena.sub_6f7(this.var_91, var1);
 			} else {
 				this.var_91.sub_327(14);
 			}
@@ -40,51 +40,51 @@ class Class_71 extends Thread {
 			return;
 		case 2:
 			try {
-				ArenaMidlet.sub_6af(this.var_91).sub_ffe();
+				Arena.sub_6af(this.var_91).sub_ffe();
 				this.var_91.var_e61 = true;
-				ArenaMidlet.sub_6af(this.var_91).var_535 = true;
-				ArenaMidlet.sub_6af(this.var_91).sub_704(0);
-				ArenaMidlet.sub_6f7(this.var_91,
-						ArenaMidlet.sub_6af(this.var_91));
-				ArenaMidlet.sub_6af(this.var_91).sub_704(10);
-				ArenaMidlet.sub_7b8(
+				Arena.sub_6af(this.var_91).var_535 = true;
+				Arena.sub_6af(this.var_91).sub_704(0);
+				Arena.sub_6f7(this.var_91,
+						Arena.sub_6af(this.var_91));
+				Arena.sub_6af(this.var_91).sub_704(10);
+				Arena.sub_7b8(
 						this.var_91,
-						ArenaMidlet.sub_814(this.var_91).getString(
-								ArenaMidlet.sub_814(this.var_91)
+						Arena.sub_814(this.var_91).getString(
+								Arena.sub_814(this.var_91)
 										.getSelectedIndex()));
 				this.var_91.var_de1 = 45;
-				ArenaMidlet.sub_760(this.var_91,
-						ArenaMidlet.sub_731(this.var_91));
+				Arena.sub_760(this.var_91,
+						Arena.sub_731(this.var_91));
 			} catch (Exception var2) {
 				;
 			}
 
-			ArenaMidlet.sub_6af(this.var_91).sub_704(100);
+			Arena.sub_6af(this.var_91).sub_704(100);
 			this.var_91.var_e61 = false;
-			ArenaMidlet.sub_6af(this.var_91).var_3246 = true;
-			ArenaMidlet.sub_6af(this.var_91).sub_6c0();
+			Arena.sub_6af(this.var_91).var_3246 = true;
+			Arena.sub_6af(this.var_91).sub_6c0();
 			return;
 		case 3:
-			ArenaMidlet.sub_6f7(this.var_91, ArenaMidlet.sub_6af(this.var_91));
-			ArenaMidlet.sub_6af(this.var_91).sub_704(0);
-			ArenaMidlet.sub_6af(this.var_91).sub_f99(this.var_91.var_d78);
+			Arena.sub_6f7(this.var_91, Arena.sub_6af(this.var_91));
+			Arena.sub_6af(this.var_91).sub_704(0);
+			Arena.sub_6af(this.var_91).sub_f99(this.var_91.var_d78);
 			this.var_91.var_d78 = null;
 			System.gc();
 			this.var_91.var_de1 = 18;
 			this.var_91.var_e61 = true;
-			ArenaMidlet.sub_760(this.var_91, ArenaMidlet.sub_731(this.var_91));
+			Arena.sub_760(this.var_91, Arena.sub_731(this.var_91));
 			this.var_91.var_e61 = false;
-			ArenaMidlet.sub_6af(this.var_91).var_535 = false;
-			ArenaMidlet.sub_6af(this.var_91).sub_704(95);
-			ArenaMidlet.sub_6af(this.var_91).sub_f51(this.var_91.var_d78);
+			Arena.sub_6af(this.var_91).var_535 = false;
+			Arena.sub_6af(this.var_91).sub_704(95);
+			Arena.sub_6af(this.var_91).sub_f51(this.var_91.var_d78);
 			this.var_91.sub_327(25);
-			ArenaMidlet.sub_6af(this.var_91).sub_704(100);
+			Arena.sub_6af(this.var_91).sub_704(100);
 			return;
 		default:
 		}
 	}
 
-	Class_71(ArenaMidlet var1, CommandListener var2, int var3, CanvView var4) {
+	Class_71(Arena var1, CommandListener var2, int var3, MoreCanvas var4) {
 		this(var1, var2, var3);
 	}
 }

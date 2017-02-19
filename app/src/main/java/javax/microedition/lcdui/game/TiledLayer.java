@@ -7,6 +7,7 @@ import javax.microedition.lcdui.Image;
 
 public class TiledLayer extends Layer {
 
+	int sc = 1;
 	private int cellHeight;
 	private int cellWidth;
 	private int rows;
@@ -63,6 +64,7 @@ public class TiledLayer extends Layer {
 		updated = true;
 	}
 
+	@Override
 	public synchronized void paint(Graphics g) {
 		if (g == null)
 			throw new NullPointerException();
@@ -113,9 +115,9 @@ public class TiledLayer extends Layer {
 			}
 			//drawTiledRegion(g, sourceImage, tileArrayLength, x_src, y_src, cellWidth, cellHeight, 0, x_dest, y_dest, 20);
 			for (int i = 0; i < tileArrayLength; i++) {
-				Rect dst = new Rect(x_dest[i] * 4, y_dest[i] * 4, (x_dest[i] + cellWidth) * 4, (y_dest[i] + cellHeight) * 4);
-				Rect src = new Rect(x_src[i] * 4, y_src[i] * 4, (x_src[i] + cellWidth) * 4, (y_src[i] + cellHeight) * 4);
-				//g.canvas.drawBitmap(sourceImage.getBitmap(), src, dst, new Paint());
+				Rect dst = new Rect(x_dest[i] * sc, y_dest[i] * sc, (x_dest[i] + cellWidth) * sc, (y_dest[i] + cellHeight) * sc);
+				Rect src = new Rect(x_src[i] * sc, y_src[i] * sc, (x_src[i] + cellWidth) * sc, (y_src[i] + cellHeight) * sc);
+				g.canvas.drawBitmap(sourceImage.getBitmap(), src, dst, null);
 			}
 		}
 	}

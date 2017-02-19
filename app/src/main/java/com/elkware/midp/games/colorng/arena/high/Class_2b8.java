@@ -1,6 +1,6 @@
 package com.elkware.midp.games.colorng.arena.high;
 
-import com.elkware.midp.games.colorng.Class_3a;
+import com.elkware.midp.games.colorng.MySprite;
 
 public class Class_2b8 {
 
@@ -17,7 +17,7 @@ public class Class_2b8 {
 	static final int[] var_2f8 = new int[] { 4, 12, 0, 8, 5, 13, 6, 14, 7, 15 };
 	int var_30b = 0;
 	int var_36c = 0;
-	public static CanvasView var_3a3;
+	public static MyCanvas var_3a3;
 	public static int var_3f5;
 	static int var_452 = 0;
 	int var_48e;
@@ -69,8 +69,8 @@ public class Class_2b8 {
 	int var_e08 = 0;
 	boolean[] var_e26;
 	int var_e4b = 1;
-	Class_3a var_e6d;
-	Class_3a var_ea2;
+	MySprite var_e6d;
+	MySprite var_ea2;
 	int var_ec1 = 12;
 	int var_ee8 = 0;
 	int var_f3a = 0;
@@ -116,8 +116,8 @@ public class Class_2b8 {
 	private int var_1887;
 	public int var_18c8;
 
-	public Class_2b8(Class_3a var1, Class_3a var2, int var3, int var4,
-			int var5, int var6, int var7, int var8) {
+	public Class_2b8(MySprite var1, MySprite var2, int var3, int var4,
+					 int var5, int var6, int var7, int var8) {
 		this.var_13e5 = var_112f;
 		this.var_1495 = 0;
 		this.var_14a7 = 0;
@@ -136,8 +136,8 @@ public class Class_2b8 {
 		this.var_182b = 0;
 		this.var_1887 = 0;
 		this.var_18c8 = 0;
-		this.var_e6d = new Class_3a(var1);
-		this.var_ea2 = new Class_3a(var2);
+		this.var_e6d = new MySprite(var1);
+		this.var_ea2 = new MySprite(var2);
 		this.var_48e = var3;
 		this.var_4dc = var4;
 		this.var_af7 = this.var_b81 = var5;
@@ -155,7 +155,7 @@ public class Class_2b8 {
 		this.var_e26 = new boolean[var_3a3.var_1efb.length];
 	}
 
-	public static void sub_1d(CanvasView var0, int var1) {
+	public static void sub_1d(MyCanvas var0, int var1) {
 		var_3a3 = var0;
 		var_3f5 = var1;
 	}
@@ -1138,7 +1138,7 @@ public class Class_2b8 {
 						- var_3a3.var_210c[this.var_1447]) < 2;
 	}
 
-	public static void sub_3eb(ArenaMidlet var0) {
+	public static void sub_3eb(Arena var0) {
 		var_13 = new int[6];
 		var_b0 = new int[6];
 		var_61 = new int[6];

@@ -10,8 +10,6 @@ public abstract class Layer {
 	int height;
 	boolean visible;
 
-	Layer() {}
-
 	Layer(int width, int height) {
 		visible = true;
 		setWidthImpl(width);
@@ -64,4 +62,5 @@ public abstract class Layer {
 			this.height = height;
 		}
 	}
+
 }
