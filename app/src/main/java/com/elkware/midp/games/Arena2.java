@@ -351,8 +351,8 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 
 	}
 
-	public final void sub_291(String var1) {
-		super.var_153 = var1;
+	public final void setAppID(String s) {
+		super.appID = s;
 	}
 
 	@Override

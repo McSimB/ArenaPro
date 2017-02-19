@@ -21,7 +21,7 @@ class Class_71 extends Thread {
 		case 1:
 			Arena.sub_6af(this.var_91).sub_ffe();
 			Arena.sub_6f7(this.var_91, Arena.sub_6af(this.var_91));
-			Arena.sub_6af(this.var_91).sub_704(0);
+			Arena.sub_6af(this.var_91).setPercent(0);
 			if (Arena.sub_865(this.var_91)) {
 				Arena.sub_6f7(this.var_91,
 						Arena.sub_814(this.var_91));
@@ -31,10 +31,10 @@ class Class_71 extends Thread {
 				var1.append(this.var_91.getStr(403));
 				var1.setCommandListener(this.var_30);
 				var1.addCommand(Arena.sub_8f2(this.var_91));
-				Arena.sub_6af(this.var_91).sub_704(100);
+				Arena.sub_6af(this.var_91).setPercent(100);
 				Arena.sub_6f7(this.var_91, var1);
 			} else {
-				this.var_91.sub_327(14);
+				this.var_91.commandManage(14);
 			}
 
 			return;
@@ -43,10 +43,10 @@ class Class_71 extends Thread {
 				Arena.sub_6af(this.var_91).sub_ffe();
 				this.var_91.var_e61 = true;
 				Arena.sub_6af(this.var_91).var_535 = true;
-				Arena.sub_6af(this.var_91).sub_704(0);
+				Arena.sub_6af(this.var_91).setPercent(0);
 				Arena.sub_6f7(this.var_91,
 						Arena.sub_6af(this.var_91));
-				Arena.sub_6af(this.var_91).sub_704(10);
+				Arena.sub_6af(this.var_91).setPercent(10);
 				Arena.sub_7b8(
 						this.var_91,
 						Arena.sub_814(this.var_91).getString(
@@ -59,14 +59,14 @@ class Class_71 extends Thread {
 				;
 			}
 
-			Arena.sub_6af(this.var_91).sub_704(100);
+			Arena.sub_6af(this.var_91).setPercent(100);
 			this.var_91.var_e61 = false;
 			Arena.sub_6af(this.var_91).var_3246 = true;
 			Arena.sub_6af(this.var_91).sub_6c0();
 			return;
 		case 3:
 			Arena.sub_6f7(this.var_91, Arena.sub_6af(this.var_91));
-			Arena.sub_6af(this.var_91).sub_704(0);
+			Arena.sub_6af(this.var_91).setPercent(0);
 			Arena.sub_6af(this.var_91).sub_f99(this.var_91.var_d78);
 			this.var_91.var_d78 = null;
 			System.gc();
@@ -75,10 +75,10 @@ class Class_71 extends Thread {
 			Arena.sub_760(this.var_91, Arena.sub_731(this.var_91));
 			this.var_91.var_e61 = false;
 			Arena.sub_6af(this.var_91).var_535 = false;
-			Arena.sub_6af(this.var_91).sub_704(95);
+			Arena.sub_6af(this.var_91).setPercent(95);
 			Arena.sub_6af(this.var_91).sub_f51(this.var_91.var_d78);
-			this.var_91.sub_327(25);
-			Arena.sub_6af(this.var_91).sub_704(100);
+			this.var_91.commandManage(25);
+			Arena.sub_6af(this.var_91).setPercent(100);
 			return;
 		default:
 		}

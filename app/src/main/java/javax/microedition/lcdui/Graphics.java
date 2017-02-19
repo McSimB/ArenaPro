@@ -4,6 +4,15 @@ import android.graphics.Paint;
 
 public class Graphics {
 
+	public static final int HCENTER = 1;
+	public static final int VCENTER = 2;
+	public static final int LEFT = 4;
+	public static final int RIGHT = 8;
+	public static final int TOP = 16;
+	public static final int BOTTOM = 32;
+	public static final int BASELINE = 64;
+
+
 	private int transX = 0;
 	private int transY = 0;
 	private short clip[] = new short[4];
@@ -25,7 +34,11 @@ public class Graphics {
 		return Font.getDefaultFont();
 	}
 
-	public void setFont() {
+	public void setFont(Font font) {
+		int color = paint.getColor();
+		paint.set(font.paint);
+		paint.setColor(color);
+
 	}
 
 	public int getClipX() {
@@ -106,15 +119,17 @@ public class Graphics {
 		canvas.drawRect(i, j, (i + k), (j + l), paint);
 	}
 
-	public void drawString(String s, int i, int j, int k) {
-		canvas.drawText(s, i, (j + 10), paint);
+	public void drawString(String s, int x, int y, int align) {
+		if ((align == (TOP | LEFT)) || (align == 0 ))  {
+			paint.setTextAlign(Paint.Align.LEFT);
+			canvas.drawText(s, x, y + paint.getTextSize(), paint);
+		} else if (align == (TOP | RIGHT)) {
+			paint.setTextAlign(Paint.Align.RIGHT);
+			canvas.drawText(s, x, y + paint.getTextSize(), paint);
+		}
 	}
 
 	public void drawImage(Image image, int x, int y, int k) {
-		//Rect dst = new Rect(clip[0], clip[1], clip[0] + clip[2], clip[1] + clip[3]);
-		//Rect src = new Rect(clip[0] - x, clip[1] - y, clip[0] - x + clip[2], clip[1] - y + clip[3]);
-		//canvas.drawBitmap(image.getBitmap(), src, dst, new Paint());
-
 		canvas.drawBitmap(image.getBitmap(), x, y, new Paint());
 	}
 
@@ -136,4 +151,5 @@ public class Graphics {
 	public int getDisplayColor(int var2) {
 		return 0;
 	}
+
 }

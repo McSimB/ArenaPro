@@ -30,7 +30,7 @@ public class Class_24e {
 			Class_2b8 var6, MyCanvas var7) {
 		int var10001;
 		if (this.var_95 == 0) {
-			var10001 = var7.var_1d77;
+			var10001 = var7.width;
 			var7.getClass();
 			this.var_95 = var10001 / 15 + 3;
 		}

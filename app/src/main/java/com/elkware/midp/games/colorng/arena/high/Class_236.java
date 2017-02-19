@@ -14,7 +14,7 @@ class Class_236 extends Thread {
 		Arena.sub_6eb(this.var_d2, Arena.sub_6af(this.var_d2)
 				.sub_4c8(), this.var_60);
 		this.var_d2.var_af2 = true;
-		this.var_d2.sub_327(10);
+		this.var_d2.commandManage(10);
 	}
 
 	Class_236(Arena var1, String var2, MoreCanvas var3) {

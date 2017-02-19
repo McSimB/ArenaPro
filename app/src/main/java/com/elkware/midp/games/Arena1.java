@@ -28,7 +28,7 @@ import javax.microedition.lcdui.List;
 public abstract class Arena1 extends Activity {
 
 	public Display display;
-	public String var_153 = null;
+	public String appID = null;
 	private String var_198 = null;
 	public CanvasView canvasView;
 	public View menuView;
@@ -235,7 +235,7 @@ public abstract class Arena1 extends Activity {
 					var5.append(this.sub_137(this.sub_fb(this.sub_3e1()))
 							.toUpperCase());
 					var5.append("&appid=");
-					var5.append(this.var_153);
+					var5.append(this.appID);
 					var5.append("&mnc=");
 					var5.append(System.getProperty("com.siemens.MNC"));
 					var5.append("&mcc=");
@@ -264,7 +264,7 @@ public abstract class Arena1 extends Activity {
 						var5.append("&nick=");
 						var5.append(this.sub_137(this.sub_fb(this.sub_3e1())));
 						var5.append("&appid=");
-						var5.append(this.var_153);
+						var5.append(this.appID);
 						var5.append("&hs=");
 						var5.append(this
 								.sub_137(new byte[]{

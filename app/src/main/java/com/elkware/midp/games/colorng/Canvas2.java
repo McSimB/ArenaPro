@@ -600,7 +600,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 		}
 	}
 
-	public String sub_446(int var1) {
+	public String getStr(int var1) {
 		return super.arena.getStr(var1);
 	}
 
