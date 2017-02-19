@@ -1,5 +1,7 @@
 package javax.microedition.lcdui;
 
+import android.view.View;
+
 public abstract class Displayable {
 
 	Display currentDisplay;
@@ -67,7 +69,7 @@ public abstract class Displayable {
 	}
 
 	void updateCommandSet() {
-		if (currentDisplay != null && currentDisplay.isShown(this))
+		if (currentDisplay != null && currentDisplay.isShown())
 			currentDisplay.updateCommandSet();
 	}
 
@@ -78,5 +80,7 @@ public abstract class Displayable {
 	int getCommandCount() {
 		return numCommands;
 	}
+
+	public abstract View getView();
 
 }

@@ -1,23 +1,36 @@
 package javax.microedition.lcdui;
 
 import android.app.Activity;
+import android.view.ViewGroup;
 
 public class Display {
 
-	public static final int WIDTH = 0;
-	public static final int HEIGHT = 0;
+	public static final int WIDTH = 132;
+	public static final int HEIGHT = 176;
 	private Displayable current;
+	private Activity activity;
 
-
-	Display(Activity m) {
+	Display(Activity activity) {
+		this.activity = activity;
 	}
 
-	public static Display getDisplay(Activity m) {
-		return new Display(m);
+	public static Display getDisplay(Activity activity) {
+		return new Display(activity);
 	}
 
-	public void setCurrent(Displayable nextDisplayable) {
+	public void setCurrent(final Displayable nextDisplayable) {
 		current = nextDisplayable;
+		if (Thread.currentThread().getName().equals("main")){
+			activity.setContentView(nextDisplayable.getView());
+		} else {
+			activity.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(WIDTH, HEIGHT);
+					activity.setContentView(nextDisplayable.getView(), params);
+				}
+			});
+		}
 	}
 
 	public Displayable getCurrent() {
@@ -30,11 +43,7 @@ public class Display {
 	public void vibrate(int var1) {
 	}
 
-	public static boolean isGraphicsDisplay(Graphics graphics) {
-		return false;
-	}
-
-	public boolean isShown(Displayable displayable) {
+	public boolean isShown() {
 		return false;
 	}
 

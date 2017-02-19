@@ -24,7 +24,7 @@ import javax.microedition.rms.RecordStoreException;
 public abstract class Arena2 extends Arena1 implements CommandListener {
 
 	private final String[] var_43 = new String[] { "RSF6", "RSHS7", "RSAD8" };
-	public Display var_52;
+	public Display display;
 	public boolean var_b4 = true;
 	public boolean var_e8 = true;
 	public boolean var_105 = true;
@@ -113,7 +113,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 	}
 
 	@Override
-	public String sub_383(int var1) {
+	public String getStr(int var1) {
 		if (this.stringResources.length == 0) {
 			this.checkLocale();
 		}
@@ -145,7 +145,9 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 		return -1;
 	}
 
+	@Override
 	public void startApp() {
+		super.startApp();
 		this.checkLocale();
 		if (this.var_64d == null) {
 			this.sub_1ea();
@@ -210,7 +212,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 		this.sub_20f();
 
 		try {
-			DataInputStream var1 = this.sub_1c4(this.sub_383(201)
+			DataInputStream var1 = this.sub_1c4(this.getStr(201)
 					+ this.var_43[2]);
 			if (var1 != null) {
 				int var2 = var1.readInt();
@@ -267,7 +269,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 
 	public void sub_20f() {
 		try {
-			DataInputStream var1 = this.sub_1c4(this.sub_383(201)
+			DataInputStream var1 = this.sub_1c4(this.getStr(201)
 					+ this.var_43[1]);
 			if (var1 != null) {
 				this.var_5ee = (long) (var1.readInt() * 1000);
@@ -307,7 +309,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 
 			var2.writeBoolean(this.var_6b2);
 			var2.writeUTF(this.var_590 != null ? this.var_590 : "");
-			this.sub_201(this.sub_383(201) + this.var_43[1], var1.toByteArray());
+			this.sub_201(this.getStr(201) + this.var_43[1], var1.toByteArray());
 		} catch (Exception var4) {
 			System.out.println("Saving highscore failed " + var4);
 		}
@@ -329,7 +331,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 				}
 			}
 
-			this.sub_201(this.sub_383(201) + this.var_43[2], var1.toByteArray());
+			this.sub_201(this.getStr(201) + this.var_43[2], var1.toByteArray());
 		} catch (Exception var5) {
 			System.out.println("saveFeatureData failed " + var5);
 		}
@@ -355,14 +357,14 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 
 	@Override
 	public void sub_4e9(String var1) {
-		this.var_2a5 = new Alert(this.sub_383(25), var1, null, null);
+		this.var_2a5 = new Alert(this.getStr(25), var1, null, null);
 		this.var_2a5.setTimeout('\uea60');
 		//TODO Alert
 		Display.getDisplay(this).setCurrent(this.var_2a5);
 	}
 
 	public boolean sub_2a7() {
-		String var1 = this.sub_383(98);
+		String var1 = this.getStr(98);
 		if (var1 == null) {
 			return true;
 		} else {
@@ -376,7 +378,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 			long var3 = System.currentTimeMillis();
 			long var5 = var3;
 			long var7 = 0L;
-			DataInputStream var9 = this.sub_1c4(this.sub_383(201) + "TS");
+			DataInputStream var9 = this.sub_1c4(this.getStr(201) + "TS");
 
 			try {
 				if (var9 != null) {
@@ -398,28 +400,28 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 				var12.printStackTrace();
 			}
 
-			this.sub_201(this.sub_383(201) + "TS", var10.toByteArray());
+			this.sub_201(this.getStr(201) + "TS", var10.toByteArray());
 			return var5 > var3 || var7 > 86400000L * (long) var2;
 		}
 	}
 
 	public boolean sub_2e6() {
-		this.var_52 = Display.getDisplay(this);
+		this.display = Display.getDisplay(this);
 		String var2 = null;
 		if (this.sub_2a7()) {
-			var2 = this.sub_383(99);
+			var2 = this.getStr(99);
 		} else if (this.var_188) {
-			var2 = this.sub_383(26);
+			var2 = this.getStr(26);
 		}
 
-		this.var_20a = new Command(this.sub_383(9), 3, 10);
+		this.var_20a = new Command(this.getStr(9), 3, 10);
 		if (var2 != null) {
-			if (!(this.var_52.getCurrent() instanceof Form)) {
-				Form var3 = new Form(this.sub_383(14));
+			if (!(this.display.getCurrent() instanceof Form)) {
+				Form var3 = new Form(this.getStr(14));
 				var3.append(var2);
 				var3.setCommandListener(this);
 				var3.addCommand(this.var_20a);
-				this.var_52.setCurrent(var3);
+				this.display.setCurrent(var3);
 			}
 
 			return false;
@@ -612,18 +614,18 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 
 	public void sub_4b4() {
 		this.var_590 = "";
-		this.var_83e = new TextBox(this.sub_383(18), this.var_590, 12, 0);
+		this.var_83e = new TextBox(this.getStr(18), this.var_590, 12, 0);
 		if (this.sub_485()) {
-			this.var_706 = new Command(this.sub_383(20), 4, 0);
+			this.var_706 = new Command(this.getStr(20), 4, 0);
 			this.var_83e.addCommand(this.var_706);
 		}
 
 		if (this.sub_447()) {
-			this.var_75b = new Command(this.sub_383(21), 4, 0);
+			this.var_75b = new Command(this.getStr(21), 4, 0);
 			this.var_83e.addCommand(this.var_75b);
 		}
 
-		this.var_78b = new Command(this.sub_383(22), 2, 0);
+		this.var_78b = new Command(this.getStr(22), 2, 0);
 		this.var_83e.addCommand(this.var_78b);
 		this.var_83e.setCommandListener(this);
 		this.sub_45b();
@@ -682,9 +684,9 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 		this.var_859 = 0;
 		this.var_83e.setString(this.var_590 != null ? this.var_590 : "");
 		if (var1 != null) {
-			this.var_52.setCurrent(var1, this.var_83e);
+			this.display.setCurrent(var1, this.var_83e);
 		} else {
-			this.var_52.setCurrent(this.var_83e);
+			this.display.setCurrent(this.var_83e);
 		}
 
 		try {
@@ -717,7 +719,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 			this.var_590 = this.sub_4c6(this.var_83e.getString());
 			if (this.var_590.length() < 3) {
 				//TODO Alert
-				//this.var_52.setCurrent(new Alert("Info", this.sub_383(23), null, null));
+				//this.display.setCurrent(new Alert("Info", this.getStr(23), null, null));
 			} else if (var1 == this.var_75b) {
 				this.var_859 = 2;
 			} else {

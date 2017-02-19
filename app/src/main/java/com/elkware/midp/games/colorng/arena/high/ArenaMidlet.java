@@ -27,12 +27,12 @@ import javax.wireless.messaging.MultipartMessage;
 public class ArenaMidlet extends Arena3 implements CommandListener {
 
 	public static boolean var_24 = true;
-	private List var_85;
-	private List var_be;
-	private List var_114;
-	private List var_144;
-	private List var_185;
-	private List var_1cc;
+	private List mainMenuList;
+	private List warriorSettingsList;
+	private List pauseList;
+	private List challengeModeList;
+	private List saveMenuList;
+	private List saveMenuList2;
 	private Command var_267;
 	private Command var_2b9;
 	private Command var_2f6;
@@ -48,21 +48,21 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 	private Command var_4a4;
 	private Command var_4e2;
 	private Command var_52c;
-	private Form var_573;
+	private Form aboutForm;
 	private Form var_5bd;
 	private Form var_62f = null;
-	private List var_644;
-	private List var_670;
+	private List settingsList;
+	private List gameModeList;
 	private List var_6a4;
-	private List var_6ea;
-	private List var_730;
+	private List tournamentList;
+	private List tournamentNextMatchList;
 	private List var_787;
 	private CanvasView canvasView;
 	private int var_845;
 	private int var_8c5;
 	private String var_91e;
-	private TextBox var_940;
-	private TextBox var_9a1;
+	private TextBox warriorNameTextBox;
+	private TextBox phoneNumberTextBox;
 	public boolean var_9d2 = true;
 	public boolean var_9f3 = true;
 	private boolean var_a44 = false;
@@ -75,7 +75,7 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 	public int var_bd9 = -1;
 	private int var_c15 = 0;
 	private byte[] var_c76 = null;
-	private byte[][] var_cb0 = (byte[][]) null;
+	private byte[][] var_cb0 = null;
 	private boolean[] var_cf4 = null;
 	private String var_d05;
 	private boolean var_d38;
@@ -85,16 +85,14 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 	public boolean var_e61 = false;
 	private TextBox var_f23 = null;
 
-	public ArenaView arenaView;
-
 	public ArenaMidlet() {
 		String var_88a = "033751AD";
 		this.sub_291(var_88a);
 	}
 
-	private synchronized void sub_11(Displayable var1) {
-		this.var_9d2 = var1 != this.canvasView;
-		this.var_9f3 = var1 == this.canvasView;
+	private synchronized void setCurrentDisp(Displayable displayable) {
+		this.var_9d2 = displayable != this.canvasView;
+		this.var_9f3 = displayable == this.canvasView;
 
 		try {
 			Thread.currentThread();
@@ -103,14 +101,12 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 			var3.printStackTrace();
 		}
 
-		super.var_52.setCurrent(var1);
+		super.display.setCurrent(displayable);
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		arenaView = new ArenaView(this);
-		setContentView(arenaView);
 		startApp();
 	}
 
@@ -119,116 +115,128 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 		if (!this.var_a44) {
 			this.var_a44 = true;
 			super.startApp();
-			this.canvasView.sub_5d4();
-			this.var_2f6 = new Command(this.sub_383(215), 2, 0);
-			this.var_353 = new Command(this.sub_383(220), 1, 0);
-			this.var_37e = new Command(this.sub_383(220), 1, 0);
-			this.var_394 = new Command(this.sub_383(222), 2, 0);
+			this.canvasView.initLogo();
+
+			this.var_2f6 = new Command(this.getStr(215), 2, 0);
+			this.var_353 = new Command(this.getStr(220), 1, 0);
+			this.var_37e = new Command(this.getStr(220), 1, 0);
+			this.var_394 = new Command(this.getStr(222), 2, 0);
 			this.var_2b9 = new Command("", 2, 0);
 			Command var_230 = new Command("", 2, 0);
 			this.var_267 = new Command("", 2, 0);
-			this.var_3c4 = new Command(this.sub_383(215), 2, 0);
-			this.var_41a = new Command(this.sub_383(459), 2, 0);
-			this.var_442 = new Command(this.sub_383(220), 4, 0);
-			this.var_460 = new Command(this.sub_383(220), 4, 0);
-			this.var_46d = new Command(this.sub_383(400), 1, 0);
-			this.var_491 = new Command(this.sub_383(400), 1, 0);
-			this.var_4a4 = new Command(this.sub_383(12), 2, 0);
-			this.var_52c = new Command(this.sub_383(523), 2, 0);
-			this.var_4e2 = new Command(this.sub_383(522), 1, 0);
+			this.var_3c4 = new Command(this.getStr(215), 2, 0);
+			this.var_41a = new Command(this.getStr(459), 2, 0);
+			this.var_442 = new Command(this.getStr(220), 4, 0);
+			this.var_460 = new Command(this.getStr(220), 4, 0);
+			this.var_46d = new Command(this.getStr(400), 1, 0);
+			this.var_491 = new Command(this.getStr(400), 1, 0);
+			this.var_4a4 = new Command(this.getStr(12), 2, 0);
+			this.var_52c = new Command(this.getStr(523), 2, 0);
+			this.var_4e2 = new Command(this.getStr(522), 1, 0);
 
-			this.var_670 = new List(this.sub_383(208), 3);
+			this.gameModeList = new List(this.getStr(208), 3, this);
 			for (int var1 = 0; var1 < 5; ++var1) {
-				this.var_670.append(this.sub_383(209 + var1), null);
+				this.gameModeList.append(this.getStr(209 + var1), null);
 			}
+			this.gameModeList.addCommand(this.var_2f6);
+			this.gameModeList.setCommandListener(this);
 
-			this.var_670.addCommand(this.var_2f6);
-			this.var_670.setCommandListener(this);
-			this.var_644 = new List(this.sub_383(206), 2);
-			this.var_644.append(this.sub_383(231), null);
-			this.var_644.append(this.sub_383(233), null);
-			this.var_644.append(this.sub_383(230), null);
-			this.var_644.addCommand(this.var_394);
-			this.var_644.setCommandListener(this);
-			this.var_940 = new TextBox(this.sub_383(219), this.canvasView.var_2f0, 12, 0);
-			this.var_940.addCommand(this.var_37e);
-			this.var_940.addCommand(this.var_3c4);
-			this.var_940.setCommandListener(this);
-			this.var_9a1 = new TextBox(this.sub_383(454), "", 30, 3);
-			this.var_9a1.addCommand(this.var_460);
-			this.var_9a1.addCommand(this.var_3c4);
-			this.var_9a1.setCommandListener(this);
-			this.var_573 = new Form(this.sub_383(217));
+			this.settingsList = new List(this.getStr(206), 2, this);
+			this.settingsList.append(this.getStr(231), null);
+			this.settingsList.append(this.getStr(233), null);
+			this.settingsList.append(this.getStr(230), null);
+			this.settingsList.addCommand(this.var_394);
+			this.settingsList.setCommandListener(this);
+
+			this.warriorNameTextBox = new TextBox(this.getStr(219), this.canvasView.var_2f0, 12, 0);
+			this.warriorNameTextBox.addCommand(this.var_37e);
+			this.warriorNameTextBox.addCommand(this.var_3c4);
+			this.warriorNameTextBox.setCommandListener(this);
+
+			this.phoneNumberTextBox = new TextBox(this.getStr(454), "", 30, 3);
+			this.phoneNumberTextBox.addCommand(this.var_460);
+			this.phoneNumberTextBox.addCommand(this.var_3c4);
+			this.phoneNumberTextBox.setCommandListener(this);
+
+			this.aboutForm = new Form(this.getStr(217));
 			String var4 = this.getAppProperty("MIDlet-Version");
 			if (var4 == null) {
 				var4 = "";
 			}
 
-			this.var_573.append("(c) 2003/2004\nelkware &\nSiemens mobile\n\ndeveloped by\nelkware GmbH\n\nwww.elkware.com\n\nVersion "
+			this.aboutForm.append("(c) 2003/2004\nelkware &\nSiemens mobile\n\ndeveloped by\nelkware GmbH\n\nwww.elkware.com\n\nVersion "
 							+ var4 + "\nDate " + "02.06.04");
-			this.var_573.addCommand(this.var_52c);
-			this.var_573.setCommandListener(this);
-			this.var_6ea = new List(this.sub_383(285), 3, new String[]{
-					this.sub_383(283), this.sub_383(284)}, null);
-			this.var_6ea.setCommandListener(this);
-			this.var_6ea.addCommand(this.var_2f6);
-			this.var_730 = new List(this.sub_383(285), 3,
-					new String[]{this.sub_383(281)}, null);
-			this.var_730.setCommandListener(this);
+			this.aboutForm.addCommand(this.var_52c);
+			this.aboutForm.setCommandListener(this);
+
+			this.tournamentList = new List(this.getStr(285), 3, new String[]{
+					this.getStr(283), this.getStr(284)}, this);
+			this.tournamentList.setCommandListener(this);
+			this.tournamentList.addCommand(this.var_2f6);
+
+			this.tournamentNextMatchList = new List(this.getStr(285), 3,
+					new String[]{this.getStr(281)}, this);
+			this.tournamentNextMatchList.setCommandListener(this);
+
 			this.var_a8d = this.sub_dc(472) == 1;
 			String[] var2;
 			if (this.var_a8d) {
-				var2 = new String[]{this.sub_383(202), this.sub_383(203),
-						this.sub_383(204), this.sub_383(206),
-						this.sub_383(218), this.sub_383(217), this.sub_383(207)};
+				var2 = new String[]{this.getStr(202), this.getStr(203),
+						this.getStr(204), this.getStr(206),
+						this.getStr(218), this.getStr(217), this.getStr(207)};
 			} else {
-				var2 = new String[]{this.sub_383(202), this.sub_383(203),
-						this.sub_383(286), this.sub_383(204),
-						this.sub_383(206), this.sub_383(218),
-						this.sub_383(217), this.sub_383(207)};
+				var2 = new String[]{this.getStr(202), this.getStr(203),
+						this.getStr(286), this.getStr(204),
+						this.getStr(206), this.getStr(218),
+						this.getStr(217), this.getStr(207)};
 			}
 
-			this.var_85 = new List("Contest Arena Pro", 3, var2, null);
-			this.var_85.setCommandListener(this);
-			this.var_85.addCommand(this.var_267);
-			String[] var3 = new String[]{this.sub_383(520)};
-			this.var_144 = new List(this.sub_383(286), 3, var3, null);
-			this.var_144.addCommand(var_230);
-			this.var_144.setCommandListener(this);
-			this.var_114 = new List(this.sub_383(282), 3, new String[]{
-					this.sub_383(201), this.sub_383(216), this.sub_383(521),
-					this.sub_383(205), this.sub_383(206), this.sub_383(218),
-					this.sub_383(217), this.sub_383(207)}, null);
-			this.var_114.addCommand(var_230);
-			this.var_114.setCommandListener(this);
-			this.var_be = new List("", 3, new String[]{this.sub_383(240),
-					this.sub_383(241), this.sub_383(242), this.sub_383(243),
-					this.sub_383(222)}, null);
-			this.var_be.addCommand(var_230);
-			this.var_be.setCommandListener(this);
-			this.var_185  = new List("", 3, new String[]{this.sub_383(226),
-					this.sub_383(215)}, null);
-			this.var_185.addCommand(var_230);
-			this.var_185.setCommandListener(this);
-			this.var_1cc = new List("", 3, new String[]{this.sub_383(226),
-					this.sub_383(215)}, null);
-			this.var_1cc.addCommand(var_230);
-			this.var_1cc.setCommandListener(this);
+			this.mainMenuList = new List("Contest Arena Pro", 3, var2, this);
+			this.mainMenuList.setCommandListener(this);
+			this.mainMenuList.addCommand(this.var_267);
+			
+			String[] var3 = new String[]{this.getStr(520)};
+			this.challengeModeList = new List(this.getStr(286), 3, var3, this);
+			this.challengeModeList.addCommand(var_230);
+			this.challengeModeList.setCommandListener(this);
+
+			this.pauseList = new List(this.getStr(282), 3, new String[]{
+					this.getStr(201), this.getStr(216), this.getStr(521),
+					this.getStr(205), this.getStr(206), this.getStr(218),
+					this.getStr(217), this.getStr(207)}, this);
+			this.pauseList.addCommand(var_230);
+			this.pauseList.setCommandListener(this);
+
+			this.warriorSettingsList = new List("", 3, new String[]{this.getStr(240),
+					this.getStr(241), this.getStr(242), this.getStr(243),
+					this.getStr(222)}, this);
+			this.warriorSettingsList.addCommand(var_230);
+			this.warriorSettingsList.setCommandListener(this);
+
+			this.saveMenuList = new List("", 3, new String[]{this.getStr(226),
+					this.getStr(215)}, this);
+			this.saveMenuList.addCommand(var_230);
+			this.saveMenuList.setCommandListener(this);
+
+			this.saveMenuList2 = new List("", 3, new String[]{this.getStr(226),
+					this.getStr(215)}, this);
+			this.saveMenuList2.addCommand(var_230);
+			this.saveMenuList2.setCommandListener(this);
 		}
 	}
 
 	public void sub_48() {
-		this.sub_11(this.var_be);
+		this.setCurrentDisp(this.warriorSettingsList);
 	}
 
 	public void sub_90() {
-		this.sub_11(this.var_185);
+		this.setCurrentDisp(this.saveMenuList);
 	}
 
 	public void sub_a7() {
 		this.var_af2 = true;
 		this.sub_327(10);
-		this.sub_11(this.var_85);
+		this.setCurrentDisp(this.mainMenuList);
 	}
 
 	public void sub_df() {
@@ -241,7 +249,7 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 		if (var1 && this.var_a8d) {
 			Image downloadMoreImage = this.canvasView.openImage(230);
 			CanvView var3 = new CanvView(this, downloadMoreImage);
-			super.var_52.setCurrent(var3);
+			super.display.setCurrent(var3);
 			this.var_ab2.start();
 		} else {
 			this.destroyApp(true);
@@ -278,16 +286,16 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 		this.sub_327(14);
 	}
 
-	public void commandAction(Command var1, Displayable var2) {
-		super.commandAction(var1, var2);
-		if (var1 == this.var_267) {
+	public void commandAction(Command command, Displayable displayable) {
+		super.commandAction(command, displayable);
+		if (command == this.var_267) {
 			this.sub_fa(false);
-		} else if (var1 == this.var_2b9) {
+		} else if (command == this.var_2b9) {
 			this.sub_14a();
 		} else {
 			int var5;
-			if (var2 == this.var_85) {
-				var5 = this.var_85.getSelectedIndex();
+			if (displayable == this.mainMenuList) {
+				var5 = this.mainMenuList.getSelectedIndex();
 				if (this.var_a8d && var5 > 1) {
 					++var5;
 				}
@@ -316,7 +324,7 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 						break;
 					case 2:
 						this.canvasView.sub_704(0);
-						this.sub_11(this.canvasView);
+						this.setCurrentDisp(this.canvasView);
 						this.canvasView.var_30a2 = true;
 						this.canvasView.sub_6c0();
 						this.canvasView.var_92a = true;
@@ -343,11 +351,11 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 						this.sub_fa(true);
 				}
 
-			} else if (var2 == this.var_be) {
-				if (var1.getCommandType() == 2) {
+			} else if (displayable == this.warriorSettingsList) {
+				if (command.getCommandType() == 2) {
 					this.sub_a7();
 				} else {
-					var5 = this.var_be.getSelectedIndex();
+					var5 = this.warriorSettingsList.getSelectedIndex();
 					switch (var5) {
 						case 0:
 							this.canvasView.var_4c6 = true;
@@ -358,21 +366,21 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 							this.sub_327(19);
 							break;
 						case 2:
-							Display.getDisplay(this).setCurrent(this.var_9a1);
+							Display.getDisplay(this).setCurrent(this.phoneNumberTextBox);
 							break;
 						case 3:
 							this.sub_327(23);
 							break;
 						case 4:
-							this.sub_11(this.canvasView);
+							this.setCurrentDisp(this.canvasView);
 					}
 
 				}
-			} else if (var2 == this.var_185) {
-				if (var1.getCommandType() == 2) {
+			} else if (displayable == this.saveMenuList) {
+				if (command.getCommandType() == 2) {
 					this.sub_df();
 				} else {
-					var5 = this.var_185.getSelectedIndex();
+					var5 = this.saveMenuList.getSelectedIndex();
 					switch (var5) {
 						case 0:
 							this.canvasView.sub_a65();
@@ -384,11 +392,11 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 					}
 
 				}
-			} else if (var2 == this.var_1cc) {
-				if (var1.getCommandType() == 2) {
+			} else if (displayable == this.saveMenuList2) {
+				if (command.getCommandType() == 2) {
 					this.sub_1b1();
 				} else {
-					var5 = this.var_1cc.getSelectedIndex();
+					var5 = this.saveMenuList2.getSelectedIndex();
 					switch (var5) {
 						case 0:
 							(new Class_71(this, this, 3, null)).start();
@@ -398,11 +406,11 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 					}
 
 				}
-			} else if (var2 == this.var_114) {
-				if (var1.getCommandType() == 2) {
+			} else if (displayable == this.pauseList) {
+				if (command.getCommandType() == 2) {
 					this.canvasView.sub_9e4();
 				} else {
-					var5 = this.var_114.getSelectedIndex();
+					var5 = this.pauseList.getSelectedIndex();
 					switch (var5) {
 						case 0:
 							this.canvasView.sub_9e4();
@@ -419,7 +427,7 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 							break;
 						case 3:
 							this.canvasView.var_2de8 = true;
-							this.sub_11(this.canvasView);
+							this.setCurrentDisp(this.canvasView);
 							break;
 						case 4:
 							this.canvasView.var_2de8 = false;
@@ -438,11 +446,11 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 					}
 
 				}
-			} else if (var2 == this.var_730) {
-				var5 = this.var_730.getSelectedIndex();
+			} else if (displayable == this.tournamentNextMatchList) {
+				var5 = this.tournamentNextMatchList.getSelectedIndex();
 				switch (var5) {
 					case 0:
-						this.var_730.removeCommand(this.var_2b9);
+						this.tournamentNextMatchList.removeCommand(this.var_2b9);
 						this.canvasView.var_2976 = false;
 						this.canvasView.var_35b0 = false;
 						if (this.canvasView.var_37be) {
@@ -457,11 +465,11 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 						}
 
 						this.canvasView.sub_171(0);
-						this.sub_11(this.canvasView);
+						this.setCurrentDisp(this.canvasView);
 					default:
 				}
-			} else if (var2 == this.var_6ea) {
-				if (var1 == this.var_2f6) {
+			} else if (displayable == this.tournamentList) {
+				if (command == this.var_2f6) {
 					this.canvasView.sub_8ab();
 					this.canvasView.var_92a = false;
 					this.canvasView.var_c8a = null;
@@ -470,7 +478,7 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 					this.var_af2 = true;
 					this.sub_327(10);
 				} else {
-					this.canvasView.var_35e9 = this.var_6ea.getSelectedIndex() == 1;
+					this.canvasView.var_35e9 = this.tournamentList.getSelectedIndex() == 1;
 					if (this.canvasView.var_35e9) {
 						this.sub_327(11);
 					} else {
@@ -479,17 +487,17 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 					}
 
 				}
-			} else if (var2 == this.var_144) {
-				if (var1.getCommandType() == 2) {
+			} else if (displayable == this.challengeModeList) {
+				if (command.getCommandType() == 2) {
 					this.sub_16b();
 				} else {
-					var5 = this.var_144.getSelectedIndex();
+					var5 = this.challengeModeList.getSelectedIndex();
 					switch (var5) {
 						case 0:
 							this.canvasView.var_891 = 5;
 							this.canvasView.var_8f4 = 1;
 							this.canvasView.var_35b0 = this.canvasView.var_a17 = false;
-							this.sub_11(this.canvasView);
+							this.setCurrentDisp(this.canvasView);
 							return;
 						case 1:
 							this.canvasView.sub_ffe();
@@ -500,7 +508,7 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 					}
 				}
 			} else {
-				if (var1.getCommandType() == 2) {
+				if (command.getCommandType() == 2) {
 					switch (this.var_845) {
 						case 16:
 							this.var_af2 = true;
@@ -517,11 +525,11 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 					}
 				}
 
-				if (var1.getCommandType() == 2 && this.var_845 == 15) {
-					this.canvasView.var_395[0] = this.var_644.isSelected(2);
-					this.canvasView.var_395[1] = this.var_644.isSelected(0);
+				if (command.getCommandType() == 2 && this.var_845 == 15) {
+					this.canvasView.var_395[0] = this.settingsList.isSelected(2);
+					this.canvasView.var_395[1] = this.settingsList.isSelected(0);
 					this.canvasView.var_395[2] = false;
-					this.canvasView.var_395[3] = this.var_644.isSelected(1);
+					this.canvasView.var_395[3] = this.settingsList.isSelected(1);
 					this.canvasView.var_395[4] = false;
 					this.canvasView.sub_ec7();
 					this.canvasView.sub_7c4();
@@ -532,43 +540,43 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 					this.canvasView.sub_116d(this.canvasView.var_395[1]);
 					this.sub_327(10);
 				} else {
-					if (var1 == this.var_46d) {
-						this.var_62f = new Form(this.sub_383(400));
-						this.var_62f.append(this.sub_383(406));
+					if (command == this.var_46d) {
+						this.var_62f = new Form(this.getStr(400));
+						this.var_62f.append(this.getStr(406));
 						this.var_62f.setCommandListener(this);
 						this.sub_327(28);
-					} else if (var1 == this.var_491) {
-						this.var_62f = new Form(this.sub_383(400));
-						this.var_62f.append(this.sub_383(455));
+					} else if (command == this.var_491) {
+						this.var_62f = new Form(this.getStr(400));
+						this.var_62f.append(this.getStr(455));
 						this.var_62f.setCommandListener(this);
 						this.sub_327(28);
-					} else if (var1 == this.var_41a) {
+					} else if (command == this.var_41a) {
 						this.var_c76 = null;
 						this.var_af2 = true;
 						this.sub_327(10);
-					} else if (var1 == this.var_442) {
-						this.sub_11(this.canvasView);
+					} else if (command == this.var_442) {
+						this.setCurrentDisp(this.canvasView);
 						this.canvasView.sub_704(0);
 						this.canvasView.sub_679(this.canvasView);
-					} else if (var1 != this.var_2f6 && var1 != this.var_394
-							&& var1 != this.var_52c) {
-						if (var1.getCommandType() == 1 && this.var_845 == 11) {
-							this.canvasView.var_891 = this.var_670
+					} else if (command != this.var_2f6 && command != this.var_394
+							&& command != this.var_52c) {
+						if (command.getCommandType() == 1 && this.var_845 == 11) {
+							this.canvasView.var_891 = this.gameModeList
 									.getSelectedIndex();
 							if (this.canvasView.var_91b) {
 								this.canvasView.sub_704(0);
-								this.sub_11(this.canvasView);
+								this.setCurrentDisp(this.canvasView);
 								this.canvasView.sub_704(0);
 								this.sub_327(13);
 							} else {
 								this.sub_327(12);
 							}
-						} else if (var1.getCommandType() == 1
+						} else if (command.getCommandType() == 1
 								&& this.var_845 == 12) {
 							this.canvasView.var_8f4 = this.var_6a4
 									.getSelectedIndex() + 1;
 							this.sub_327(13);
-						} else if (var1 == this.var_3c4) {
+						} else if (command == this.var_3c4) {
 							this.var_af2 = true;
 							this.canvasView.var_4c6 = false;
 							this.canvasView.var_4ee = false;
@@ -577,30 +585,30 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 							this.canvasView.var_4ee = false;
 						} else {
 							String var3;
-							if (var1 == this.var_37e) {
+							if (command == this.var_37e) {
 								this.canvasView.sub_a84(false);
-								var3 = this.var_940.getString().replace('\n',
+								var3 = this.warriorNameTextBox.getString().replace('\n',
 										' ');
 								this.canvasView.var_2f0 = var3.substring(0,
 										Math.min(var3.length(), 10));
 								this.sub_327(19);
-							} else if (var1 == this.var_353) {
+							} else if (command == this.var_353) {
 								this.canvasView.var_4ee = false;
-								this.sub_11(this.canvasView);
+								this.setCurrentDisp(this.canvasView);
 								this.canvasView.sub_6c0();
 							} else if (this.var_845 == 23) {
-								this.sub_11(this.canvasView);
+								this.setCurrentDisp(this.canvasView);
 								this.sub_327(24);
-							} else if (var1 == this.var_460) {
-								this.sub_11(this.canvasView);
+							} else if (command == this.var_460) {
+								this.setCurrentDisp(this.canvasView);
 								this.canvasView.sub_6a1(this.canvasView);
-							} else if (var1 == this.var_4e2) {
+							} else if (command == this.var_4e2) {
 								var3 = this.var_f23.getString();
-								Form var4 = new Form(this.sub_383(19));
-								var4.append(this.sub_383(127));
+								Form var4 = new Form(this.getStr(19));
+								var4.append(this.getStr(127));
 								var4.addCommand(this.var_394);
 								var4.setCommandListener(this);
-								this.sub_11(var4);
+								this.setCurrentDisp(var4);
 								(new Class_236(this, var3, null))
 										.start();
 							}
@@ -641,7 +649,7 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 		this.canvasView.sub_704(0);
 		boolean var1 = false;
 		byte var2 = -1;
-		String var3 = this.var_9a1.getString();
+		String var3 = this.phoneNumberTextBox.getString();
 		String var4 = String.valueOf(this.var_8c5);
 		String var5 = "sms://" + var3 + ":" + var4;
 		MessageConnection var6 = null;
@@ -687,7 +695,7 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 		}
 
 		if (!var1) {
-			this.sub_24e(this.sub_383(456));
+			this.sub_24e(this.getStr(456));
 		}
 
 		this.var_af2 = true;
@@ -706,24 +714,24 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 	}
 
 	public void sub_25c() {
-		this.sub_11(this.var_1cc);
+		this.setCurrentDisp(this.saveMenuList2);
 	}
 
 	public void sub_27c() {
-		this.sub_11(this.var_114);
+		this.setCurrentDisp(this.pauseList);
 	}
 
 	public void sub_28d() {
-		this.var_730.addCommand(this.var_2b9);
-		this.sub_11(this.var_730);
+		this.tournamentNextMatchList.addCommand(this.var_2b9);
+		this.setCurrentDisp(this.tournamentNextMatchList);
 	}
 
 	public void sub_2ec() {
-		if (this.canvasView.var_2a7b != null && this.var_144.size() == 1) {
-			this.var_144.append(this.sub_383(292), null);
+		if (this.canvasView.var_2a7b != null && this.challengeModeList.size() == 1) {
+			this.challengeModeList.append(this.getStr(292), null);
 		}
 
-		this.sub_11(this.var_144);
+		this.setCurrentDisp(this.challengeModeList);
 	}
 
 	public void sub_327(int var1) {
@@ -740,48 +748,48 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 						this.sub_27c();
 					} else {
 						if (this.var_d38) {
-							Form var_604 = new Form(this.sub_383(457));
-							var_604.append(this.sub_383(458) + " "
+							Form var_604 = new Form(this.getStr(457));
+							var_604.append(this.getStr(458) + " "
 									+ this.var_d05);
 							if (this.var_b9f) {
-								var_604.append("\n" + this.sub_383(460));
+								var_604.append("\n" + this.getStr(460));
 							}
 
 							var_604.addCommand(this.var_442);
 							var_604.addCommand(this.var_41a);
 							var_604.setCommandListener(this);
-							this.sub_11(var_604);
+							this.setCurrentDisp(var_604);
 							this.var_d38 = false;
 							return;
 						}
 
-						this.sub_11(this.var_85);
+						this.setCurrentDisp(this.mainMenuList);
 					}
 					break;
 				case 11:
-					this.sub_11(this.var_670);
+					this.setCurrentDisp(this.gameModeList);
 					break;
 				case 12:
 					if (this.canvasView.var_891 != 0) {
-						this.var_6a4 = new List(this.sub_383(300), 3);
+						this.var_6a4 = new List(this.getStr(300), 3, this);
 						var4 = Math.max(2, this.canvasView.var_891);
 
 						for (var6 = 0; var6 < CanvasView.var_154[this.canvasView.var_891]; ++var6) {
 							this.var_6a4.append(
-									this.sub_383(CanvasView.var_1a6[var4 + var6 / 5
+									this.getStr(CanvasView.var_1a6[var4 + var6 / 5
 											% 5]
 											+ var6 % 5), null);
 						}
 
 						this.var_6a4.addCommand(this.var_2f6);
 						this.var_6a4.setCommandListener(this);
-						this.sub_11(this.var_6a4);
+						this.setCurrentDisp(this.var_6a4);
 					} else {
 						this.sub_327(13);
 					}
 					break;
 				case 13:
-					this.sub_11(this.canvasView);
+					this.setCurrentDisp(this.canvasView);
 					this.canvasView.sub_6b4(this.canvasView);
 					break;
 				case 14:
@@ -790,22 +798,22 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 						this.canvasView.sub_110();
 					}
 
-					this.sub_11(this.canvasView);
+					this.setCurrentDisp(this.canvasView);
 					this.canvasView.sub_6c0();
 					break;
 				case 15:
-					this.var_644.setSelectedFlags(new boolean[]{
+					this.settingsList.setSelectedFlags(new boolean[]{
 							this.canvasView.var_395[1], this.canvasView.var_395[3],
 							this.canvasView.var_395[0]});
-					this.sub_11(this.var_644);
+					this.setCurrentDisp(this.settingsList);
 					break;
 				case 16:
-					this.sub_11(this.var_573);
+					this.setCurrentDisp(this.aboutForm);
 					break;
 				case 17:
 					if (this.var_5bd == null) {
-						this.var_5bd = new Form(this.sub_383(218));
-						String var5 = this.sub_383(200);
+						this.var_5bd = new Form(this.getStr(218));
+						String var5 = this.getStr(200);
 
 						while ((var6 = var5.indexOf("\nn")) != -1) {
 							var5 = var5.substring(0, var6) + '\n'
@@ -817,10 +825,10 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 						this.var_5bd.setCommandListener(this);
 					}
 
-					this.sub_11(this.var_5bd);
+					this.setCurrentDisp(this.var_5bd);
 					break;
 				case 18:
-					this.sub_11(this.var_940);
+					this.setCurrentDisp(this.warriorNameTextBox);
 					break;
 				case 19:
 					this.canvasView.var_535 = false;
@@ -832,18 +840,18 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 
 					this.canvasView.var_4ee = true;
 					this.canvasView.sub_aad();
-					this.sub_11(this.canvasView);
+					this.setCurrentDisp(this.canvasView);
 					this.canvasView.sub_6c0();
 					break;
 				case 20:
-					this.sub_11(this.canvasView);
+					this.setCurrentDisp(this.canvasView);
 				case 21:
 				case 26:
 				case 27:
 				default:
 					break;
 				case 22:
-					this.sub_11(this.var_6ea);
+					this.setCurrentDisp(this.tournamentList);
 					break;
 				case 23:
 					(new Class_71(this, this, 1, null)).start();
@@ -852,18 +860,18 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 					(new Class_71(this, this, 2, null)).start();
 					break;
 				case 25:
-					Form var2 = new Form(this.sub_383(404));
-					var2.append(this.sub_383(402));
+					Form var2 = new Form(this.getStr(404));
+					var2.append(this.getStr(402));
 					var2.setCommandListener(this);
 					var2.addCommand(this.var_353);
-					this.sub_11(var2);
+					this.setCurrentDisp(var2);
 					break;
 				case 28:
 					this.var_62f.addCommand(this.var_4a4);
-					this.sub_11(this.var_62f);
+					this.setCurrentDisp(this.var_62f);
 					break;
 				case 29:
-					this.sub_11(this.canvasView);
+					this.setCurrentDisp(this.canvasView);
 					this.canvasView.var_92a = true;
 					this.sub_327(13);
 			}
@@ -929,9 +937,9 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 		} else {
 			String var8 = this.sub_309();
 			if (var8 != null) {
-				this.sub_24e(this.sub_383(24) + " " + var8);
+				this.sub_24e(this.getStr(24) + " " + var8);
 			} else {
-				this.sub_24e(this.sub_383(24));
+				this.sub_24e(this.getStr(24));
 			}
 		}
 
@@ -1010,7 +1018,7 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 
 	private boolean sub_4f0() {
 		this.var_d64 = true;
-		this.var_787 = new List(this.sub_383(401), 3);
+		this.var_787 = new List(this.getStr(401), 3, this);
 
 		try {
 			FileConnection var1 = (FileConnection) Connector.open(
@@ -1287,11 +1295,11 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 
 	private void sub_63b() {
 		try {
-			this.var_f23 = new TextBox(this.sub_383(526), "mms://", 256, 0);
+			this.var_f23 = new TextBox(this.getStr(526), "mms://", 256, 0);
 			this.var_f23.addCommand(this.var_394);
 			this.var_f23.addCommand(this.var_4e2);
 			this.var_f23.setCommandListener(this);
-			this.sub_11(this.var_f23);
+			this.setCurrentDisp(this.var_f23);
 		} catch (Exception var2) {
 			var2.printStackTrace();
 		}
@@ -1325,7 +1333,7 @@ public class ArenaMidlet extends Arena3 implements CommandListener {
 	}
 
 	static void sub_6f7(ArenaMidlet var0, Displayable var1) {
-		var0.sub_11(var1);
+		var0.setCurrentDisp(var1);
 	}
 
 	static String sub_731(ArenaMidlet var0) {

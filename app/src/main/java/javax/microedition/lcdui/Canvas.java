@@ -1,5 +1,7 @@
 package javax.microedition.lcdui;
 
+import android.view.View;
+
 import com.elkware.midp.games.colorng.arena.high.ArenaMidlet;
 
 public abstract class Canvas extends Displayable {
@@ -55,6 +57,11 @@ public abstract class Canvas extends Displayable {
 
 	void callShowNotify(Display d) {
 		super.callShowNotify(d);
+	}
+
+	@Override
+	public View getView() {
+		return arena.arenaView;
 	}
 
 }

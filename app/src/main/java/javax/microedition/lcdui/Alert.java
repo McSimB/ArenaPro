@@ -1,5 +1,7 @@
 package javax.microedition.lcdui;
 
+import android.view.View;
+
 public class Alert extends Displayable {
 
 	public Alert(String string, String var12, Image image, AlertType alertType) {
@@ -11,4 +13,8 @@ public class Alert extends Displayable {
 		// TODO Auto-generated method stub
 	}
 
+	@Override
+	public View getView() {
+		return null;
+	}
 }

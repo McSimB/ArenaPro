@@ -127,7 +127,7 @@ public abstract class CanvasView2 extends CanvasView1 implements Runnable, Comma
 			this.var_66e[15] = this.sub_462(5016);
 			this.var_1df = var1.sub_dc(5032) == 1;
 			if (var1.sub_dc(5051) == 1) {
-				this.var_6a8 = new Command(var1.sub_383(43), 4, 0);
+				this.var_6a8 = new Command(var1.getStr(43), 4, 0);
 				this.setCommandListener(this);
 			}
 
@@ -467,7 +467,7 @@ public abstract class CanvasView2 extends CanvasView1 implements Runnable, Comma
 
 	public abstract void sub_2dd();
 
-	public void sub_30c(Displayable var1) {
+	public void setCurDisp(Displayable var1) {
 		Display var2 = Display.getDisplay(super.arena);
 		if (var2 != null) {
 			var2.setCurrent(var1);
@@ -513,7 +513,7 @@ public abstract class CanvasView2 extends CanvasView1 implements Runnable, Comma
 				this.sub_2dd();
 				break;
 			case 7:
-				this.sub_30c(this);
+				this.setCurDisp(this);
 				this.var_207 = new Thread(this);
 				this.var_207.start();
 		}
@@ -601,7 +601,7 @@ public abstract class CanvasView2 extends CanvasView1 implements Runnable, Comma
 	}
 
 	public String sub_446(int var1) {
-		return super.arena.sub_383(var1);
+		return super.arena.getStr(var1);
 	}
 
 	public int sub_462(int var1) {

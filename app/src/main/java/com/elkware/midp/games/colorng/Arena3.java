@@ -51,12 +51,12 @@ public abstract class Arena3 extends Arena2 implements CommandListener {
 
 	private void sub_60() {
 		if ((this.int_c5 & 3) > 0 && (super.var_166 || super.var_b4)) {
-			this.list = new List(this.sub_383(3) + " " + this.sub_383(4)
+			this.list = new List(this.getStr(3) + " " + this.getStr(4)
 					+ "?", 3,
-					new String[] { this.sub_383(7), this.sub_383(8) }, null);
+					new String[] { this.getStr(7), this.getStr(8) }, this);
 			this.list.setCommandListener(this);
 			this.bool_148 = false;
-			super.var_52.setCurrent(this.list);
+			super.display.setCurrent(this.list);
 		} else {
 			this.canvasView3.sub_248();
 		}

@@ -5,4 +5,7 @@ public abstract class Screen extends Displayable {
 	Screen() {;
 	}
 
+	public Screen(String title) {
+	}
+
 }

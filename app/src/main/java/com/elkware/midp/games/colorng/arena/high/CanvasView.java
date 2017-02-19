@@ -324,7 +324,7 @@ public class CanvasView extends CanvasView5 implements Runnable, PlayerListener 
 			System.gc();
 
 			for (int var1 = 0; var1 < 4; ++var1) {
-				this.var_62c[var1] = this.var_11b.sub_383(262 + var1);
+				this.var_62c[var1] = this.var_11b.getStr(262 + var1);
 			}
 
 			this.var_686 = this.openImage(173);
@@ -429,10 +429,10 @@ public class CanvasView extends CanvasView5 implements Runnable, PlayerListener 
 		} else if (this.var_844 == 2) {
 			if (this.var_1250 == null) {
 				this.var_1250 = this.var_d74;
-				this.var_2ae9 = this.var_11b.sub_383(221);
-				this.var_5a4 = this.var_11b.sub_383(223);
-				this.var_5b6 = this.var_11b.sub_383(224);
-				this.var_5e3 = this.var_11b.sub_383(225);
+				this.var_2ae9 = this.var_11b.getStr(221);
+				this.var_5a4 = this.var_11b.getStr(223);
+				this.var_5b6 = this.var_11b.getStr(224);
+				this.var_5e3 = this.var_11b.getStr(225);
 			}
 
 			if (this.var_4ee) {
@@ -970,8 +970,8 @@ public class CanvasView extends CanvasView5 implements Runnable, PlayerListener 
 
 	private final void sub_2f6(Graphics var1) {
 		if (this.var_2b02 == null) {
-			this.var_2b02 = this.var_11b.sub_383(227);
-			this.var_2b2d = this.var_11b.sub_383(228);
+			this.var_2b02 = this.var_11b.getStr(227);
+			this.var_2b2d = this.var_11b.getStr(228);
 		}
 
 		var1.setClip(0, 0, this.var_1d77, this.var_1d81 + 20);
@@ -1032,7 +1032,7 @@ public class CanvasView extends CanvasView5 implements Runnable, PlayerListener 
 		int var3;
 		if (this.var_3657.length > 4) {
 			if (this.var_3723 == null) {
-				this.var_3723 = this.var_11b.sub_383(280);
+				this.var_3723 = this.var_11b.getStr(280);
 			}
 
 			System.gc();
@@ -1137,7 +1137,7 @@ public class CanvasView extends CanvasView5 implements Runnable, PlayerListener 
 			}
 
 			var1.drawImage(this.var_d74, 0, 0, 0);
-			this.var_5fb = this.var_11b.sub_383(407);
+			this.var_5fb = this.var_11b.getStr(407);
 			var1.setFont(this.var_498[1]);
 			var1.setColor(200, 200, 200);
 			var1.drawString(this.var_5fb, 12, 14, 20);
@@ -1315,7 +1315,7 @@ public class CanvasView extends CanvasView5 implements Runnable, PlayerListener 
 		if (this.var_34fd == 0 || this.var_30a2) {
 			this.var_30a2 = false;
 			if (this.var_2b60 == null) {
-				this.var_2b60 = this.var_11b.sub_383(405);
+				this.var_2b60 = this.var_11b.getStr(405);
 			}
 
 			var1.setColor(50, 50, 50);
@@ -1633,7 +1633,7 @@ public class CanvasView extends CanvasView5 implements Runnable, PlayerListener 
 				: 16));
 	}
 
-	public void sub_5d4() {
+	public void initLogo() {
 		Class_202.sub_2c(this);
 		Class_2b8.sub_3eb(this.var_11b);
 		this.var_498[0] = Font.getFont(32, this.var_11b.sub_dc(401) == 0 ? 0
@@ -1653,7 +1653,7 @@ public class CanvasView extends CanvasView5 implements Runnable, PlayerListener 
 		System.gc();
 		this.logoImage = this.openImage(2);
 		this.var_844 = 5;
-		this.var_2acf = this.var_11b.sub_383(250);
+		this.var_2acf = this.var_11b.getStr(250);
 		this.var_1d77 = this.getwidth();
 		this.var_1d81 = this.getheight();
 		this.sub_630();
@@ -2409,7 +2409,7 @@ public class CanvasView extends CanvasView5 implements Runnable, PlayerListener 
 			this.var_b2f[0] = this.var_2f0;
 
 			for (var34 = 0; var34 < this.var_eb; ++var34) {
-				this.var_b2f[var34 + 1] = this.var_11b.sub_383(500 + var34);
+				this.var_b2f[var34 + 1] = this.var_11b.getStr(500 + var34);
 			}
 
 			if (var29 != null) {
@@ -2820,9 +2820,9 @@ public class CanvasView extends CanvasView5 implements Runnable, PlayerListener 
 					} else {
 						var11.setColor(0, 0, 0);
 						var11.setFont(this.var_498[0]);
-						var11.drawString(super.arena.sub_383(287), 15, 44, 0);
+						var11.drawString(super.arena.getStr(287), 15, 44, 0);
 						var11.setColor(200, 200, 200);
-						var11.drawString(super.arena.sub_383(287), 16, 45, 0);
+						var11.drawString(super.arena.getStr(287), 16, 45, 0);
 					}
 
 					var6.closeRecordStore();

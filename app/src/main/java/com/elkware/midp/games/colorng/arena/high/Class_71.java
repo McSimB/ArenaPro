@@ -27,8 +27,8 @@ class Class_71 extends Thread {
 						ArenaMidlet.sub_814(this.var_91));
 			} else if (ArenaMidlet.sub_884(this.var_91)) {
 				ArenaMidlet.sub_8c9(this.var_91, (List) null);
-				Form var1 = new Form(this.var_91.sub_383(401));
-				var1.append(this.var_91.sub_383(403));
+				Form var1 = new Form(this.var_91.getStr(401));
+				var1.append(this.var_91.getStr(403));
 				var1.setCommandListener(this.var_30);
 				var1.addCommand(ArenaMidlet.sub_8f2(this.var_91));
 				ArenaMidlet.sub_6af(this.var_91).sub_704(100);

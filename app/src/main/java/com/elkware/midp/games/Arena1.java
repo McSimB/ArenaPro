@@ -1,10 +1,19 @@
 package com.elkware.midp.games;
 
 import android.app.Activity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.elkware.midp.games.colorng.arena.high.ArenaView;
+import com.elkware.midp.games.colorng.arena.high.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import javax.microedition.io.Connector;
 import javax.microedition.io.HttpConnection;
@@ -16,9 +25,30 @@ import javax.microedition.lcdui.Form;
 
 public abstract class Arena1 extends Activity {
 
-	private int var_ad = -1577856450;
 	public String var_153 = null;
 	private String var_198 = null;
+	public ArenaView arenaView;
+	public View menuView;
+	private TextView title;
+	private ListView listView;
+	private ArrayAdapter<String> adapter;
+
+	public void startApp() {
+		arenaView = new ArenaView(this);
+		LayoutInflater inflater = getLayoutInflater();
+		menuView = inflater.inflate(R.layout.list, null, false);
+		title = (TextView) menuView.findViewById(R.id.title);
+		listView = (ListView) menuView.findViewById(R.id.listView);
+		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+		listView.setAdapter(adapter);
+	}
+
+	public void initMenuView(String title, ArrayList<String> items) {
+		this.title.setText(title);
+		for (String s : items) {
+			adapter.add(s);
+		}
+	}
 
 	public boolean sub_485() {
 		return true;
@@ -149,7 +179,7 @@ public abstract class Arena1 extends Activity {
 						this.sub_5de(true);
 						this.sub_36e();
 					} else {
-						var3 = this.sub_383(124);
+						var3 = this.getStr(124);
 					}
 				}
 
@@ -173,7 +203,7 @@ public abstract class Arena1 extends Activity {
 				return false;
 			} else {
 				Form var4 = new Form("Info");
-				var4.append(this.sub_383(127));
+				var4.append(this.getStr(127));
 
 				do {
 					Display.getDisplay(this).setCurrent(var4);
@@ -205,7 +235,7 @@ public abstract class Arena1 extends Activity {
 						if (var6.startsWith("alternative nick")) {
 							var12 = var6.substring(17);
 							byte[] var13 = this.sub_1fa(var12);
-							var12 = this.sub_383(128);
+							var12 = this.getStr(128);
 							this.sub_3f3(this.sub_19f(var13, 0,
 									var13.length / 2));
 						} else {
@@ -214,7 +244,8 @@ public abstract class Arena1 extends Activity {
 
 						var2 = !this.sub_4af(new Alert("Nickname", var12, null, null));
 					} else {
-						var1 ^= this.var_ad;
+						int var_ad = -1577856450;
+						var1 ^= var_ad;
 						var5 = new StringBuffer("http://139.23.38.140/hs/");
 						var5.append("hs.asp?imei=");
 						var5.append(var3.substring(1));
@@ -282,7 +313,7 @@ public abstract class Arena1 extends Activity {
 	public void sub_36e() {
 	}
 
-	public abstract String sub_383(int var1);
+	public abstract String getStr(int var1);
 
 	public abstract String sub_3e1();
 
@@ -305,10 +336,6 @@ public abstract class Arena1 extends Activity {
 	abstract int sub_5af();
 
 	abstract void sub_5de(boolean var1);
-
-
-	public void startApp() {
-	}
 
 	public void destroyApp(boolean b) {
 	}

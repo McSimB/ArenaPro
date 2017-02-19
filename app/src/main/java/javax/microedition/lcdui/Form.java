@@ -1,5 +1,7 @@
 package javax.microedition.lcdui;
 
+import android.view.View;
+
 public class Form extends Screen {
 
 	public Form(String title) {
@@ -10,5 +12,10 @@ public class Form extends Screen {
 	}
 
 	public void append(String s) {
+	}
+
+	@Override
+	public View getView() {
+		return null;
 	}
 }
