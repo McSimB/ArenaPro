@@ -47,7 +47,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 			42, 35, 0, 0, 0, 0, -3, -4, -1, -2, -5, -5, 42, 48, 35};
 	private int[] var_67b = new int[]{8388608, 327680, 262144, 393216, 65536,
 			1048576, 131072, 589824, 524288, 655360, 4194304, 16777216};
-	Command var_6a8;
+	Command menuCom;
 	public boolean var_6d4;
 	public int var_6fb = -1;
 	public int var_75e = -1;
@@ -127,7 +127,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 			this.var_66e[15] = this.sub_462(5016);
 			this.var_1df = var1.sub_dc(5032) == 1;
 			if (var1.sub_dc(5051) == 1) {
-				this.var_6a8 = new Command(var1.getStr(43), 4, 0);
+				this.menuCom = new Command(var1.getStr(43), 4, 0);
 				this.setCommandListener(this);
 			}
 
@@ -317,8 +317,8 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 			try {
 				this.sub_83e();
 				this.var_34f = true;
-				if (this.var_6a8 != null) {
-					this.addCommand(this.var_6a8);
+				if (this.menuCom != null) {
+					this.addCommand(this.menuCom);
 				}
 
 				while (this.var_207 != null) {
@@ -361,7 +361,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 					var1.drawImage(this.var_28e, this.var_4d3, this.var_50d, 20);
 				}
 
-				if (this.var_635 && this.var_6a8 == null) {
+				if (this.var_635 && this.menuCom == null) {
 					for (int var2 = 0; var2 < 5; ++var2) {
 						var1.setColor(this.var_56f);
 						var1.drawLine(this.var_5a0 + var2 + 1, this.var_5d6
@@ -609,7 +609,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 	}
 
 	public void commandAction(Command var1, Displayable var2) {
-		if (var1 == this.var_6a8) {
+		if (var1 == this.menuCom) {
 			this.sub_93a(16384L);
 		}
 	}

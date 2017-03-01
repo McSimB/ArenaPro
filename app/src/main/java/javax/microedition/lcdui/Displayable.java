@@ -2,10 +2,13 @@ package javax.microedition.lcdui;
 
 import android.view.View;
 
+import static javax.microedition.lcdui.Display.HEIGHT;
+import static javax.microedition.lcdui.Display.WIDTH;
+
 public abstract class Displayable {
 
 	Display currentDisplay;
-	Command commands[];
+	Command[] commands;
 	int numCommands;
 	CommandListener listener;
 
@@ -27,14 +30,11 @@ public abstract class Displayable {
 	}
 
 	public int getwidth() {
-		return 132;
+		return WIDTH;
 	}
 
 	public int getheight() {
-		return 176;
-	}
-
-	void callShowNotify(Display d) {
+		return HEIGHT;
 	}
 
 	void addCommandImpl(Command cmd) {
@@ -43,7 +43,7 @@ public abstract class Displayable {
 				return;
 
 		if (commands == null || numCommands == commands.length) {
-			Command newCommands[] = new Command[numCommands + 4];
+			Command[] newCommands = new Command[numCommands + 4];
 			if (commands != null)
 				System.arraycopy(commands, 0, newCommands, 0, numCommands);
 			commands = newCommands;
@@ -80,6 +80,8 @@ public abstract class Displayable {
 	int getCommandCount() {
 		return numCommands;
 	}
+
+	public abstract void callKeyPressed(int key);
 
 	public abstract View getView();
 

@@ -30,7 +30,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 	public boolean var_166 = false;
 	boolean var_188 = false;
 	private String var_1d6 = "Afgh6Sg";
-	public Command var_20a;
+	public Command quitStr;
 	Hashtable var_247 = new Hashtable();
 	Alert var_2a5;
 	public String[] stringResources = new String[0];
@@ -54,39 +54,39 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 	public int var_675;
 	public int var_68e;
 	public boolean var_6b2 = true;
-	public Command var_706;
-	public Command var_75b;
-	public Command var_78b;
+	public Command saveAndSaveCom;
+	public Command saveCom;
+	public Command cancelCom;
 	private TextBox var_83e;
 	private int var_859;
 
 	public void readStringResources(String fileName, String var2) throws IOException {
-		DataInputStream var3 = new DataInputStream(getAssets().open(fileName));
-		int var4 = var3.readInt();
-		int var5 = 0;
+		DataInputStream stream = new DataInputStream(getAssets().open(fileName));
+		int _int = stream.readInt();
+		int i = 0;
 		int var7 = 4;
 
 		int var6;
-		String var8;
+		String s;
 		do {
-			var8 = var3.readUTF();
-			var6 = var3.readInt();
-			var7 += 4 + var8.length() + 2;
-			++var5;
-		} while (var5 < var4 && !var2.startsWith(var8));
+			s = stream.readUTF();
+			var6 = stream.readInt();
+			var7 += 4 + s.length() + 2;
+			++i;
+		} while (i < _int && !var2.startsWith(s));
 
-		var3.skip((long) (var6 - var7));
-		int var9 = var3.readInt();
-		int var10 = var3.readInt();
+		stream.skip((long) (var6 - var7));
+		int var9 = stream.readInt();
+		int var10 = stream.readInt();
 		if (var10 > this.stringResources.length - 1) {
 			String[] var12 = this.stringResources;
 			this.stringResources = new String[var10 + 1];
 			System.arraycopy(var12, 0, this.stringResources, 0, var12.length);
 		}
 
-		for (var5 = 0; var5 < var9; ++var5) {
-			int var11 = var3.readInt();
-			this.stringResources[var11] = var3.readUTF();
+		for (i = 0; i < var9; ++i) {
+			int index = stream.readInt();
+			this.stringResources[index] = stream.readUTF();
 		}
 	}
 
@@ -414,13 +414,13 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 			var2 = this.getStr(26);
 		}
 
-		this.var_20a = new Command(this.getStr(9), 3, 10);
+		this.quitStr = new Command(this.getStr(9), 3, 10);
 		if (var2 != null) {
 			if (!(this.display.getCurrent() instanceof Form)) {
-				Form var3 = new Form(this.getStr(14));
+				Form var3 = new Form(this.getStr(14)); // Error
 				var3.append(var2);
 				var3.setCommandListener(this);
-				var3.addCommand(this.var_20a);
+				var3.addCommand(this.quitStr);
 				this.display.setCurrent(var3);
 			}
 
@@ -616,17 +616,17 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 		this.var_590 = "";
 		this.var_83e = new TextBox(this.getStr(18), this.var_590, 12, 0);
 		if (this.sub_485()) {
-			this.var_706 = new Command(this.getStr(20), 4, 0);
-			this.var_83e.addCommand(this.var_706);
+			this.saveAndSaveCom = new Command(this.getStr(20), 4, 0);
+			this.var_83e.addCommand(this.saveAndSaveCom);
 		}
 
 		if (this.sub_447()) {
-			this.var_75b = new Command(this.getStr(21), 4, 0);
-			this.var_83e.addCommand(this.var_75b);
+			this.saveCom = new Command(this.getStr(21), 4, 0);
+			this.var_83e.addCommand(this.saveCom);
 		}
 
-		this.var_78b = new Command(this.getStr(22), 2, 0);
-		this.var_83e.addCommand(this.var_78b);
+		this.cancelCom = new Command(this.getStr(22), 2, 0);
+		this.var_83e.addCommand(this.cancelCom);
 		this.var_83e.setCommandListener(this);
 		this.sub_45b();
 	}
@@ -702,10 +702,10 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 
 	@Override
 	public void commandAction(Command var1, Displayable var2) {
-		if (var1 != this.var_706 && var1 != this.var_75b) {
-			if (var1 == this.var_78b) {
+		if (var1 != this.saveAndSaveCom && var1 != this.saveCom) {
+			if (var1 == this.cancelCom) {
 				this.var_859 = 3;
-			} else if (var1 == this.var_20a) {
+			} else if (var1 == this.quitStr) {
 				try {
 					this.destroyApp(true);
 					this.notifyDestroyed();
@@ -720,7 +720,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 			if (this.var_590.length() < 3) {
 				//TODO Alert
 				//this.display.setCurrent(new Alert("Info", this.getStr(23), null, null));
-			} else if (var1 == this.var_75b) {
+			} else if (var1 == this.saveCom) {
 				this.var_859 = 2;
 			} else {
 				this.var_859 = 1;

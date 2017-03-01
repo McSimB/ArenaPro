@@ -24,10 +24,6 @@ import javax.microedition.rms.RecordStoreException;
 
 public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
 
-	public final int var_c = 15;
-	public final int var_20 = 20;
-	public final int var_50 = 4;
-	public final int var_6d = 4;
 	private int var_eb;
 	private final String[] var_12d = new String[]{"RSPL", "RSTU", "RSOPT",
 			"RSWAR", "RSPHO", "RSSMS", "RSMAX", "RSHI"};

@@ -34,7 +34,6 @@ public abstract class Canvas1 extends Canvas {
 		} catch (Exception var3) {
 			this.arena.sub_4e9("paintFrame: " + var3);
 		}
-
 	}
 
 	public abstract void draw(Graphics var1);

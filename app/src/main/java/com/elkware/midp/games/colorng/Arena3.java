@@ -16,7 +16,7 @@ public abstract class Arena3 extends Arena2 implements CommandListener {
 	private List list;
 	private boolean bool_148 = true;
 
-	public abstract Canvas3 getMyCanvas();
+	public abstract Canvas3 getCanvas();
 
 	@Override
 	public void startApp() {
@@ -32,7 +32,7 @@ public abstract class Arena3 extends Arena2 implements CommandListener {
 			this.bool_81 = this.sub_dc(5035) != 0;
 
 			try {
-				this.canvasView3 = this.getMyCanvas();
+				this.canvasView3 = this.getCanvas();
 			} catch (Exception var2) {
 				this.sub_4e9("getGameCanvas: " + var2);
 				return;

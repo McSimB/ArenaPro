@@ -7,6 +7,9 @@ import com.elkware.midp.games.colorng.Arena3;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static javax.microedition.lcdui.Canvas.FIRE;
+import static javax.microedition.lcdui.Canvas.KEY_DISPLAY2;
+
 public class List extends Displayable {
 
 	public static final Command SELECT_COMMAND = new Command("", 1, 0);
@@ -67,9 +70,23 @@ public class List extends Displayable {
 		this.selectedArray = selectedArray;
 	}
 
-	 public  void callKeyPressed() {
-		if (listener != null && listType == 3)
-			listener.commandAction(selectCommand, this);
+	@Override
+	public void callKeyPressed(int key) {
+		if (key == FIRE) {
+			if (listener != null && listType == 3)
+				listener.commandAction(selectCommand, this);
+		} else if (key == KEY_DISPLAY2) {
+			Command[] commands = getCommands();
+			if (commands != null) {
+				for (int i = 0; i < getCommandCount(); i++) {
+					Command command = getCommands()[i];
+					if (command != null && command.getCommandType() == Command.BACK) {
+						listener.commandAction(command, this);
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	@Override
@@ -77,11 +94,6 @@ public class List extends Displayable {
 		super.removeCommandImpl(cmd);
 		if (cmd == selectCommand)
 			selectCommand = null;
-	}
-
-	@Override
-	void callShowNotify(Display d) {
-		super.callShowNotify(d);
 	}
 
 	@Override

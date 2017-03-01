@@ -3,8 +3,10 @@ package com.elkware.midp.games;
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,13 +27,16 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.List;
 
+import static javax.microedition.lcdui.Canvas.FIRE;
+import static javax.microedition.lcdui.Canvas.KEY_DISPLAY2;
+
 public abstract class Arena1 extends Activity {
 
 	public Display display;
 	public String appID = null;
 	private String var_198 = null;
 	public CanvasView canvasView;
-	public View menuView;
+	public ViewGroup menuView;
 	private TextView title;
 	private ArrayAdapter<String> adapter;
 
@@ -39,7 +44,7 @@ public abstract class Arena1 extends Activity {
 		display = new Display(this);
 		canvasView = new CanvasView(this);
 		LayoutInflater inflater = getLayoutInflater();
-		menuView = inflater.inflate(R.layout.list, null, false);
+		menuView = (ViewGroup) inflater.inflate(R.layout.list, null, false);
 		title = (TextView) menuView.findViewById(R.id.title);
 		ListView listView = (ListView) menuView.findViewById(R.id.listView);
 		adapter = new ArrayAdapter<String>(this, R.layout.list_item);
@@ -49,7 +54,15 @@ public abstract class Arena1 extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				List list = (List) display.getCurrent();
 				list.setSelectedIndex(position);
-				list.callKeyPressed();
+				list.callKeyPressed(FIRE);
+			}
+		});
+		setContentView(R.layout.main);
+		Button b2 = (Button) findViewById(R.id.button2);
+		b2.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				display.getCurrent().callKeyPressed(KEY_DISPLAY2);
 			}
 		});
 	}
@@ -94,11 +107,11 @@ public abstract class Arena1 extends Activity {
 
 	private String sub_149(String var1) throws IOException {
 		System.out.println(var1);
-		InputStream var2 = null;
+		InputStream var2;
 		HttpConnection var3 = (HttpConnection) Connector.open(var1);
 		var2 = var3.openInputStream();
 		var3.getType();
-		int var6 = (int) var3.getLength();
+		int var6 = var3.getLength();
 		String var5;
 		int var8;
 		if (var6 > 0) {
@@ -180,10 +193,6 @@ public abstract class Arena1 extends Activity {
 			this.sub_486(var1, this.sub_3e1());
 			boolean var2;
 			if (this.sub_485() && this.sub_5af() == 1) {
-				if (!this.sub_331()) {
-					return false;
-				}
-
 				var2 = this.sub_2b9(var1);
 				String var3 = this.sub_309();
 				if (var3 == null) {
@@ -209,7 +218,7 @@ public abstract class Arena1 extends Activity {
 
 	public final boolean sub_2b9(int var1) {
 		try {
-			boolean var2 = true;
+			boolean var2;
 			String var3 = System.getProperty("com.siemens.IMEI");
 			if (var3 == null) {
 				return false;
@@ -316,10 +325,6 @@ public abstract class Arena1 extends Activity {
 	}
 
 	public void commandAction(Command var1, Displayable var2) {
-	}
-
-	public boolean sub_331() {
-		return true;
 	}
 
 	public void sub_36e() {

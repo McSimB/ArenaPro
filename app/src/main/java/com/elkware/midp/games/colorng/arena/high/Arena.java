@@ -68,7 +68,7 @@ public class Arena extends Arena3 implements CommandListener {
 	private boolean var_a44 = false;
 	private boolean var_a8d;
 	private boolean var_aa0 = false;
-	private Thread var_ab2 = new Class_10(this);
+	private Thread var_ab2 = new ExitTimer(this);
 	public boolean var_af2 = false;
 	private Class_177 var_b43 = null;
 	private boolean var_b9f = false;
@@ -108,6 +108,7 @@ public class Arena extends Arena3 implements CommandListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		startApp();
+		boolean adf = false;
 	}
 
 	@Override
@@ -245,7 +246,7 @@ public class Arena extends Arena3 implements CommandListener {
 		this.commandManage(14);
 	}
 
-	private void sub_fa(boolean var1) {
+	private void exit(boolean var1) {
 		if (var1 && this.var_a8d) {
 			Image downloadMoreImage = this.myCanvas.openImage(230);
 			MoreCanvas var3 = new MoreCanvas(this, downloadMoreImage);
@@ -290,7 +291,7 @@ public class Arena extends Arena3 implements CommandListener {
 	public void commandAction(Command command, Displayable displayable) {
 		super.commandAction(command, displayable);
 		if (command == this.mainMenuBack) {
-			this.sub_fa(false);
+			this.exit(false);
 		} else if (command == this.tournamentNextMatchBack) {
 			this.sub_14a();
 		} else {
@@ -349,7 +350,7 @@ public class Arena extends Arena3 implements CommandListener {
 						this.commandManage(16);
 						break;
 					case 7:
-						this.sub_fa(true);
+						this.exit(true);
 				}
 
 			} else if (displayable == this.warriorSettingsList) {
@@ -424,7 +425,7 @@ public class Arena extends Arena3 implements CommandListener {
 							break;
 						case 2:
 							this.myCanvas.var_2de8 = false;
-							this.sub_63b();
+							this.sendWarrior();
 							break;
 						case 3:
 							this.myCanvas.var_2de8 = true;
@@ -443,7 +444,7 @@ public class Arena extends Arena3 implements CommandListener {
 							this.commandManage(16);
 							break;
 						case 7:
-							this.sub_fa(true);
+							this.exit(true);
 					}
 
 				}
@@ -861,11 +862,11 @@ public class Arena extends Arena3 implements CommandListener {
 					(new Class_71(this, this, 2, null)).start();
 					break;
 				case 25:
-					Form var2 = new Form(this.getStr(404));
-					var2.append(this.getStr(402));
-					var2.setCommandListener(this);
-					var2.addCommand(this.commandAccept);
-					this.setCurrentDisp(var2);
+					Form processCompleteForm = new Form(this.getStr(404));
+					processCompleteForm.append(this.getStr(402)); // Photo has been added to database. You can select it in your player setup.
+					processCompleteForm.setCommandListener(this);
+					processCompleteForm.addCommand(this.commandAccept);
+					this.setCurrentDisp(processCompleteForm);
 					break;
 				case 28:
 					this.helpForm.addCommand(this.helpBack);
@@ -1237,10 +1238,11 @@ public class Arena extends Arena3 implements CommandListener {
 		this.commandManage(10);
 	}
 
-	public Canvas3 getMyCanvas() {
+	@Override
+	public Canvas3 getCanvas() {
 		try {
 			this.myCanvas = new MyCanvas(this);
-			canvasView.myCanvas = this.myCanvas;
+			canvasView.initView(myCanvas);
 			return this.myCanvas;
 		} catch (Exception var2) {
 			var2.printStackTrace();
@@ -1294,7 +1296,7 @@ public class Arena extends Arena3 implements CommandListener {
 		return var4;
 	}
 
-	private void sub_63b() {
+	private void sendWarrior() {
 		try {
 			this.receiverTextBox = new TextBox(this.getStr(526), "mms://", 256, 0);
 			this.receiverTextBox.addCommand(this.settingsBack);
@@ -1304,9 +1306,9 @@ public class Arena extends Arena3 implements CommandListener {
 		} catch (Exception var2) {
 			var2.printStackTrace();
 		}
-
 	}
 
+	@Override
 	public void destroyApp(boolean var1) {
 		if (this.var_b43 != null) {
 			this.var_b43.sub_9d();

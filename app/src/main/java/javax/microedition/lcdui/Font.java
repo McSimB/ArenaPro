@@ -28,7 +28,7 @@ public final class Font {
 		}
 		paint.setTypeface(Typeface.create(f, s));
 		if (size == 0) {
-			paint.setTextSize(13);
+			paint.setTextSize(12);
 		} else if (size == 8) {
 			paint.setTextSize(10);
 		}

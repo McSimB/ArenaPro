@@ -2,7 +2,7 @@ package javax.microedition.lcdui;
 
 import android.view.View;
 
-public class Form extends Screen {
+public class Form extends Displayable {
 
 	public Form(String title) {
 		this(title, null);
@@ -12,6 +12,11 @@ public class Form extends Screen {
 	}
 
 	public void append(String s) {
+	}
+
+	@Override
+	public void callKeyPressed(int key) {
+
 	}
 
 	@Override

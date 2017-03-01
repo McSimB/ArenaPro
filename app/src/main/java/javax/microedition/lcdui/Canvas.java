@@ -28,6 +28,9 @@ public abstract class Canvas extends Displayable {
 	public static final int KEY_STAR = 42;
 	public static final int KEY_POUND = 35;
 
+	public static final int KEY_DISPLAY1 = 100;
+	public static final int KEY_DISPLAY2 = 101;
+
 	public Arena arena;
 
 	public Canvas(Arena var1) {
@@ -55,8 +58,9 @@ public abstract class Canvas extends Displayable {
 	protected void hideNotify() {
 	}
 
-	void callShowNotify(Display d) {
-		super.callShowNotify(d);
+	@Override
+	public void callKeyPressed(int key) {
+
 	}
 
 	@Override

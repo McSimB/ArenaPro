@@ -12,16 +12,16 @@ import javax.microedition.lcdui.List;
 
 public abstract class Canvas4 extends Canvas3 {
 
-	public Command var_5c;
+	public Command continueOrStartCom;
 	public Command var_90;
-	public Command var_e1;
-	public Command var_f4;
-	public Command var_181;
-	public Command var_1ad;
-	public Command var_20e;
-	public Command var_21c;
-	public Command var_26a;
-	public Command var_2a9;
+	public Command resumeCom;
+	public Command helpCom;
+	public Command aboubCom;
+	public Command okStr;
+	public Command backStr;
+	public Command sendCom;
+	public Command highscoresCom;
+	public Command quitCom;
 	public Command var_2d8;
 	Form var_301;
 	Form var_332;
@@ -59,11 +59,11 @@ public abstract class Canvas4 extends Canvas3 {
 		this.var_332 = new Form(var1.getStr(2));
 		this.var_332.append(var1.getStr(200));
 		this.var_332.setCommandListener(this);
-		this.var_332.addCommand(this.var_1ad);
+		this.var_332.addCommand(this.okStr);
 		this.var_301 = new Form(var1.getStr(10));
 		this.var_301.append(var1.getStr(42));
 		this.var_301.setCommandListener(this);
-		this.var_301.addCommand(this.var_1ad);
+		this.var_301.addCommand(this.okStr);
 		this.var_384 = new List(var1.getStr(19), 3, arena);
 		if (super.var_6fb != -1) {
 			this.var_384.append(var1.getStr(3));
@@ -89,9 +89,9 @@ public abstract class Canvas4 extends Canvas3 {
 
 		this.var_384.setCommandListener(this);
 		if (var1.sub_dc(5053) == 1) {
-			this.var_384.addCommand(this.var_1ad);
+			this.var_384.addCommand(this.okStr);
 		} else {
-			this.var_384.addCommand(this.var_20e);
+			this.var_384.addCommand(this.backStr);
 		}
 
 		if (var1.sub_dc(5052) == 1) {
@@ -103,28 +103,28 @@ public abstract class Canvas4 extends Canvas3 {
 	public void sub_16() {
 		this.var_372 = new Form(super.arena.getStr(40));
 		this.var_372.append(super.arena.getStr(41));
-		this.var_372.addCommand(this.var_1ad);
-		this.var_372.addCommand(this.var_20e);
+		this.var_372.addCommand(this.okStr);
+		this.var_372.addCommand(this.backStr);
 		this.var_372.setCommandListener(this);
 	}
 
 	public void sub_33() {
-		this.var_e1 = new Command(super.arena.getStr(0), 1, 0);
-		this.var_f4 = new Command(super.arena.getStr(2), 1, 1);
-		this.var_21c = new Command(super.arena.getStr(19), 1, 2);
-		this.var_26a = new Command(super.arena.getStr(1), 1, 5);
-		this.var_181 = new Command(super.arena.getStr(10), 1, 6);
-		this.var_2a9 = new Command(super.arena.getStr(9), 6, 7);
-		this.var_1ad = new Command(super.arena.getStr(35), 4, 0);
-		this.var_20e = new Command(super.arena.getStr(12), 2, 0);
+		this.resumeCom = new Command(super.arena.getStr(0), 1, 0);
+		this.helpCom = new Command(super.arena.getStr(2), 1, 1);
+		this.sendCom = new Command(super.arena.getStr(19), 1, 2);
+		this.highscoresCom = new Command(super.arena.getStr(1), 1, 5);
+		this.aboubCom = new Command(super.arena.getStr(10), 1, 6);
+		this.quitCom = new Command(super.arena.getStr(9), 6, 7);
+		this.okStr = new Command(super.arena.getStr(35), 4, 0);
+		this.backStr = new Command(super.arena.getStr(12), 2, 0);
 	}
 
 	public void sub_86() {
 		boolean var1 = this.var_428 && this.sub_36b();
 		this.var_39a = new List(super.arena.getStr(201), 3, arena);
-		this.var_5c = new Command(super.arena.getStr(super.var_401 ? 0
+		this.continueOrStartCom = new Command(super.arena.getStr(super.var_401 ? 0
 				: (var1 ? 13 : 31)), 1, 0);
-		this.var_39a.append(this.var_5c.getLabel());
+		this.var_39a.append(this.continueOrStartCom.getLabel());
 		if (var1 || super.var_401) {
 			this.var_39a.append(this.var_90.getLabel());
 		}
@@ -141,20 +141,20 @@ public abstract class Canvas4 extends Canvas3 {
 			}
 		}
 
-		this.var_39a.append(this.var_f4.getLabel());
+		this.var_39a.append(this.helpCom.getLabel());
 		if (super.var_6d4) {
-			this.var_39a.append(this.var_21c.getLabel());
+			this.var_39a.append(this.sendCom.getLabel());
 		}
 
 		if (this.var_453) {
-			this.var_39a.append(this.var_26a.getLabel());
+			this.var_39a.append(this.highscoresCom.getLabel());
 		}
 
 		if (this.var_3e2) {
-			this.var_39a.append(this.var_181.getLabel());
+			this.var_39a.append(this.aboubCom.getLabel());
 		}
 
-		this.var_39a.append(this.var_2a9.getLabel());
+		this.var_39a.append(this.quitCom.getLabel());
 		this.var_39a.setCommandListener(this);
 		if (this.var_2d8 != null) {
 			this.var_39a.addCommand(this.var_2d8);
@@ -189,7 +189,7 @@ public abstract class Canvas4 extends Canvas3 {
 		}
 
 		var1.append(var2);
-		var1.addCommand(this.var_1ad);
+		var1.addCommand(this.okStr);
 		var1.setCommandListener(this);
 		this.setCurDisp(var1);
 	}
@@ -233,10 +233,10 @@ public abstract class Canvas4 extends Canvas3 {
 	@Override
 	public void commandAction(Command var1, Displayable var2) {
 		super.commandAction(var1, var2);
-		if (var1 != this.var_2a9) {
-			if (var1 == this.var_20e) {
+		if (var1 != this.quitCom) {
+			if (var1 == this.backStr) {
 				this.sub_310(super.var_3ef);
-			} else if (var1 == this.var_1ad) {
+			} else if (var1 == this.okStr) {
 				if (var2 == this.var_372) {
 					this.sub_39a();
 					this.sub_310(2);
@@ -252,20 +252,20 @@ public abstract class Canvas4 extends Canvas3 {
 		} else if (var2 == this.var_39a) {
 			String var3 = this.var_39a.getString(this.var_39a
 					.getSelectedIndex());
-			if (var3.equals(this.var_5c.getLabel())) {
+			if (var3.equals(this.continueOrStartCom.getLabel())) {
 				this.sub_310(2);
 			} else if (var3.equals(this.var_90.getLabel())) {
 				super.var_3ef = 1;
 				this.setCurDisp(this.var_372);
-			} else if (var3.equals(this.var_f4.getLabel())) {
+			} else if (var3.equals(this.helpCom.getLabel())) {
 				this.sub_310(4);
-			} else if (var3.equals(this.var_26a.getLabel())) {
+			} else if (var3.equals(this.highscoresCom.getLabel())) {
 				this.sub_310(3);
-			} else if (var3.equals(this.var_181.getLabel())) {
+			} else if (var3.equals(this.aboubCom.getLabel())) {
 				this.sub_310(5);
-			} else if (var3.equals(this.var_21c.getLabel())) {
+			} else if (var3.equals(this.sendCom.getLabel())) {
 				this.sub_359(6);
-			} else if (var3.equals(this.var_2a9.getLabel())) {
+			} else if (var3.equals(this.quitCom.getLabel())) {
 				super.arena.destroyApp(true);
 			} else {
 				this.sub_2fb();

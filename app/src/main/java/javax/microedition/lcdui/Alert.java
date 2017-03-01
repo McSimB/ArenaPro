@@ -14,6 +14,11 @@ public class Alert extends Displayable {
 	}
 
 	@Override
+	public void callKeyPressed(int key) {
+
+	}
+
+	@Override
 	public View getView() {
 		return null;
 	}
