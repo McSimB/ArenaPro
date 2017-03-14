@@ -9,14 +9,11 @@ public interface Player {
 	public static final int CLOSED = 0;
 	public static final long TIME_UNKNOWN = -1L;
 
-	void prefetch()
-			throws MediaException;
+	void prefetch();
 
-	void start()
-			throws MediaException;
+	void start();
 
-	void stop()
-			throws MediaException;
+	void stop();
 
 	void deallocate();
 

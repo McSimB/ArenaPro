@@ -19,7 +19,7 @@ public abstract class Canvas5 extends Canvas4 {
 	}
 
 	@Override
-	public void sub_1fd(long var1) {
+	public void mainLoop(long var1) {
 	}
 
 }

@@ -2,15 +2,18 @@ package com.elkware.midp.games.colorng.arena.high;
 
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Form;
-import javax.microedition.lcdui.List;
 
-class Class_71 extends Thread {
+class PhotoThread extends Thread {
 
 	private CommandListener var_30;
 	private int var_56;
 	private final Arena var_91;
 
-	private Class_71(Arena var1, CommandListener var2, int var3) {
+	PhotoThread(Arena var1, CommandListener var2, int var3, MoreCanvas var4) {
+		this(var1, var2, var3);
+	}
+
+	private PhotoThread(Arena var1, CommandListener var2, int var3) {
 		this.var_91 = var1;
 		this.var_30 = var2;
 		this.var_56 = var3;
@@ -26,13 +29,13 @@ class Class_71 extends Thread {
 				Arena.sub_6f7(this.var_91,
 						Arena.sub_814(this.var_91));
 			} else if (Arena.sub_884(this.var_91)) {
-				Arena.sub_8c9(this.var_91, (List) null);
-				Form var1 = new Form(this.var_91.getStr(401));
-				var1.append(this.var_91.getStr(403));
-				var1.setCommandListener(this.var_30);
-				var1.addCommand(Arena.sub_8f2(this.var_91));
+				Arena.sub_8c9(this.var_91, null);
+				Form selectFotoForm = new Form(this.var_91.getStr(401));
+				selectFotoForm.append(this.var_91.getStr(403)); // There are no images in the camera's directory.
+				selectFotoForm.setCommandListener(this.var_30);
+				selectFotoForm.addCommand(Arena.sub_8f2(this.var_91));
 				Arena.sub_6af(this.var_91).setPercent(100);
-				Arena.sub_6f7(this.var_91, var1);
+				Arena.sub_6f7(this.var_91, selectFotoForm);
 			} else {
 				this.var_91.commandManage(14);
 			}
@@ -84,7 +87,4 @@ class Class_71 extends Thread {
 		}
 	}
 
-	Class_71(Arena var1, CommandListener var2, int var3, MoreCanvas var4) {
-		this(var1, var2, var3);
-	}
 }

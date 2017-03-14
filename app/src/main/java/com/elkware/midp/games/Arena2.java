@@ -24,10 +24,10 @@ import javax.microedition.rms.RecordStoreException;
 public abstract class Arena2 extends Arena1 implements CommandListener {
 
 	private final String[] var_43 = new String[] { "RSF6", "RSHS7", "RSAD8" };
-	public boolean var_b4 = true;
+	public boolean _forPlayMus1 = true;
 	public boolean var_e8 = true;
 	public boolean var_105 = true;
-	public boolean var_166 = false;
+	public boolean _forPlayMus = false;
 	boolean var_188 = false;
 	private String var_1d6 = "Afgh6Sg";
 	public Command quitStr;
@@ -131,16 +131,16 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 
 	}
 
-	public int sub_dc(int var1) {
-		for (int var2 = 0; var2 < this.var_310.length; var2 += 4) {
-			if (var1 == ((this.var_310[var2] & 255) << 8)
-					+ (this.var_310[var2 + 1] & 255)) {
-				return (short) ((this.var_310[var2 + 2] & 255) << 8)
-						+ (this.var_310[var2 + 3] & 255);
+	public int sub_dc(int p) {
+		for (int i = 0; i < this.var_310.length; i += 4) {
+			if (p == ((this.var_310[i] & 255) << 8)
+					+ (this.var_310[i + 1] & 255)) {
+				return (short) ((this.var_310[i + 2] & 255) << 8)
+						+ (this.var_310[i + 3] & 255);
 			}
 		}
 
-		System.out.println("Parameter " + var1 + " not found!");
+		System.out.println("Parameter " + p + " not found!");
 		return -1;
 	}
 

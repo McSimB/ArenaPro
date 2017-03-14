@@ -4,10 +4,10 @@ import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.TiledLayer;
 
-public class Class_18b extends TiledLayer {
+public class MyTiledLayer1 extends TiledLayer {
 
-	public Class_18b(int var1, int var2, Image var3, int var4, int var5,
-			byte[] var6) {
+	public MyTiledLayer1(int var1, int var2, Image var3, int var4, int var5,
+						 byte[] var6) {
 		super(var1, var2, var3, var4, var5);
 		int var7 = 0;
 		if (var6 != null) {

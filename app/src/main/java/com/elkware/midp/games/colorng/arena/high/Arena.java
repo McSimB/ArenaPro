@@ -262,7 +262,7 @@ public class Arena extends Arena3 implements CommandListener {
 		this.myCanvas.championsBg = null;
 		System.gc();
 		if (this.myCanvas.var_270a) {
-			this.myCanvas.sub_769(0, 64, -1, true);
+			this.myCanvas.playMusic(0, 64, -1, true);
 		}
 
 		this.myCanvas.sub_ffe();
@@ -311,8 +311,8 @@ public class Arena extends Arena3 implements CommandListener {
 						this.myCanvas.var_91b = true;
 						this.myCanvas.var_92a = false;
 						if (this.myCanvas.var_270a) {
-							this.myCanvas.sub_7c4();
-							this.myCanvas.sub_769(0, 67, 1, true);
+							this.myCanvas.stopPlayer();
+							this.myCanvas.playMusic(0, 67, 1, true); //
 						}
 
 						if (this.myCanvas.sub_ddd()) {
@@ -401,7 +401,7 @@ public class Arena extends Arena3 implements CommandListener {
 					i = this.saveMenuList2.getSelectedIndex();
 					switch (i) {
 						case 0:
-							(new Class_71(this, this, 3, null)).start();
+							(new PhotoThread(this, this, 3, null)).start();
 							break;
 						case 1:
 							this.sub_1b1();
@@ -420,7 +420,7 @@ public class Arena extends Arena3 implements CommandListener {
 						case 1:
 							this.myCanvas.var_2de8 = false;
 							this.myCanvas.setPercent(0);
-							this.myCanvas.sub_7c4();
+							this.myCanvas.stopPlayer();
 							this.myCanvas.sub_8ab();
 							break;
 						case 2:
@@ -534,9 +534,9 @@ public class Arena extends Arena3 implements CommandListener {
 					this.myCanvas.var_395[3] = this.settingsList.isSelected(1);
 					this.myCanvas.var_395[4] = false;
 					this.myCanvas.sub_ec7();
-					this.myCanvas.sub_7c4();
+					this.myCanvas.stopPlayer();
 					if (this.myCanvas.var_270a) {
-						this.myCanvas.sub_769(0, 64, 10, true);
+						this.myCanvas.playMusic(0, 64, 10, true); // intro
 					}
 
 					this.myCanvas.sub_116d(this.myCanvas.var_395[1]);
@@ -856,10 +856,10 @@ public class Arena extends Arena3 implements CommandListener {
 					this.setCurrentDisp(this.tournamentList);
 					break;
 				case 23:
-					(new Class_71(this, this, 1, null)).start();
+					(new PhotoThread(this, this, 1, null)).start();
 					break;
 				case 24:
-					(new Class_71(this, this, 2, null)).start();
+					(new PhotoThread(this, this, 2, null)).start();
 					break;
 				case 25:
 					Form processCompleteForm = new Form(this.getStr(404));

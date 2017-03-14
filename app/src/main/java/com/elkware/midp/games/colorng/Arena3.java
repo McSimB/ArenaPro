@@ -50,7 +50,7 @@ public abstract class Arena3 extends Arena2 implements CommandListener {
 	}
 
 	private void sub_60() {
-		if ((this.int_c5 & 3) > 0 && (super.var_166 || super.var_b4)) {
+		if ((this.int_c5 & 3) > 0 && (super._forPlayMus || super._forPlayMus1)) {
 			this.list = new List(this.getStr(3) + " " + this.getStr(4)
 					+ "?", 3,
 					new String[] { this.getStr(7), this.getStr(8) }, this);

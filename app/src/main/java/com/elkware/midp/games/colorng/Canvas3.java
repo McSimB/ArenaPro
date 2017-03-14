@@ -4,15 +4,14 @@ import com.elkware.midp.games.colorng.arena.high.Arena;
 
 import java.io.IOException;
 
-import javax.microedition.media.MediaException;
 import javax.microedition.media.Player;
 import javax.microedition.media.PlayerListener;
 
 public abstract class Canvas3 extends Canvas2 implements PlayerListener {
 
-	Player[] var_22;
-	short[] var_6e;
-	boolean[] var_103;
+	Player[] players;
+	short[] shortsPlayers;
+	boolean[] booleanPlayers;
 
 	public Canvas3(Arena var1) {
 		super(var1);
@@ -26,9 +25,9 @@ public abstract class Canvas3 extends Canvas2 implements PlayerListener {
 				e.printStackTrace();
 			}
 		} else {
-			this.var_22 = new Player[var2];
-			this.var_6e = new short[var2];
-			this.var_103 = new boolean[var2];
+			this.players = new Player[var2];
+			this.shortsPlayers = new short[var2];
+			this.booleanPlayers = new boolean[var2];
 		}
 	}
 
@@ -37,13 +36,13 @@ public abstract class Canvas3 extends Canvas2 implements PlayerListener {
 		if (var2.equals("endOfMedia")) {
 			int var4;
 			var4 = 0;
-			while (var4 < this.var_22.length && this.var_22[var4] != var1) {
+			while (var4 < this.players.length && this.players[var4] != var1) {
 				++var4;
 			}
 
-			if (var4 < this.var_22.length && this.var_103[var4]) {
-				this.var_103[var4] = false;
-				this.sub_4b(this.var_6e[var4]);
+			if (var4 < this.players.length && this.booleanPlayers[var4]) {
+				this.booleanPlayers[var4] = false;
+				this.closePlayer(this.shortsPlayers[var4]);
 			}
 		}
 	}
@@ -51,19 +50,19 @@ public abstract class Canvas3 extends Canvas2 implements PlayerListener {
 	private int sub_21(int var1) {
 		int var2;
 		var2 = 0;
-		while (var2 < this.var_6e.length && this.var_6e[var2] != var1) {
+		while (var2 < this.shortsPlayers.length && this.shortsPlayers[var2] != var1) {
 			++var2;
 		}
 
-		return var2 < this.var_6e.length ? var2 : -1;
+		return var2 < this.shortsPlayers.length ? var2 : -1;
 	}
 
-	public void sub_4b(int var1) {
+	private void closePlayer(int var1) {
 		int var2 = this.sub_21(var1);
 		if (var2 != -1) {
 			try {
-				this.var_22[var2].close();
-				this.var_22[var2] = null;
+				this.players[var2].close();
+				this.players[var2] = null;
 			} catch (Exception var4) {
 				var4.printStackTrace();
 			}
@@ -71,14 +70,14 @@ public abstract class Canvas3 extends Canvas2 implements PlayerListener {
 	}
 
 	@Override
-	public void sub_7a1(int var1) {
+	public void stopPlayers(int var1) {
 		try {
-			for (Player aVar_22 : this.var_22) {
-				if (aVar_22 != null) {
-					aVar_22.stop();
+			for (Player player : this.players) {
+				if (player != null) {
+					player.stop();
 				}
 			}
-		} catch (MediaException var3) {
+		} catch (Exception var3) {
 			var3.printStackTrace();
 		}
 	}

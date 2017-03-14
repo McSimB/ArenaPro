@@ -7,7 +7,6 @@ import java.util.Vector;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
-import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.List;
 
 public abstract class Canvas4 extends Canvas3 {
@@ -28,7 +27,6 @@ public abstract class Canvas4 extends Canvas3 {
 	Form var_372;
 	public List var_384;
 	public List var_39a;
-	Image[] var_3cb;
 	boolean var_3e2 = true;
 	boolean var_428;
 	boolean var_453 = true;
@@ -48,14 +46,8 @@ public abstract class Canvas4 extends Canvas3 {
 			this.var_90 = new Command(var1.getStr(40), 1, 0);
 			this.sub_16();
 		}
-
-		this.var_3cb = new Image[7];
-
+		
 		int var3;
-		for (var3 = 0; var3 < this.var_3cb.length; ++var3) {
-			this.var_3cb[var3] = this.sub_120(6 + var3);
-		}
-
 		this.var_332 = new Form(var1.getStr(2));
 		this.var_332.append(var1.getStr(200));
 		this.var_332.setCommandListener(this);
@@ -164,14 +156,6 @@ public abstract class Canvas4 extends Canvas3 {
 
 	public Vector sub_d3() {
 		return null;
-	}
-
-	Image sub_120(int var1) {
-		try {
-			return this.openImage(var1);
-		} catch (Exception var3) {
-			return null;
-		}
 	}
 
 	public void sub_171(int var1) {

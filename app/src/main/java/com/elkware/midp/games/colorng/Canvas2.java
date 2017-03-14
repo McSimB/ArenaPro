@@ -214,21 +214,21 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 	public void sub_2e9(int var1, boolean var2) {
 		this.var_8b4[var1] = var2;
 		if (var1 == this.var_6fb) {
-			super.arena.var_b4 = var2;
+			super.arena._forPlayMus1 = var2;
 			if (!this.var_1df) {
-				super.arena.var_166 = var2;
+				super.arena._forPlayMus = var2;
 				if (!var2) {
-					this.sub_7a1(0);
+					this.stopPlayers(0);
 				}
 			}
 
 			if (!var2) {
-				this.sub_7a1(1);
+				this.stopPlayers(1);
 			}
 		} else if (var1 == this.var_75e) {
-			super.arena.var_166 = var2;
+			super.arena._forPlayMus = var2;
 			if (!var2) {
-				this.sub_7a1(0);
+				this.stopPlayers(0);
 			}
 		} else if (var1 == this.var_7c0) {
 			super.arena.var_e8 = var2;
@@ -243,7 +243,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 		return this.var_8b4[var1];
 	}
 
-	public abstract void sub_7a1(int var1);
+	public abstract void stopPlayers(int var1);
 
 	public Image openImage(int var1) throws IOException {
 		try {
@@ -290,8 +290,8 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 			Object var6 = var5.elementAt(var7);
 			if (var6 instanceof MySprite) {
 				((MySprite) var6).sub_90(var2, var3, var4);
-			} else if (var6 instanceof Class_151) {
-				((Class_151) var6).sub_3d(var2, var3, var4);
+			} else if (var6 instanceof MyTiledLayer) {
+				((MyTiledLayer) var6).sub_3d(var2, var3, var4);
 			}
 		}
 
@@ -345,46 +345,6 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 		}
 	}
 
-	@Override
-	public synchronized void draw(Graphics var1) {
-		var1.setClip(0, 0, this.getwidth(), this.getheight());
-		if (this.var_368 == 7) {
-			if (this.var_260 != null) {
-				var1.fillRect(0, 0, this.getwidth(), this.getheight());
-				var1.drawImage(this.var_260,
-						(this.getwidth() - this.var_260.getWidth()) / 2,
-						(this.getheight() - this.var_260.getHeight()) / 2, 20);
-			}
-
-			if (this.var_34f) {
-				if (this.var_28e != null) {
-					var1.drawImage(this.var_28e, this.var_4d3, this.var_50d, 20);
-				}
-
-				if (this.var_635 && this.menuCom == null) {
-					for (int var2 = 0; var2 < 5; ++var2) {
-						var1.setColor(this.var_56f);
-						var1.drawLine(this.var_5a0 + var2 + 1, this.var_5d6
-										+ var2 + 1, this.var_5a0 + 9 - var2,
-								this.var_5d6 + var2 + 1);
-						var1.setColor(this.var_4a2);
-						var1.drawLine(this.var_5a0 + var2, this.var_5d6 + var2,
-								this.var_5a0 + 8 - var2, this.var_5d6 + var2);
-					}
-				} else if (this.var_2ca != null) {
-					var1.drawImage(this.var_2ca, this.var_5a0, this.var_5d6, 20);
-				}
-			} else if (this.var_305 > 0) {
-				var1.setColor(this.var_4a2);
-				var1.fillRect(this.var_4d3, this.var_50d, (this.var_305 - 1)
-						* this.var_543 / 100, this.var_556);
-				var1.setColor(this.var_56f);
-				var1.drawRect(this.var_4d3, this.var_50d, this.var_543 - 1,
-						this.var_556 - 1);
-			}
-		}
-	}
-
 	public void sub_29e() {
 		try {
 			this.var_260 = this.openImage(0);
@@ -431,7 +391,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 				this.var_3ef = 1;
 			} else {
 				try {
-					this.sub_1fd(var3);
+					this.mainLoop(var3);
 				} catch (Exception var9) {
 					super.arena.sub_4e9("update: " + var9);
 					return;
@@ -521,7 +481,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 		this.var_368 = var1;
 	}
 
-	public abstract void sub_1fd(long var1);
+	public abstract void mainLoop(long var1);
 
 	public abstract boolean sub_36b();
 

@@ -1,8 +1,8 @@
 package com.elkware.midp.games.colorng.arena.high;
 
 import com.elkware.midp.games.Arena2;
-import com.elkware.midp.games.colorng.Class_151;
 import com.elkware.midp.games.colorng.MySprite;
+import com.elkware.midp.games.colorng.MyTiledLayer;
 import com.elkware.midp.games.colorng.arena.Canvas5;
 
 import java.io.ByteArrayOutputStream;
@@ -15,14 +15,13 @@ import java.util.Vector;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
-import javax.microedition.media.PlayerListener;
 import javax.microedition.rms.RecordComparator;
 import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordFilter;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
 
-public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
+public class MyCanvas extends Canvas5 implements Runnable {
 
 	private int var_eb;
 	private final String[] var_12d = new String[]{"RSPL", "RSTU", "RSOPT",
@@ -30,12 +29,7 @@ public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
 	private static final String[] var_139 = new String[]{"bt", "bt", "bt",
 			"kh", "cc", "bt"};
 	public static final int[] var_154 = new int[]{7, 7, 7, 7, 7, 5};
-	public static final int[] var_1a6 = new int[]{301, 301, 301, 330, 360,
-			301};
-	public static final int[][] var_1da = new int[][]{
-			{301, 302, 303, 304, 305, 330, 331},
-			{330, 331, 332, 333, 334, 360, 361},
-			{360, 361, 362, 363, 364, 301, 302}};
+	public static final int[] var_1a6 = new int[]{301, 301, 301, 330, 360, 301};
 	public int[] var_234 = new int[9];
 	public int[] var_295 = new int[4];
 	public String var_2f0 = "Player";
@@ -62,25 +56,17 @@ public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
 	private boolean var_6e8 = false;
 	public Image gameOverBg;
 	public int var_733 = 0;
-	public final int var_760 = 0;
-	public final int var_793 = 1;
-	public final int var_7b0 = 2;
-	public final int var_7f1 = 4;
-	public final int var_812 = 5;
 	private int var_844 = 0;
 	public int var_891 = -1;
 	public int var_8f4;
 	public boolean var_91b;
 	public boolean var_92a;
-	public boolean var_97a = true;
-	public final long var_987 = 120000L;
 	public long var_9b6 = 120000L;
 	public long var_9dd;
 	public boolean var_a17 = false;
 	public boolean var_a67 = false;
 	public boolean var_a72 = false;
 	private int var_a89 = 0;
-	public final int var_ad3 = 4;
 	public String[] var_b2f;
 	public int[] var_b57;
 	public int var_ba9 = 0;
@@ -104,10 +90,10 @@ public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
 	public int var_1011;
 	public int var_1074;
 	public int[] var_10c6;
-	private Image var_10fc;
+	private Image panelImage;
 	private Image var_1139;
-	private Image var_1174;
-	private Image var_11ab;
+	private Image greenHPImage;
+	private Image whiteHPImage;
 	private int var_11c8;
 	private int var_11d4;
 	private int var_11fa;
@@ -124,36 +110,8 @@ public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
 	public int var_1504 = 0;
 	private long var_151f = 0L;
 	public int var_157f = -1;
-	public final byte var_15a0 = 1;
-	public final byte var_15c0 = 32;
-	public final byte var_1601 = 4;
-	public final byte var_1646 = 32;
-	public final byte var_165a = 71;
-	public final byte var_167c = 72;
-	public final byte var_16c8 = 57;
-	public final byte var_16fd = 60;
-	public final byte var_1756 = 61;
-	public final byte var_1799 = 64;
-	public final byte var_17ef = 53;
-	public final byte var_1811 = 65;
-	public final byte var_183c = 79;
-	public final byte var_187a = 100;
-	public final byte var_18b4 = 65;
-	public final byte var_18d6 = 66;
-	public final byte var_190b = 67;
-	public final byte var_194d = 70;
-	public final byte var_19a4 = 74;
-	public final byte var_19eb = 7;
-	public final byte var_1a20 = 8;
-	public final byte var_1a83 = -20;
-	public final byte var_1a8e = -3;
-	public final byte var_1aad = 80;
-	public final byte var_1af2 = 79;
-	public final byte var_1b50 = 73;
-	public final byte var_1b72 = 75;
-	public final byte var_1ba1 = 78;
-	public Class_151 var_1c70;
-	private Class_151 var_1c8d;
+	public MyTiledLayer var_1c70;
+	private MyTiledLayer var_1c8d;
 	public byte[] var_1c98;
 	public byte[] var_1cdd;
 	public int var_1d1c;
@@ -239,7 +197,7 @@ public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
 	public boolean var_3103 = false;
 	private boolean var_3124 = false;
 	private Image var_3133 = null;
-	private Class_114 var_3180;
+	private Music music;
 	private boolean var_31be = false;
 	private boolean var_31f0 = false;
 	public boolean var_3246 = false;
@@ -287,10 +245,6 @@ public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
 
 	public boolean sub_a8() {
 		return 0 == this.var_844;
-	}
-
-	public boolean sub_b6() {
-		return 1 == this.var_844;
 	}
 
 	public void sub_c2() {
@@ -809,7 +763,7 @@ public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
 	}
 
 	@Override
-	public void sub_1fd(long var1) {
+	public void mainLoop(long var1) {
 		long var3 = System.currentTimeMillis();
 		if (this.var_844 == 5) {
 			this.sub_15c();
@@ -1462,7 +1416,7 @@ public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
 			}
 
 			if (this.var_2bba) {
-				this.sub_95f(g);
+				this.paintPanel(g);
 			} else {
 				g.setFont(this.fonts[1]);
 				if (this.var_2de8) {
@@ -1499,7 +1453,7 @@ public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
 						;
 					}
 
-					this.sub_95f(g);
+					this.paintPanel(g);
 					this.var_2b6c = false;
 				} else {
 					if (this.var_a17) {
@@ -1558,7 +1512,7 @@ public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
 					}
 
 					if (this.var_3386 || this.var_3366) {
-						this.sub_95f(g);
+						this.paintPanel(g);
 					}
 
 				}
@@ -1728,7 +1682,7 @@ public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
 					while (Thread.currentThread() == this.var_2e63) {
 						try {
 							var1 = System.currentTimeMillis();
-							this.sub_1fd(var3);
+							this.mainLoop(var3);
 							this.repaint();
 							this.serviceRepaints();
 							var3 = System.currentTimeMillis() - var1;
@@ -1748,7 +1702,7 @@ public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
 				}
 
 			} else {
-				this.sub_1fd(0L);
+				this.mainLoop(0L);
 				this.repaint();
 				this.serviceRepaints();
 			}
@@ -1757,7 +1711,7 @@ public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
 
 	public void sub_6c0() {
 		try {
-			this.sub_1fd(0L);
+			this.mainLoop(0L);
 			this.repaint();
 			this.serviceRepaints();
 			Thread.currentThread();
@@ -2010,7 +1964,7 @@ public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
 			}
 
 			this.sub_b71(70);
-			this.var_1c70 = new Class_151(this.var_1d1c, this.var_1d37,
+			this.var_1c70 = new MyTiledLayer(this.var_1d1c, this.var_1d37,
 					this.var_ced, 15, 15, this.var_1c98);
 			this.sub_b71(75);
 			this.var_146d = 10000;
@@ -2136,7 +2090,7 @@ public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
 		}
 
 		this.sub_b71(100);
-		this.sub_7c4();
+		this.stopPlayer();
 		this.var_a67 = true;
 		this.var_2a41 = 0L;
 		this.var_3594 = false;
@@ -2144,26 +2098,25 @@ public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
 		System.gc();
 	}
 
-	public void sub_769(int var1, int var2, int var3, boolean var4) {
+	public void playMusic(int var1, int var2, int var3, boolean var4) {
 		if (Arena.var_24) {
-			super.arena.var_166 = true;
-			super.arena.var_b4 = true;
-			this.var_3180.sub_53(var1, var2, var3, var4);
+			super.arena._forPlayMus = true;
+			super.arena._forPlayMus1 = true;
+			this.music.beginPlay(var1, var2, var3, var4);
 		}
 	}
 
-	public void sub_7a1(int var1) {
+	public void stopPlayers(int var1) {
 		if (Arena.var_24) {
-			this.var_3180.sub_1a8(var1);
+			this.music.stopPlayers();
 		}
 
 	}
 
-	public void sub_7c4() {
+	public void stopPlayer() {
 		if (Arena.var_24) {
-			this.var_3180.sub_1ba();
+			this.music.stopPlayers();
 		}
-
 	}
 
 	private void sub_819() {
@@ -2187,8 +2140,8 @@ public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
 			this.sub_f23();
 
 			try {
-				this.var_3180 = new Class_114(super.arena);
-				this.var_3180.start();
+				this.music = new Music(super.arena);
+				//this.music.start();
 			} catch (Exception var23) {
 				var23.printStackTrace();
 			}
@@ -2412,7 +2365,7 @@ public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
 
 	public void sub_8ab() {
 		if (this.var_270a) {
-			this.sub_769(0, 64, 1, true);
+			this.playMusic(0, 64, 1, true);
 		}
 
 		System.gc();
@@ -2827,24 +2780,24 @@ public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
 
 	}
 
-	private final void sub_95f(Graphics var1) {
+	private void paintPanel(Graphics var1) {
 		var1.setClip(0, this.height, this.width, 20);
-		var1.drawImage(this.var_10fc, 0, this.height, 0);
-		int var2 = this.var_1174.getWidth() / 3 * this.var_1f25.var_b81
+		var1.drawImage(this.panelImage, 0, this.height, 0);
+		int var2 = this.greenHPImage.getWidth() / 3 * this.var_1f25.var_b81
 				/ this.var_1f25.var_af7;
 		int var3 = var2 * 3;
 		if (var2 > 0) {
 			var1.setClip(var_3417, this.height + 3, var3,
-					this.var_1174.getHeight());
-			var1.drawImage(this.var_1174, var_3417, this.height + 3, 0);
+					this.greenHPImage.getHeight());
+			var1.drawImage(this.greenHPImage, var_3417, this.height + 3, 0);
 		}
 
 		this.var_3366 = var2 != this.var_339d;
 		if (var2 < this.var_339d) {
 			this.var_33b6 = (this.var_339d - var2) * 3;
 			var1.setClip(var_3417 + var3, this.height + 3, this.var_33b6,
-					this.var_1174.getHeight());
-			var1.drawImage(this.var_11ab, var_3417 + var3, this.height + 3, 0);
+					this.greenHPImage.getHeight());
+			var1.drawImage(this.whiteHPImage, var_3417 + var3, this.height + 3, 0);
 			--this.var_339d;
 		} else {
 			this.var_339d = var2;
@@ -2868,7 +2821,7 @@ public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
 			this.var_2e63 = null;
 			this.var_2a41 = 0L;
 			if (this.var_270a) {
-				this.sub_769(0, 67, 10, true);
+				this.playMusic(0, 67, 10, true);
 			}
 
 		}
@@ -2902,7 +2855,7 @@ public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
 		this.var_37be = false;
 		System.gc();
 		this.arena.commandManage(13);
-		this.sub_7c4();
+		this.stopPlayer();
 		if (!this.var_26b0 && this.var_270a) {
 			;
 		}
@@ -3784,8 +3737,8 @@ public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
 
 		this.setPercent(25);
 		this.var_1139 = this.openImage(205);
-		this.var_1174 = this.openImage(203);
-		this.var_11ab = this.openImage(204);
+		this.greenHPImage = this.openImage(203);
+		this.whiteHPImage = this.openImage(204);
 		this.setPercent(35);
 		if (this.var_1c8d == null) {
 			Image var1 = this.openImage(211);
@@ -3798,7 +3751,7 @@ public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
 					var2[var3] = 1;
 				}
 
-				this.var_1c8d = new Class_151(4, 4, var1, var1.getWidth(),
+				this.var_1c8d = new MyTiledLayer(4, 4, var1, var1.getWidth(),
 						var1.getHeight(), var2);
 				var1 = null;
 				System.gc();
@@ -3872,8 +3825,8 @@ public class MyCanvas extends Canvas5 implements Runnable, PlayerListener {
 		this.var_3133 = this.openImage(167);
 		this.setPercent(95);
 		System.gc();
-		if (this.var_10fc == null) {
-			this.var_10fc = this.openImage(165);
+		if (this.panelImage == null) {
+			this.panelImage = this.openImage(165);
 		}
 
 		this.setPercent(100);

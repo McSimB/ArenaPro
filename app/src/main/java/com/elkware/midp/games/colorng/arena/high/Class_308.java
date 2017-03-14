@@ -1,6 +1,6 @@
 package com.elkware.midp.games.colorng.arena.high;
 
-import com.elkware.midp.games.colorng.Class_151;
+import com.elkware.midp.games.colorng.MyTiledLayer;
 
 public class Class_308 {
 
@@ -63,7 +63,7 @@ public class Class_308 {
 			int var10001 = this.var_1f0;
 			this.var_274.getClass();
 			var3[var10001] = 71;
-			Class_151 var4 = this.var_274.var_1c70;
+			MyTiledLayer var4 = this.var_274.var_1c70;
 			var10001 = this.var_1f0 % this.var_274.var_1d1c;
 			int var10002 = this.var_1f0 / this.var_274.var_1d1c;
 			this.var_274.getClass();
