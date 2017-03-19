@@ -8,15 +8,73 @@
 	<Button
 		android:id="@+id/button1"
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:layout_alignParentBottom="true"
-		android:layout_alignParentRight="false" android:layout_alignParentLeft="true"
-		android:minWidth="50dp"/>
-
+		android:layout_height="wrap_content"
+		android:layout_alignParentLeft="true"
+		android:minWidth="50dp"
+		android:visibility="invisible"/>
 
 	<Button
 		android:id="@+id/button2"
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:layout_alignParentBottom="true"
-		android:layout_alignParentRight="true" android:minWidth="50dp"/>
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:minWidth="50dp"
+		android:visibility="invisible"/>
+
+	<Button
+		android:id="@+id/btn_left"
+		android:layout_width="50dp"
+		android:layout_height="70dp"
+		android:layout_above="@+id/btn_down"
+		android:layout_marginLeft="24dp"
+		android:text="&lt;"/>
+
+	<Button
+		android:id="@+id/btn_down"
+		android:layout_width="70dp"
+		android:layout_height="50dp"
+		android:layout_alignParentBottom="true"
+		android:layout_marginBottom="12dp"
+		android:layout_toEndOf="@+id/btn_left"
+		android:layout_toRightOf="@+id/btn_left"
+		android:text="down"/>
+
+	<Button
+		android:id="@+id/btn_right"
+		android:layout_width="50dp"
+		android:layout_height="70dp"
+		android:layout_above="@+id/btn_down"
+		android:layout_toEndOf="@+id/btn_down"
+		android:layout_toRightOf="@+id/btn_down"
+		android:text="&gt;"/>
+
+	<Button
+		android:id="@+id/btn_jump"
+		android:layout_width="70dp"
+		android:layout_height="50dp"
+		android:layout_above="@+id/btn_right"
+		android:layout_toLeftOf="@+id/btn_right"
+		android:layout_toStartOf="@+id/btn_right"
+		android:text="jump"/>
+
+	<Button
+		android:id="@+id/btn_fire"
+		android:layout_width="70dp"
+		android:layout_height="70dp"
+		android:layout_above="@+id/btn_use"
+		android:layout_marginLeft="60dp"
+		android:layout_toEndOf="@+id/btn_use"
+		android:layout_toRightOf="@+id/btn_use"
+		android:text="fire"/>
+
+	<Button
+		android:id="@+id/btn_use"
+		android:layout_width="50dp"
+		android:layout_height="50dp"
+		android:layout_alignParentBottom="true"
+		android:layout_marginBottom="12dp"
+		android:layout_marginLeft="240dp"
+		android:layout_toRightOf="@+id/btn_right"
+		android:text="use"/>
 
 </RelativeLayout>

@@ -12,20 +12,20 @@ import javax.microedition.lcdui.List;
 public abstract class Canvas4 extends Canvas3 {
 
 	public Command continueOrStartCom;
-	public Command var_90;
+	public Command headCom;
 	public Command resumeCom;
 	public Command helpCom;
 	public Command aboubCom;
 	public Command okStr;
-	public Command backStr;
+	public Command backCom;
 	public Command sendCom;
 	public Command highscoresCom;
 	public Command quitCom;
-	public Command var_2d8;
-	Form var_301;
-	Form var_332;
-	Form var_372;
-	public List var_384;
+	public Command equipCom;
+	Form aboutForm;
+	Form helpForm;
+	Form newGameForm;
+	public List sendList;
 	public List var_39a;
 	boolean var_3e2 = true;
 	boolean var_428;
@@ -43,61 +43,61 @@ public abstract class Canvas4 extends Canvas3 {
 
 		this.sub_33();
 		if (this.var_428) {
-			this.var_90 = new Command(var1.getStr(40), 1, 0);
+			this.headCom = new Command(var1.getStr(40), 1, 0);
 			this.sub_16();
 		}
 		
 		int var3;
-		this.var_332 = new Form(var1.getStr(2));
-		this.var_332.append(var1.getStr(200));
-		this.var_332.setCommandListener(this);
-		this.var_332.addCommand(this.okStr);
-		this.var_301 = new Form(var1.getStr(10));
-		this.var_301.append(var1.getStr(42));
-		this.var_301.setCommandListener(this);
-		this.var_301.addCommand(this.okStr);
-		this.var_384 = new List(var1.getStr(19), 3, arena);
+		this.helpForm = new Form(var1.getStr(2), arena);
+		this.helpForm.append(var1.getStr(200));
+		this.helpForm.setCommandListener(this);
+		this.helpForm.addCommand(this.okStr);
+		this.aboutForm = new Form(var1.getStr(10), arena);
+		this.aboutForm.append(var1.getStr(42));
+		this.aboutForm.setCommandListener(this);
+		this.aboutForm.addCommand(this.okStr);
+		this.sendList = new List(var1.getStr(19), 3, arena);
 		if (super.var_6fb != -1) {
-			this.var_384.append(var1.getStr(3));
+			this.sendList.append(var1.getStr(3));
 		}
 
 		if (super.var_75e != -1) {
-			this.var_384.append(var1.getStr(4));
+			this.sendList.append(var1.getStr(4));
 		}
 
 		if (super.var_7c0 != -1) {
-			this.var_384.append(var1.getStr(5));
+			this.sendList.append(var1.getStr(5));
 		}
 
 		if (super.var_813 != -1) {
-			this.var_384.append(var1.getStr(6));
+			this.sendList.append(var1.getStr(6));
 		}
 
 		if (super.var_87b != null) {
 			for (var3 = 0; var3 < super.var_87b.length; ++var3) {
-				this.var_384.append(super.var_87b[var3]);
+				this.sendList.append(super.var_87b[var3]);
 			}
 		}
 
-		this.var_384.setCommandListener(this);
+		this.sendList.setCommandListener(this);
 		if (var1.sub_dc(5053) == 1) {
-			this.var_384.addCommand(this.okStr);
+			this.sendList.addCommand(this.okStr);
 		} else {
-			this.var_384.addCommand(this.backStr);
+			this.sendList.addCommand(this.backCom);
 		}
 
 		if (var1.sub_dc(5052) == 1) {
-			this.var_2d8 = new Command(var1.getStr(44), 4, 0);
+			this.equipCom = new Command(var1.getStr(44), 4, 0);
 		}
 
 	}
 
 	public void sub_16() {
-		this.var_372 = new Form(super.arena.getStr(40));
-		this.var_372.append(super.arena.getStr(41));
-		this.var_372.addCommand(this.okStr);
-		this.var_372.addCommand(this.backStr);
-		this.var_372.setCommandListener(this);
+		this.newGameForm = new Form(super.arena.getStr(40), arena);
+		this.newGameForm.append(super.arena.getStr(41));
+		this.newGameForm.addCommand(this.okStr);
+		this.newGameForm.addCommand(this.backCom);
+		this.newGameForm.setCommandListener(this);
 	}
 
 	public void sub_33() {
@@ -108,7 +108,7 @@ public abstract class Canvas4 extends Canvas3 {
 		this.aboubCom = new Command(super.arena.getStr(10), 1, 6);
 		this.quitCom = new Command(super.arena.getStr(9), 6, 7);
 		this.okStr = new Command(super.arena.getStr(35), 4, 0);
-		this.backStr = new Command(super.arena.getStr(12), 2, 0);
+		this.backCom = new Command(super.arena.getStr(12), 2, 0);
 	}
 
 	public void sub_86() {
@@ -118,7 +118,7 @@ public abstract class Canvas4 extends Canvas3 {
 				: (var1 ? 13 : 31)), 1, 0);
 		this.var_39a.append(this.continueOrStartCom.getLabel());
 		if (var1 || super.var_401) {
-			this.var_39a.append(this.var_90.getLabel());
+			this.var_39a.append(this.headCom.getLabel());
 		}
 
 		Vector var2 = this.sub_d3();
@@ -148,8 +148,8 @@ public abstract class Canvas4 extends Canvas3 {
 
 		this.var_39a.append(this.quitCom.getLabel());
 		this.var_39a.setCommandListener(this);
-		if (this.var_2d8 != null) {
-			this.var_39a.addCommand(this.var_2d8);
+		if (this.equipCom != null) {
+			this.var_39a.addCommand(this.equipCom);
 		}
 
 	}
@@ -164,7 +164,7 @@ public abstract class Canvas4 extends Canvas3 {
 	}
 
 	public void sub_1a7() {
-		Form var1 = new Form(super.arena.getStr(1));
+		Form highscoresForm = new Form(super.arena.getStr(1), arena);
 		String var2 = "";
 
 		for (int var3 = 0; var3 < super.arena.var_5db; ++var3) {
@@ -172,10 +172,10 @@ public abstract class Canvas4 extends Canvas3 {
 					+ super.arena.var_666[var3] + "\n";
 		}
 
-		var1.append(var2);
-		var1.addCommand(this.okStr);
-		var1.setCommandListener(this);
-		this.setCurDisp(var1);
+		highscoresForm.append(var2);
+		highscoresForm.addCommand(this.okStr);
+		highscoresForm.setCommandListener(this);
+		this.setCurDisp(highscoresForm);
 	}
 
 	@Override
@@ -190,24 +190,24 @@ public abstract class Canvas4 extends Canvas3 {
 
 	@Override
 	public void sub_25b() {
-		this.setCurDisp(this.var_332);
+		this.setCurDisp(this.helpForm);
 	}
 
 	@Override
 	public void sub_2a0() {
-		this.setCurDisp(this.var_301);
+		this.setCurDisp(this.aboutForm);
 	}
 
 	@Override
 	public void sub_2dd() {
-		this.setCurDisp(this.var_384);
+		this.setCurDisp(this.sendList);
 		this.sub_af(super.var_8b4);
 	}
 
 	@Override
 	public void sub_2e9(int var1, boolean var2) {
 		super.sub_2e9(var1, var2);
-		this.var_384.set(var1, this.var_384.getString(var1)
+		this.sendList.set(var1, this.sendList.getString(var1)
 		);
 	}
 
@@ -218,10 +218,10 @@ public abstract class Canvas4 extends Canvas3 {
 	public void commandAction(Command var1, Displayable var2) {
 		super.commandAction(var1, var2);
 		if (var1 != this.quitCom) {
-			if (var1 == this.backStr) {
+			if (var1 == this.backCom) {
 				this.sub_310(super.var_3ef);
 			} else if (var1 == this.okStr) {
-				if (var2 == this.var_372) {
+				if (var2 == this.newGameForm) {
 					this.sub_39a();
 					this.sub_310(2);
 				} else {
@@ -230,17 +230,17 @@ public abstract class Canvas4 extends Canvas3 {
 			}
 		}
 
-		if (var2 == this.var_384 && var1 == List.SELECT_COMMAND) {
-			int var4 = this.var_384.getSelectedIndex();
+		if (var2 == this.sendList && var1 == List.SELECT_COMMAND) {
+			int var4 = this.sendList.getSelectedIndex();
 			this.sub_2e9(var4, !this.sub_100(var4));
 		} else if (var2 == this.var_39a) {
 			String var3 = this.var_39a.getString(this.var_39a
 					.getSelectedIndex());
 			if (var3.equals(this.continueOrStartCom.getLabel())) {
 				this.sub_310(2);
-			} else if (var3.equals(this.var_90.getLabel())) {
+			} else if (var3.equals(this.headCom.getLabel())) {
 				super.var_3ef = 1;
-				this.setCurDisp(this.var_372);
+				this.setCurDisp(this.newGameForm);
 			} else if (var3.equals(this.helpCom.getLabel())) {
 				this.sub_310(4);
 			} else if (var3.equals(this.highscoresCom.getLabel())) {

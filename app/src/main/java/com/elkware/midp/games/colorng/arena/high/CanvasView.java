@@ -49,4 +49,8 @@ public class CanvasView extends View {
 		setMeasuredDimension(WIDTH * SCALE, HEIGHT * SCALE);
 	}
 
+	public Graphics getGraphics() {
+		return graphics;
+	}
+
 }

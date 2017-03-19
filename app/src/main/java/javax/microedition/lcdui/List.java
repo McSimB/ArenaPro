@@ -2,13 +2,13 @@ package javax.microedition.lcdui;
 
 import android.view.View;
 
+import com.elkware.midp.games.Arena1;
 import com.elkware.midp.games.colorng.Arena3;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 import static javax.microedition.lcdui.Canvas.FIRE;
-import static javax.microedition.lcdui.Canvas.KEY_DISPLAY2;
 
 public class List extends Displayable {
 
@@ -19,10 +19,9 @@ public class List extends Displayable {
 	private int listType;
 	private ArrayList<String> items;
 	private String title;
-	private Arena3 arena;
 
-	public List(String title, int listType, String[] items, Arena3 arena) {
-		this.arena = arena;
+	public List(String title, int listType, String[] items, Arena1 arena1) {
+		this.arena1 = arena1;
 		this.title = title;
 		this.items = new ArrayList<String>();
 		Collections.addAll(this.items, items);
@@ -33,8 +32,8 @@ public class List extends Displayable {
 			throw new IllegalArgumentException();
 	}
 
-	public List(String title, int listType, Arena3 arena) {
-		this(title, listType, new String[0], arena);
+	public List(String title, int listType, Arena3 arena3) {
+		this(title, listType, new String[0], arena3);
 	}
 
 	public int size() {
@@ -72,20 +71,10 @@ public class List extends Displayable {
 
 	@Override
 	public void callKeyPressed(int key) {
+		super.callKeyPressed(key);
 		if (key == FIRE) {
 			if (listener != null && listType == 3)
 				listener.commandAction(selectCommand, this);
-		} else if (key == KEY_DISPLAY2) {
-			Command[] commands = getCommands();
-			if (commands != null) {
-				for (int i = 0; i < getCommandCount(); i++) {
-					Command command = getCommands()[i];
-					if (command != null && command.getCommandType() == Command.BACK) {
-						listener.commandAction(command, this);
-						break;
-					}
-				}
-			}
 		}
 	}
 
@@ -98,8 +87,8 @@ public class List extends Displayable {
 
 	@Override
 	public View getView() {
-		arena.initMenuView(title, items);
-		return arena.menuView;
+		arena1.initList(title, items);
+		return arena1.menuView;
 	}
 
 }

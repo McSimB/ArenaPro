@@ -28,8 +28,8 @@ public abstract class Canvas extends Displayable {
 	public static final int KEY_STAR = 42;
 	public static final int KEY_POUND = 35;
 
-	public static final int KEY_DISPLAY1 = 100;
-	public static final int KEY_DISPLAY2 = 101;
+	public static final int KEY_DISPLAY1 = -12;
+	public static final int KEY_DISPLAY2 = -4;
 
 	public Arena arena;
 
@@ -60,7 +60,7 @@ public abstract class Canvas extends Displayable {
 
 	@Override
 	public void callKeyPressed(int key) {
-
+		keyPressed(key);
 	}
 
 	@Override

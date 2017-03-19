@@ -57,7 +57,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 	public Command saveAndSaveCom;
 	public Command saveCom;
 	public Command cancelCom;
-	private TextBox var_83e;
+	private TextBox highscoreNameTextBox;
 	private int var_859;
 
 	public void readStringResources(String fileName, String var2) throws IOException {
@@ -417,7 +417,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 		this.quitStr = new Command(this.getStr(9), 3, 10);
 		if (var2 != null) {
 			if (!(this.display.getCurrent() instanceof Form)) {
-				Form var3 = new Form(this.getStr(14)); // Error
+				Form var3 = new Form(this.getStr(14), this); // Error
 				var3.append(var2);
 				var3.setCommandListener(this);
 				var3.addCommand(this.quitStr);
@@ -614,20 +614,20 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 
 	public void sub_4b4() {
 		this.var_590 = "";
-		this.var_83e = new TextBox(this.getStr(18), this.var_590, 12, 0);
+		this.highscoreNameTextBox = new TextBox(this.getStr(18), this.var_590, 12, 0, this);
 		if (this.sub_485()) {
 			this.saveAndSaveCom = new Command(this.getStr(20), 4, 0);
-			this.var_83e.addCommand(this.saveAndSaveCom);
+			this.highscoreNameTextBox.addCommand(this.saveAndSaveCom);
 		}
 
 		if (this.sub_447()) {
 			this.saveCom = new Command(this.getStr(21), 4, 0);
-			this.var_83e.addCommand(this.saveCom);
+			this.highscoreNameTextBox.addCommand(this.saveCom);
 		}
 
 		this.cancelCom = new Command(this.getStr(22), 2, 0);
-		this.var_83e.addCommand(this.cancelCom);
-		this.var_83e.setCommandListener(this);
+		this.highscoreNameTextBox.addCommand(this.cancelCom);
+		this.highscoreNameTextBox.setCommandListener(this);
 		this.sub_45b();
 	}
 
@@ -682,11 +682,11 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 	@Override
 	public boolean sub_4af(Alert var1) {
 		this.var_859 = 0;
-		this.var_83e.setString(this.var_590 != null ? this.var_590 : "");
+		this.highscoreNameTextBox.setString(this.var_590 != null ? this.var_590 : "");
 		if (var1 != null) {
-			this.display.setCurrent(var1, this.var_83e);
+			this.display.setCurrent(var1, this.highscoreNameTextBox);
 		} else {
-			this.display.setCurrent(this.var_83e);
+			this.display.setCurrent(this.highscoreNameTextBox);
 		}
 
 		try {
@@ -716,7 +716,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 				super.commandAction(var1, var2);
 			}
 		} else {
-			this.var_590 = this.sub_4c6(this.var_83e.getString());
+			this.var_590 = this.sub_4c6(this.highscoreNameTextBox.getString());
 			if (this.var_590.length() < 3) {
 				//TODO Alert
 				//this.display.setCurrent(new Alert("Info", this.getStr(23), null, null));

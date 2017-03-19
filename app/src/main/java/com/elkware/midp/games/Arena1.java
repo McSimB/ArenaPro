@@ -7,10 +7,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.elkware.midp.games.colorng.arena.high.CanvasView;
+import com.elkware.midp.games.colorng.arena.high.MyCanvas;
 import com.elkware.midp.games.colorng.arena.high.R;
 
 import java.io.ByteArrayOutputStream;
@@ -28,16 +31,22 @@ import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.List;
 
 import static javax.microedition.lcdui.Canvas.FIRE;
+import static javax.microedition.lcdui.Canvas.KEY_DISPLAY1;
 import static javax.microedition.lcdui.Canvas.KEY_DISPLAY2;
+import static javax.microedition.lcdui.Display.HEIGHT;
+import static javax.microedition.lcdui.Display.SCALE;
 
 public abstract class Arena1 extends Activity {
 
+	public MyCanvas myCanvas;
 	public Display display;
 	public String appID = null;
 	private String var_198 = null;
 	public CanvasView canvasView;
 	public ViewGroup menuView;
 	private TextView title;
+	private EditText editText;
+	private ListView listView;
 	private ArrayAdapter<String> adapter;
 
 	public void startApp() {
@@ -46,7 +55,8 @@ public abstract class Arena1 extends Activity {
 		LayoutInflater inflater = getLayoutInflater();
 		menuView = (ViewGroup) inflater.inflate(R.layout.list, null, false);
 		title = (TextView) menuView.findViewById(R.id.title);
-		ListView listView = (ListView) menuView.findViewById(R.id.listView);
+		editText = (EditText) menuView.findViewById(R.id.editText);
+		listView = (ListView) menuView.findViewById(R.id.listView);
 		adapter = new ArrayAdapter<String>(this, R.layout.list_item);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -58,6 +68,13 @@ public abstract class Arena1 extends Activity {
 			}
 		});
 		setContentView(R.layout.main);
+		Button b1 = (Button) findViewById(R.id.button1);
+		b1.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				display.getCurrent().callKeyPressed(KEY_DISPLAY1);
+			}
+		});
 		Button b2 = (Button) findViewById(R.id.button2);
 		b2.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -65,13 +82,63 @@ public abstract class Arena1 extends Activity {
 				display.getCurrent().callKeyPressed(KEY_DISPLAY2);
 			}
 		});
+		/*Button b3 = (Button) findViewById(R.id.button3);
+		b3.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				myCanvas.keyPressed(KEY_DISPLAY1);
+			}
+		});
+		Button b4 = (Button) findViewById(R.id.button4);
+		b4.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				myCanvas.keyPressed(KEY_DISPLAY2);
+			}
+		});*/
 	}
 
-	public void initMenuView(String title, ArrayList<String> items) {
+	public void initList(String title, ArrayList<String> items) {
+		editText.setVisibility(View.INVISIBLE);
+		listView.setVisibility(View.VISIBLE);
+		listView.setMinimumHeight(HEIGHT * SCALE);
 		this.title.setText(title);
 		adapter.clear();
 		for (String s : items) {
 			adapter.add(s);
+		}
+		removeScrollView();
+	}
+
+	public void initTextBox(String title, String hint) {
+		editText.setVisibility(View.VISIBLE);
+		listView.setVisibility(View.GONE);
+		this.title.setText(title);
+		editText.setText(hint);
+		removeScrollView();
+	}
+
+	public String getFromTextBox() {
+		return editText.getText().toString();
+	}
+
+	public void initForm(String title, ArrayList<String> strings) {
+		editText.setVisibility(View.GONE);
+		listView.setVisibility(View.GONE);
+		this.title.setText(title);
+		removeScrollView();
+		ScrollView scrollView = new ScrollView(this);
+		menuView.addView(scrollView);
+		for (String string : strings) {
+			TextView textView = new TextView(this);
+			textView.setText(string);
+			scrollView.addView(textView);
+		}
+	}
+
+	private void removeScrollView() {
+		while (menuView.getChildCount() > 3) {
+			menuView.removeViewAt(menuView.getChildCount() - 1);
 		}
 	}
 
@@ -223,7 +290,7 @@ public abstract class Arena1 extends Activity {
 			if (var3 == null) {
 				return false;
 			} else {
-				Form var4 = new Form("Info");
+				Form var4 = new Form("Info", this);
 				var4.append(this.getStr(127));
 
 				do {

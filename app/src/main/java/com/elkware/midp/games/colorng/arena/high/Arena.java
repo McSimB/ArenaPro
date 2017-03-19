@@ -1,6 +1,9 @@
 package com.elkware.midp.games.colorng.arena.high;
 
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
 
 import com.elkware.midp.games.colorng.Arena3;
 import com.elkware.midp.games.colorng.Canvas3;
@@ -10,6 +13,7 @@ import java.util.Enumeration;
 
 import javax.microedition.io.Connector;
 import javax.microedition.io.file.FileConnection;
+import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
@@ -24,7 +28,7 @@ import javax.wireless.messaging.MessageConnection;
 import javax.wireless.messaging.MessagePart;
 import javax.wireless.messaging.MultipartMessage;
 
-public class Arena extends Arena3 implements CommandListener {
+public class Arena extends Arena3 implements CommandListener, View.OnTouchListener{
 
 	public static boolean var_24 = true;
 	private List mainMenuList;
@@ -49,7 +53,7 @@ public class Arena extends Arena3 implements CommandListener {
 	private Command sendSMSScreenCommand;
 	private Command aboutBack;
 	private Form aboutForm;
-	private Form var_5bd;
+	private Form helpForm2;
 	private Form helpForm = null;
 	private List settingsList;
 	private List gameModeList;
@@ -57,7 +61,6 @@ public class Arena extends Arena3 implements CommandListener {
 	private List tournamentList;
 	private List tournamentNextMatchList;
 	private List var_787;
-	private MyCanvas myCanvas;
 	private int var_845;
 	private int var_8c5;
 	private String var_91e;
@@ -108,7 +111,67 @@ public class Arena extends Arena3 implements CommandListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		startApp();
-		boolean adf = false;
+		Button btnLeft = (Button) findViewById(R.id.btn_left);
+		btnLeft.setOnTouchListener(this);
+		Button btnRight = (Button) findViewById(R.id.btn_right);
+		btnRight.setOnTouchListener(this);
+		Button btnDown = (Button) findViewById(R.id.btn_down);
+		btnDown.setOnTouchListener(this);
+		Button btnFire = (Button) findViewById(R.id.btn_fire);
+		btnFire.setOnTouchListener(this);
+		Button btnJump = (Button) findViewById(R.id.btn_jump);
+		btnJump.setOnTouchListener(this);
+		Button btnUse = (Button) findViewById(R.id.btn_use);
+		btnUse.setOnTouchListener(this);
+	}
+
+	@Override
+	public boolean onTouch(View view, MotionEvent event) {
+		switch (view.getId()) {
+			case R.id.btn_left:
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					myCanvas.keyPressed(Canvas.KEY_NUM4);
+				} else if (event.getAction() == MotionEvent.ACTION_UP) {
+					myCanvas.keyReleased(Canvas.KEY_NUM4);
+				}
+				break;
+			case R.id.btn_right:
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					myCanvas.keyPressed(Canvas.KEY_NUM6);
+				} else if (event.getAction() == MotionEvent.ACTION_UP) {
+					myCanvas.keyReleased(Canvas.KEY_NUM6);
+				}
+				break;
+			case R.id.btn_down:
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					myCanvas.keyPressed(Canvas.KEY_NUM8);
+				} else if (event.getAction() == MotionEvent.ACTION_UP) {
+					myCanvas.keyReleased(Canvas.KEY_NUM8);
+				}
+				break;
+			case R.id.btn_fire:
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					myCanvas.keyPressed(Canvas.KEY_NUM5);
+				} else if (event.getAction() == MotionEvent.ACTION_UP) {
+					myCanvas.keyReleased(Canvas.KEY_NUM5);
+				}
+				break;
+			case R.id.btn_jump:
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					myCanvas.keyPressed(Canvas.KEY_NUM2);
+				} else if (event.getAction() == MotionEvent.ACTION_UP) {
+					myCanvas.keyReleased(Canvas.KEY_NUM2);
+				}
+				break;
+			case R.id.btn_use:
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					myCanvas.keyPressed(Canvas.KEY_NUM0);
+				} else if (event.getAction() == MotionEvent.ACTION_UP) {
+					myCanvas.keyReleased(Canvas.KEY_NUM0);
+				}
+				break;
+		}
+		return false;
 	}
 
 	@Override
@@ -149,17 +212,17 @@ public class Arena extends Arena3 implements CommandListener {
 			this.settingsList.addCommand(this.settingsBack);
 			this.settingsList.setCommandListener(this);
 
-			this.warriorNameTextBox = new TextBox(this.getStr(219), this.myCanvas.var_2f0, 12, 0);
+			this.warriorNameTextBox = new TextBox(this.getStr(219), this.myCanvas.var_2f0, 12, 0, this);
 			this.warriorNameTextBox.addCommand(this.warriorNameScreenCommand);
 			this.warriorNameTextBox.addCommand(this.textBoxBack);
 			this.warriorNameTextBox.setCommandListener(this);
 
-			this.phoneNumberTextBox = new TextBox(this.getStr(454), "", 30, 3);
+			this.phoneNumberTextBox = new TextBox(this.getStr(454), "", 30, 3, this);
 			this.phoneNumberTextBox.addCommand(this.phoneNumberOk);
 			this.phoneNumberTextBox.addCommand(this.textBoxBack);
 			this.phoneNumberTextBox.setCommandListener(this);
 
-			this.aboutForm = new Form(this.getStr(217));
+			this.aboutForm = new Form(this.getStr(217), this);
 			String var4 = this.getAppProperty("MIDlet-Version");
 			if (var4 == null) {
 				var4 = "";
@@ -312,7 +375,7 @@ public class Arena extends Arena3 implements CommandListener {
 						this.myCanvas.var_92a = false;
 						if (this.myCanvas.var_270a) {
 							this.myCanvas.stopPlayer();
-							this.myCanvas.playMusic(0, 67, 1, true); //
+							this.myCanvas.playMusic(0, 67, 1, true);
 						}
 
 						if (this.myCanvas.sub_ddd()) {
@@ -543,12 +606,12 @@ public class Arena extends Arena3 implements CommandListener {
 					this.commandManage(10);
 				} else {
 					if (command == this.helpScreenCommand) {
-						this.helpForm = new Form(this.getStr(400));
+						this.helpForm = new Form(this.getStr(400), this);
 						this.helpForm.append(this.getStr(406));
 						this.helpForm.setCommandListener(this);
 						this.commandManage(28);
 					} else if (command == this.helpScreenCommand2) {
-						this.helpForm = new Form(this.getStr(400));
+						this.helpForm = new Form(this.getStr(400), this);
 						this.helpForm.append(this.getStr(455));
 						this.helpForm.setCommandListener(this);
 						this.commandManage(28);
@@ -589,8 +652,7 @@ public class Arena extends Arena3 implements CommandListener {
 							String var3;
 							if (command == this.warriorNameScreenCommand) {
 								this.myCanvas.sub_a84(false);
-								var3 = this.warriorNameTextBox.getString().replace('\n',
-										' ');
+								var3 = this.warriorNameTextBox.getString().replace('\n', ' ');
 								this.myCanvas.var_2f0 = var3.substring(0,
 										Math.min(var3.length(), 10));
 								this.commandManage(19);
@@ -606,11 +668,11 @@ public class Arena extends Arena3 implements CommandListener {
 								this.myCanvas.sub_6a1(this.myCanvas);
 							} else if (command == this.sendSMSScreenCommand) {
 								var3 = this.receiverTextBox.getString();
-								Form var4 = new Form(this.getStr(19));
-								var4.append(this.getStr(127));
-								var4.addCommand(this.settingsBack);
-								var4.setCommandListener(this);
-								this.setCurrentDisp(var4);
+								Form sendForm = new Form(this.getStr(19), this);
+								sendForm.append(this.getStr(127));
+								sendForm.addCommand(this.settingsBack);
+								sendForm.setCommandListener(this);
+								this.setCurrentDisp(sendForm);
 								(new Class_236(this, var3, null))
 										.start();
 							}
@@ -715,11 +777,11 @@ public class Arena extends Arena3 implements CommandListener {
 
 	}
 
-	public void sub_25c() {
+	public void setSaveMenu2() {
 		this.setCurrentDisp(this.saveMenuList2);
 	}
 
-	public void sub_27c() {
+	public void setPauseDisplay() {
 		this.setCurrentDisp(this.pauseList);
 	}
 
@@ -747,10 +809,10 @@ public class Arena extends Arena3 implements CommandListener {
 					this.myCanvas.sub_ffe();
 					System.gc();
 					if (this.myCanvas.var_3463) {
-						this.sub_27c();
+						this.setPauseDisplay();
 					} else {
 						if (this.var_d38) {
-							Form imcommingWarriorForm = new Form(this.getStr(457));
+							Form imcommingWarriorForm = new Form(this.getStr(457), this);
 							imcommingWarriorForm.append(this.getStr(458) + " "
 									+ this.var_d05);
 							if (this.var_b9f) {
@@ -813,8 +875,8 @@ public class Arena extends Arena3 implements CommandListener {
 					this.setCurrentDisp(this.aboutForm);
 					break;
 				case 17:
-					if (this.var_5bd == null) {
-						this.var_5bd = new Form(this.getStr(218));
+					if (this.helpForm2 == null) {
+						this.helpForm2 = new Form(this.getStr(218), this);
 						String var5 = this.getStr(200);
 
 						while ((var6 = var5.indexOf("\nn")) != -1) {
@@ -822,12 +884,12 @@ public class Arena extends Arena3 implements CommandListener {
 									+ var5.substring(var6 + 2, var5.length() - var6 - 2);
 						}
 
-						this.var_5bd.append(var5);
-						this.var_5bd.addCommand(this.aboutBack);
-						this.var_5bd.setCommandListener(this);
+						this.helpForm2.append(var5);
+						this.helpForm2.addCommand(this.aboutBack);
+						this.helpForm2.setCommandListener(this);
 					}
 
-					this.setCurrentDisp(this.var_5bd);
+					this.setCurrentDisp(this.helpForm2);
 					break;
 				case 18:
 					this.setCurrentDisp(this.warriorNameTextBox);
@@ -862,7 +924,7 @@ public class Arena extends Arena3 implements CommandListener {
 					(new PhotoThread(this, this, 2, null)).start();
 					break;
 				case 25:
-					Form processCompleteForm = new Form(this.getStr(404));
+					Form processCompleteForm = new Form(this.getStr(404), this);
 					processCompleteForm.append(this.getStr(402)); // Photo has been added to database. You can select it in your player setup.
 					processCompleteForm.setCommandListener(this);
 					processCompleteForm.addCommand(this.commandAccept);
@@ -1241,7 +1303,9 @@ public class Arena extends Arena3 implements CommandListener {
 	@Override
 	public Canvas3 getCanvas() {
 		try {
-			this.myCanvas = new MyCanvas(this);
+			myCanvas = new MyCanvas(this);
+			//myCanvas.addCommand(new Command("", 1, 0));
+			//myCanvas.addCommand(new Command("", 2, 0));
 			canvasView.initView(myCanvas);
 			return this.myCanvas;
 		} catch (Exception var2) {
@@ -1286,8 +1350,7 @@ public class Arena extends Arena3 implements CommandListener {
 			FileConnection var5 = (FileConnection) Connector
 					.open("file:///0:/Pictures/" + var2);
 			DataInputStream var6 = var5.openDataInputStream();
-			var4 = new MessagePart(var6, "image/jpeg", var3, var2,
-					(String) null);
+			var4 = new MessagePart(var6, "image/jpeg", var3, var2, null);
 			var5.close();
 		} catch (Exception var7) {
 			var7.printStackTrace();
@@ -1298,7 +1361,7 @@ public class Arena extends Arena3 implements CommandListener {
 
 	private void sendWarrior() {
 		try {
-			this.receiverTextBox = new TextBox(this.getStr(526), "mms://", 256, 0);
+			this.receiverTextBox = new TextBox(this.getStr(526), "mms://", 256, 0, this);
 			this.receiverTextBox.addCommand(this.settingsBack);
 			this.receiverTextBox.addCommand(this.sendSMSScreenCommand);
 			this.receiverTextBox.setCommandListener(this);

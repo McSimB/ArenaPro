@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.elkware.midp.games.Arena1;
+import com.elkware.midp.games.colorng.arena.high.MyCanvas;
 import com.elkware.midp.games.colorng.arena.high.R;
 
 public class Display {
@@ -15,6 +16,7 @@ public class Display {
 	public static int SCALE = 4;
 	private Displayable current;
 	private Arena1 arena;
+	private boolean firstDisp;
 
 	public Display(Arena1 arena) {
 		this.arena = arena;
@@ -74,8 +76,8 @@ public class Display {
 	}
 
 	private void initButtons(ViewGroup view) {
-		Button b1 = (Button) view.findViewById(R.id.button1);
-		Button b2 = (Button) view.findViewById(R.id.button2);
+		final Button b1 = (Button) view.findViewById(R.id.button1);
+		final Button b2 = (Button) view.findViewById(R.id.button2);
 		b1.setVisibility(View.INVISIBLE);
 		b2.setVisibility(View.INVISIBLE);
 		if (current.getCommands() != null) {
@@ -98,6 +100,13 @@ public class Display {
 				}
 			}
 		}
+		if (current instanceof MyCanvas && firstDisp) {
+			b1.setVisibility(View.VISIBLE);
+			b1.setText("");
+			b2.setVisibility(View.VISIBLE);
+			b2.setText("");
+		}
+		firstDisp = true;
 	}
 
 }

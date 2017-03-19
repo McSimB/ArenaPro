@@ -98,9 +98,9 @@ public class MyCanvas extends Canvas5 implements Runnable {
 	private int var_11d4;
 	private int var_11fa;
 	private Image optionBg2 = null;
-	private int var_132b;
-	private int var_134f;
-	private int var_137d;
+	private int leftRight;
+	private int upDown;
+	private int _fireUse;
 	private long var_13a7;
 	private int[] var_13c4;
 	public int var_140d = -1;
@@ -297,7 +297,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
 	private final void sub_180() {
 		if (this.var_91b) {
-			if ((this.var_134f == 4 || this.var_31f0) && this.var_6e8) {
+			if ((this.upDown == 4 || this.var_31f0) && this.var_6e8) {
 				if (this.var_32c0 < 1) {
 					this.var_32c0 = 3;
 					this.var_692 = Math.min(this.var_692 + 1,
@@ -308,7 +308,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 				}
 
 				this.var_31f0 = false;
-			} else if ((this.var_134f == 3 || this.var_31be) && this.var_6e8) {
+			} else if ((this.upDown == 3 || this.var_31be) && this.var_6e8) {
 				if (this.var_32c0 < 1) {
 					this.var_32c0 = 3;
 					this.var_692 = Math.max(this.var_692 - 1, 0);
@@ -384,8 +384,8 @@ public class MyCanvas extends Canvas5 implements Runnable {
 			}
 
 			if (this.var_4ee) {
-				if (this.var_134f != 3 && !this.var_31be) {
-					if (this.var_134f != 4 && !this.var_31f0) {
+				if (this.upDown != 3 && !this.var_31be) {
+					if (this.upDown != 4 && !this.var_31f0) {
 						if (this.var_567 < 2) {
 							if (this.var_567 == 0) {
 								var6 = this.var_f45.length;
@@ -394,26 +394,26 @@ public class MyCanvas extends Canvas5 implements Runnable {
 							}
 
 							if (this.var_567 == 0) {
-								if (this.var_132b == 1) {
+								if (this.leftRight == 1) {
 									this.var_234[this.var_567] = Math.max(0,
 											this.var_234[this.var_567] - 1);
-								} else if (this.var_132b == 2) {
+								} else if (this.leftRight == 2) {
 									this.var_234[this.var_567] = Math.min(
 											var6 - 1,
 											this.var_234[this.var_567] + 1);
 								}
-							} else if (this.var_132b == 1) {
+							} else if (this.leftRight == 1) {
 								this.var_234[this.var_567] = Math.max(0,
 										this.var_234[this.var_567] - 1);
-							} else if (this.var_132b == 2) {
+							} else if (this.leftRight == 2) {
 								this.var_234[this.var_567] = Math.min(var6 - 1,
 										this.var_234[this.var_567] + 1);
 							}
-						} else if (this.var_132b == 1
+						} else if (this.leftRight == 1
 								&& (this.var_4c6 || this.var_234[this.var_567] > this.var_295[this.var_567 - 2])) {
 							this.var_234[this.var_567] = Math.max(0,
 									this.var_234[this.var_567] - 1);
-						} else if (this.var_132b == 2 && this.var_234[8] > 0) {
+						} else if (this.leftRight == 2 && this.var_234[8] > 0) {
 							this.var_234[this.var_567] = Math.min(20,
 									this.var_234[this.var_567] + 1);
 						}
@@ -473,22 +473,22 @@ public class MyCanvas extends Canvas5 implements Runnable {
 				if (var17.var_bd6) {
 					var17.sub_272();
 				} else {
-					if (this.var_132b == 1) {
+					if (this.leftRight == 1) {
 						var17.sub_d8();
 					}
 
-					if (this.var_132b == 2) {
+					if (this.leftRight == 2) {
 						var17.sub_11d();
 					}
 
-					if (this.var_134f == 3) {
+					if (this.upDown == 3) {
 						var17.sub_143();
 					}
 
-					var17.var_7c1 = this.var_134f == 4;
-					if (this.var_137d == 6) {
+					var17.var_7c1 = this.upDown == 4;
+					if (this._fireUse == 6) {
 						var17.var_c05 = true;
-					} else if (this.var_137d == 5 && var17.var_aaf) {
+					} else if (this._fireUse == 5 && var17.var_aaf) {
 						this.var_1f25.sub_2cf();
 					}
 				}
@@ -1064,11 +1064,10 @@ public class MyCanvas extends Canvas5 implements Runnable {
 					this.paintString(var1, var8, (this.width - var4) / 2,
 							15 + var2 * 15, 100);
 				} catch (Exception var5) {
-					;
+					var5.printStackTrace();
 				}
 			}
 		}
-
 	}
 
 	private void paintEquip(Graphics g) {
@@ -2358,7 +2357,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
 	public void sub_84f(long var1) {
 		super.sub_84f(var1);
-		this.var_13a7 = (long) (this.var_134f = this.var_132b = this.var_137d = 0);
+		this.var_13a7 = (long) (this.upDown = this.leftRight = this._fireUse = 0);
 		this.var_13a7 = 0L;
 		this.var_6e8 = this.var_31be = this.var_31f0 = false;
 	}
@@ -2395,7 +2394,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 		this.var_a67 = false;
 	}
 
-	public void keyPressed(int var1) {
+	public void keyPressed(int key) {
 		if (!this.var_3594 && !this.var_3051) {
 			if (this.var_91b && this.var_a17 && this.var_37be) {
 				this.sub_8ab();
@@ -2403,13 +2402,13 @@ public class MyCanvas extends Canvas5 implements Runnable {
 			} else {
 				if (this.var_844 == 2) {
 					if (this.var_535 && !this.arena.var_e61 && this.var_3246) {
-						if (var1 == -4) {
+						if (key == -4) {
 							this.var_3246 = false;
-							this.arena.sub_25c();
+							this.arena.setSaveMenu2();
 							return;
 						}
 
-						if (var1 == -12) {
+						if (key == -12) {
 							this.var_3246 = false;
 							this.arena.sub_1b1();
 							return;
@@ -2419,7 +2418,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 					}
 
 					if (this.var_4ee) {
-						switch (var1) {
+						switch (key) {
 							case -12:
 								this.arena.sub_df();
 								return;
@@ -2428,7 +2427,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 								return;
 						}
 					} else {
-						switch (var1) {
+						switch (key) {
 							case -12:
 								this.sub_8ab();
 								this.arena.sub_a7();
@@ -2441,37 +2440,37 @@ public class MyCanvas extends Canvas5 implements Runnable {
 				} else if (this.var_844 == 1) {
 					if (this.var_91b) {
 						if (!this.var_a67 && this.var_a17 && !this.var_35b0) {
-							this.sub_910(var1);
+							this.sub_910(key);
 							return;
 						}
 					} else if (this.var_92a) {
 						if (!this.var_a67 && this.var_a17 && !this.var_35b0) {
-							this.sub_910(var1);
+							this.sub_910(key);
 							return;
 						}
 
-						if (!this.var_a67 && var1 == -4) {
+						if (!this.var_a67 && key == -4) {
 							this.arena.sub_2ec();
 							return;
 						}
 
-						if (!this.var_a67 && var1 == -12) {
+						if (!this.var_a67 && key == -12) {
 							this.arena.sub_16b();
 							return;
 						}
 					} else if (this.var_a17) {
-						this.sub_910(var1);
+						this.sub_910(key);
 						return;
 					}
 
-					if (var1 == -4 || var1 == -12) {
+					if (key == -4 || key == -12) {
 						if (this.var_91b) {
 							if (!this.var_a67) {
 								if (this.var_a17 && !this.var_35b0) {
 									return;
 								}
 
-								if (var1 == -4) {
+								if (key == -4) {
 									this.arena.sub_28d();
 								} else {
 									this.arena.sub_14a();
@@ -2486,13 +2485,13 @@ public class MyCanvas extends Canvas5 implements Runnable {
 								return;
 							}
 
-							this.sub_9bf();
+							this._toPause();
 							return;
 						}
 
 						if (!this.var_92a) {
 							if (!this.var_3463) {
-								this.sub_9bf();
+								this._toPause();
 								return;
 							}
 
@@ -2513,13 +2512,13 @@ public class MyCanvas extends Canvas5 implements Runnable {
 						}
 
 						if (!this.var_3463) {
-							this.sub_9bf();
+							this._toPause();
 							return;
 						}
 					}
 				}
 
-				this.sub_910(var1);
+				this.sub_910(key);
 			}
 		}
 	}
@@ -2543,7 +2542,6 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
 	public void sub_93a(long var1) {
 		super.sub_93a(var1);
-
 		try {
 			if (!this.var_6e8) {
 				this.var_6e8 = true;
@@ -2558,59 +2556,60 @@ public class MyCanvas extends Canvas5 implements Runnable {
 			}
 
 			this.var_13a7 = var1;
-			if ((this.var_13a7 & 2L) > 0L) {
-				this.var_134f = 3;
-				this.var_132b = 1;
+
+			if ((this.var_13a7 & 2L) > 0L) { //jump,left
+				this.upDown = 3;
+				this.leftRight = 1;
 			}
 
-			if ((this.var_13a7 & 32L) > 0L) {
-				this.var_137d = 5;
+			if ((this.var_13a7 & 32L) > 0L) { //fire
+				this._fireUse = 5;
 			}
 
-			if ((this.var_13a7 & 8L) > 0L) {
-				this.var_134f = 3;
-				this.var_132b = 2;
+			if ((this.var_13a7 & 8L) > 0L) { //jump,right
+				this.upDown = 3;
+				this.leftRight = 2;
 			}
 
-			if ((this.var_13a7 & 128L) > 0L) {
-				this.var_134f = 4;
-				this.var_132b = 1;
-				this.var_137d = 5;
+			if ((this.var_13a7 & 128L) > 0L) { //down, left
+				this.upDown = 4;
+				this.leftRight = 1;
+				this._fireUse = 5;
 			}
 
-			if ((this.var_13a7 & 512L) > 0L) {
-				this.var_134f = 4;
-				this.var_132b = 2;
-				this.var_137d = 5;
+			if ((this.var_13a7 & 512L) > 0L) { //down, right
+				this.upDown = 4;
+				this.leftRight = 2;
+				this._fireUse = 5;
 			}
 
-			if ((this.var_13a7 & 65536L) > 0L) {
-				this.var_132b = 1;
+			if ((this.var_13a7 & 65536L) > 0L) { //left
+				this.leftRight = 1;
 			}
 
-			if ((this.var_13a7 & 1048576L) > 0L) {
-				this.var_137d = 5;
+			if ((this.var_13a7 & 1048576L) > 0L) { //fire
+				this._fireUse = 5;
 			}
 
-			if ((this.var_13a7 & 131072L) > 0L) {
-				this.var_132b = 2;
+			if ((this.var_13a7 & 131072L) > 0L) { //right
+				this.leftRight = 2;
 			}
 
-			if ((this.var_13a7 & 262144L) > 0L || this.var_31be) {
-				this.var_134f = 3;
+			if ((this.var_13a7 & 262144L) > 0L || this.var_31be) { //jump
+				this.upDown = 3;
 				this.var_31be = false;
 			}
 
-			if ((this.var_13a7 & 524288L) > 0L || this.var_31f0) {
-				this.var_134f = 4;
+			if ((this.var_13a7 & 524288L) > 0L || this.var_31f0) { //down
+				this.upDown = 4;
 				this.var_31f0 = false;
 			}
 
-			if ((this.var_13a7 & 1L) > 0L) {
-				this.var_137d = 6;
+			if ((this.var_13a7 & 1L) > 0L) { //use
+				this._fireUse = 6;
 			}
 		} catch (Exception var10) {
-			;
+			var10.printStackTrace();
 		}
 
 		if (this.var_844 == 2 || this.var_844 == 4) {
@@ -2626,8 +2625,9 @@ public class MyCanvas extends Canvas5 implements Runnable {
 			this.var_326a = new int[this.var_1efb.length];
 
 			int var3;
-			for (var3 = 0; var3 < this.var_326a.length; this.var_326a[var3] = var3++) {
-				;
+			var3 = 0;
+			while (var3 < this.var_326a.length) {
+				this.var_326a[var3] = var3++;
 			}
 
 			int var4;
@@ -2664,9 +2664,8 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
 			try {
 				System.gc();
-				this.var_d15 = Image.createImage(this.width,
-						this.getheight());
-				Graphics var11 = this.var_d15.getGraphics();
+				this.var_d15 = Image.createImage(this.width, this.getheight());
+				Graphics var11 = arena.canvasView.getGraphics();
 				var11.setClip(0, 0, this.width, this.height);
 				var11.drawImage(this.optionBg, 0, 0, 0);
 				var11.drawImage(this.var_3133,
@@ -2689,7 +2688,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 											: this.var_f45[this.var_234[0]], 8,
 									28 + var4 * 20, 0);
 						} catch (Exception var8) {
-							;
+							var8.printStackTrace();
 						}
 
 						this.paintString(
@@ -2727,9 +2726,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
 					RecordStore var6 = RecordStore.openRecordStore(
 							this.var_12d[7], true);
-					RecordEnumeration var7 = var6
-							.enumerateRecords((RecordFilter) null,
-									(RecordComparator) null, false);
+					RecordEnumeration var7 = var6.enumerateRecords(null, null, false);
 					if (var7.numRecords() > 0) {
 						var11.setColor(0, 0, 0);
 						this.paintString(var11, this.getStr(1) + ": " + var5, 19,
@@ -2806,7 +2803,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 		this.var_3386 = false;
 	}
 
-	public void sub_9bf() {
+	public void _toPause() {
 		if (!this.var_3463) {
 			this.var_3463 = true;
 			this.arena.commandManage(10);
@@ -2815,7 +2812,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 			try {
 				Thread.sleep(10L);
 			} catch (Exception var2) {
-				;
+				var2.printStackTrace();
 			}
 
 			this.var_2e63 = null;
@@ -2823,7 +2820,6 @@ public class MyCanvas extends Canvas5 implements Runnable {
 			if (this.var_270a) {
 				this.playMusic(0, 67, 10, true);
 			}
-
 		}
 	}
 
@@ -2836,9 +2832,8 @@ public class MyCanvas extends Canvas5 implements Runnable {
 	public void hideNotify() {
 		if (!this.arena.isNotMyCanvasCurrent) {
 			super.hideNotify();
-			if (this.var_844 == 1 && this.var_29c3 && this.var_2a41 > 6L
-					&& !this.var_3463) {
-				this.sub_9bf();
+			if (this.var_844 == 1 && this.var_29c3 && this.var_2a41 > 6L && !this.var_3463) {
+				this._toPause();
 			}
 		}
 	}
