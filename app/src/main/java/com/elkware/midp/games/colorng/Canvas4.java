@@ -35,7 +35,7 @@ public abstract class Canvas4 extends Canvas3 {
 
 	public Canvas4(Arena var1) {
 		super(var1);
-		this.var_428 = var1.sub_dc(5033) == 1;
+		this.var_428 = var1.getParameter(5033) == 1;
 		int var2 = this.sub_462(5047);
 		if (var2 != -1) {
 			this.var_453 = var2 == 1;
@@ -80,13 +80,13 @@ public abstract class Canvas4 extends Canvas3 {
 		}
 
 		this.sendList.setCommandListener(this);
-		if (var1.sub_dc(5053) == 1) {
+		if (var1.getParameter(5053) == 1) {
 			this.sendList.addCommand(this.okStr);
 		} else {
 			this.sendList.addCommand(this.backCom);
 		}
 
-		if (var1.sub_dc(5052) == 1) {
+		if (var1.getParameter(5052) == 1) {
 			this.equipCom = new Command(var1.getStr(44), 4, 0);
 		}
 

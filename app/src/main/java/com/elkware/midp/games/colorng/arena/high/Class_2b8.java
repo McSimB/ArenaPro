@@ -1146,11 +1146,11 @@ public class Class_2b8 {
 		var_142 = new int[6];
 
 		for (int var1 = 0; var1 < var_13.length; ++var1) {
-			var_13[var1] = var0.sub_dc(420 + var1 * 5);
-			var_b0[var1] = var0.sub_dc(422 + var1 * 5);
-			var_61[var1] = var0.sub_dc(421 + var1 * 5) * -1;
-			var_111[var1] = var0.sub_dc(423 + var1 * 5);
-			var_142[var1] = var0.sub_dc(424 + var1 * 5);
+			var_13[var1] = var0.getParameter(420 + var1 * 5);
+			var_b0[var1] = var0.getParameter(422 + var1 * 5);
+			var_61[var1] = var0.getParameter(421 + var1 * 5) * -1;
+			var_111[var1] = var0.getParameter(423 + var1 * 5);
+			var_142[var1] = var0.getParameter(424 + var1 * 5);
 		}
 
 	}

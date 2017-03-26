@@ -32,6 +32,10 @@ public class Image {
 		}
 	}
 
+	private Image(int[] rgb, int width, int height, boolean processAlpha) {
+		bitmap = Bitmap.createBitmap(rgb, width, height, Bitmap.Config.ARGB_8888);
+	}
+
 	public static Image createImage(int width, int height) {
 		if(width <= 0 || height <= 0)
 			throw new IllegalArgumentException();
@@ -41,6 +45,10 @@ public class Image {
 
 	public static Image createImage(String name, Activity activity) {
 		return new Image(name, activity);
+	}
+
+	public static Image createRGBImage(int[] rgb, int width, int height, boolean processAlpha) {
+		return new Image(rgb, width, height, processAlpha);
 	}
 
 	public static Image createImage(byte imageData[], int imageOffset, int imageLength) {
@@ -66,13 +74,14 @@ public class Image {
 	}
 
 	public Graphics getGraphics() {
-		throw new IllegalStateException();
+		android.graphics.Canvas bufCanvas = new android.graphics.Canvas(bitmap);
+		Graphics g = new Graphics(bitmap.getWidth(), bitmap.getHeight());
+		g.canvas = bufCanvas;
+		g.firstSave = true;
+		return g;
 	}
 
 	public void getRGB(int[] var5, int i, int var3, int i1, int i2, int var31, int var4) {
 	}
 
-	public static Image createRGBImage(int[] var8, int var_de1, int var_de11, boolean b) {
-		return null;
-	}
 }

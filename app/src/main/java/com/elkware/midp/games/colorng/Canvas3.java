@@ -15,7 +15,7 @@ public abstract class Canvas3 extends Canvas2 implements PlayerListener {
 
 	public Canvas3(Arena var1) {
 		super(var1);
-		int var2 = var1.sub_dc(5034);
+		int var2 = var1.getParameter(5034);
 		if (var2 < 0) {
 			try {
 				throw new IOException(

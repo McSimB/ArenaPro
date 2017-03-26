@@ -23,7 +23,7 @@ import javax.microedition.rms.RecordStoreException;
 
 public abstract class Arena2 extends Arena1 implements CommandListener {
 
-	private final String[] var_43 = new String[] { "RSF6", "RSHS7", "RSAD8" };
+	private final String[] recStores = new String[]{"RSF6", "RSHS7", "RSAD8"};
 	public boolean _forPlayMus1 = true;
 	public boolean var_e8 = true;
 	public boolean var_105 = true;
@@ -92,7 +92,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 
 	void checkLocale() {
 		String var1;
-		if ((var1 = Locale.getDefault().getLanguage()) == null) {
+		if ((var1 = Locale.getDefault().getLanguage()) != null) { // ==
 			var1 = "";
 		}
 
@@ -131,7 +131,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 
 	}
 
-	public int sub_dc(int p) {
+	public int getParameter(int p) {
 		for (int i = 0; i < this.var_310.length; i += 4) {
 			if (p == ((this.var_310[i] & 255) << 8)
 					+ (this.var_310[i + 1] & 255)) {
@@ -155,7 +155,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 
 		this.var_310 = sub_32f("_FF.ini");
 		if (this.var_310 != null) {
-			var_562 = this.sub_dc(5050) == 1;
+			var_562 = this.getParameter(5050) == 1;
 		}
 
 		sub_38f(this, "res.raw");
@@ -179,41 +179,40 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 		return (String) this.var_247.get(var1);
 	}
 
-	public byte[] sub_170(String var1) {
+	public byte[] loadRecStore(String storeName) {
 		try {
-			RecordStore var2 = null;
-			var2 = RecordStore.openRecordStore(var1, false);
-			RecordEnumeration var3 = var2.enumerateRecords(null, null, false);
-			if (var3.hasNextElement()) {
-				byte[] var4 = var3.nextRecord();
-				System.out.println("loadRecordStore " + var1 + ": "
-						+ var4.length + " bytes.");
-				var2.closeRecordStore();
-				this.sub_255(var4);
-				return var4;
+			RecordStore store;
+			store = RecordStore.openRecordStore(storeName, false);
+			RecordEnumeration enumeration = store.enumerateRecords(null, null, false);
+			if (enumeration.hasNextElement()) {
+				byte[] bytes = enumeration.nextRecord();
+				System.out.println("loadRecordStore " + storeName + ": "
+						+ bytes.length + " bytes.");
+				store.closeRecordStore();
+				this.sub_255(bytes);
+				return bytes;
 			}
 
-			var2.closeRecordStore();
+			store.closeRecordStore();
 		} catch (Exception var5) {
-			System.out.println("loadRecordStore: " + var5);
+			System.out.println("loadRecordStore: " + var5 + ". " + storeName);
 		}
 
 		return null;
 	}
 
-	public DataInputStream sub_1c4(String var1) {
-		byte[] var2 = this.sub_170(var1);
-		return var2 != null ? new DataInputStream(
-				new ByteArrayInputStream(var2)) : null;
+	public DataInputStream getDIStream(String s) {
+		byte[] bytes = this.loadRecStore(s);
+		return bytes != null ? new DataInputStream(new ByteArrayInputStream(bytes)) : null;
 	}
 
 	public void sub_1ea() {
 		this.sub_4b4();
-		this.sub_20f();
+		this.loadHighscore();
 
 		try {
-			DataInputStream var1 = this.sub_1c4(this.getStr(201)
-					+ this.var_43[2]);
+			DataInputStream var1 = this.getDIStream(this.getStr(201)
+					+ this.recStores[2]);
 			if (var1 != null) {
 				int var2 = var1.readInt();
 
@@ -227,34 +226,33 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 
 	}
 
-	public void sub_201(String var1, byte[] var2) {
+	public void saveRecordStore(String name, byte[] bytes) {
 		RecordStore var3 = null;
 
 		try {
-			this.sub_255(var2);
-			var3 = RecordStore.openRecordStore(var1, true);
+			this.sub_255(bytes);
+			var3 = RecordStore.openRecordStore(name, true);
 			int var4 = -1;
 			if (var3.getNumRecords() > 0) {
 				RecordEnumeration var5 = var3.enumerateRecords(null, null, false);
 				var4 = var5.nextRecordId();
 			}
 
-			var3.addRecord(var2, 0, var2.length);
-			System.out.println("saveRecordStore " + var1 + ": writing "
-					+ var2.length + " bytes.");
+			var3.addRecord(bytes, 0, bytes.length);
+			System.out.println("saveRecordStore " + name + ": writing "
+					+ bytes.length + " bytes.");
 			if (var4 != -1) {
 				var3.deleteRecord(var4);
-				System.out.println("saveRecordStore " + var1
-						+ ": deleted old record " + var4);
+				System.out.println("saveRecordStore " + name + ": deleted old record " + var4);
 			}
 
-			System.out.println("saveRecordStore " + var1 + ": Total size "
+			System.out.println("saveRecordStore " + name + ": Total size "
 					+ var3.getSize() + "/" + var3.getSizeAvailable()
 					+ " bytes.");
 			var3.closeRecordStore();
 			this.var_188 = false;
 		} catch (Exception var7) {
-			System.out.println("saveRecordStore: " + var7);
+			System.out.println("saveRecordStore: " + var7 + ". " + name);
 			this.var_188 = true;
 
 			try {
@@ -267,23 +265,22 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 		}
 	}
 
-	public void sub_20f() {
+	public void loadHighscore() {
 		try {
-			DataInputStream var1 = this.sub_1c4(this.getStr(201)
-					+ this.var_43[1]);
-			if (var1 != null) {
-				this.var_5ee = (long) (var1.readInt() * 1000);
-				this.var_5db = var1.readInt();
-				this.var_68e = var1.readInt();
-				this.var_675 = var1.readInt();
+			DataInputStream diStream = this.getDIStream(this.getStr(201) + this.recStores[1]);
+			if (diStream != null) {
+				this.var_5ee = (long) (diStream.readInt() * 1000);
+				this.var_5db = diStream.readInt();
+				this.var_68e = diStream.readInt();
+				this.var_675 = diStream.readInt();
 
-				for (int var2 = 0; var2 < this.var_5db; ++var2) {
-					this.var_64d[var2] = var1.readUTF();
-					this.var_666[var2] = var1.readInt();
+				for (int i = 0; i < this.var_5db; ++i) {
+					this.var_64d[i] = diStream.readUTF();
+					this.var_666[i] = diStream.readInt();
 				}
 
-				this.var_6b2 = var1.readBoolean();
-				this.var_590 = var1.readUTF();
+				this.var_6b2 = diStream.readBoolean();
+				this.var_590 = diStream.readUTF();
 			}
 		} catch (Exception var3) {
 			System.out.println("Loading highscore failed " + var3);
@@ -293,7 +290,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 	}
 
 	@Override
-	public void sub_571() {
+	public void saveHighscore() {
 		try {
 			ByteArrayOutputStream var1 = new ByteArrayOutputStream();
 			DataOutputStream var2 = new DataOutputStream(var1);
@@ -309,7 +306,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 
 			var2.writeBoolean(this.var_6b2);
 			var2.writeUTF(this.var_590 != null ? this.var_590 : "");
-			this.sub_201(this.getStr(201) + this.var_43[1], var1.toByteArray());
+			this.saveRecordStore(this.getStr(201) + this.recStores[1], var1.toByteArray());
 		} catch (Exception var4) {
 			System.out.println("Saving highscore failed " + var4);
 		}
@@ -331,22 +328,21 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 				}
 			}
 
-			this.sub_201(this.getStr(201) + this.var_43[2], var1.toByteArray());
+			this.saveRecordStore(this.getStr(201) + this.recStores[2], var1.toByteArray());
 		} catch (Exception var5) {
 			System.out.println("saveFeatureData failed " + var5);
 		}
 
 	}
 
-	private void sub_255(byte[] var1) {
+	private void sub_255(byte[] bytes) {
 		if (this.var_1d6 != null) {
 			this.var_33f = this.var_1d6.getBytes();
 			this.var_1d6 = null;
 		}
 
-		for (int var2 = 0; var2 < var1.length; ++var2) {
-			var1[var2] = (byte) (var1[var2]
-					^ this.var_33f[var2 % this.var_33f.length] ^ var2);
+		for (int i = 0; i < bytes.length; ++i) {
+			bytes[i] = (byte) (bytes[i] ^ this.var_33f[i % this.var_33f.length] ^ i);
 		}
 
 	}
@@ -378,7 +374,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 			long var3 = System.currentTimeMillis();
 			long var5 = var3;
 			long var7 = 0L;
-			DataInputStream var9 = this.sub_1c4(this.getStr(201) + "TS");
+			DataInputStream var9 = this.getDIStream(this.getStr(201) + "TS");
 
 			try {
 				if (var9 != null) {
@@ -400,7 +396,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 				var12.printStackTrace();
 			}
 
-			this.sub_201(this.getStr(201) + "TS", var10.toByteArray());
+			this.saveRecordStore(this.getStr(201) + "TS", var10.toByteArray());
 			return var5 > var3 || var7 > 86400000L * (long) var2;
 		}
 	}
@@ -615,10 +611,8 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 	public void sub_4b4() {
 		this.var_590 = "";
 		this.highscoreNameTextBox = new TextBox(this.getStr(18), this.var_590, 12, 0, this);
-		if (this.sub_485()) {
-			this.saveAndSaveCom = new Command(this.getStr(20), 4, 0);
-			this.highscoreNameTextBox.addCommand(this.saveAndSaveCom);
-		}
+		this.saveAndSaveCom = new Command(this.getStr(20), 4, 0);
+		this.highscoreNameTextBox.addCommand(this.saveAndSaveCom);
 
 		if (this.sub_447()) {
 			this.saveCom = new Command(this.getStr(21), 4, 0);

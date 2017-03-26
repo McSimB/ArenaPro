@@ -24,15 +24,15 @@ import javax.microedition.rms.RecordStoreException;
 public class MyCanvas extends Canvas5 implements Runnable {
 
 	private int var_eb;
-	private final String[] var_12d = new String[]{"RSPL", "RSTU", "RSOPT",
+	private final String[] recStorages = new String[]{"RSPL", "RSTU", "RSOPT",
 			"RSWAR", "RSPHO", "RSSMS", "RSMAX", "RSHI"};
-	private static final String[] var_139 = new String[]{"bt", "bt", "bt",
+	private static final String[] typesBattles = new String[]{"bt", "bt", "bt",
 			"kh", "cc", "bt"};
 	public static final int[] var_154 = new int[]{7, 7, 7, 7, 7, 5};
 	public static final int[] var_1a6 = new int[]{301, 301, 301, 330, 360, 301};
 	public int[] var_234 = new int[9];
 	public int[] var_295 = new int[4];
-	public String var_2f0 = "Player";
+	public String playerName = "Player";
 	private int var_30a = 0;
 	private int var_33e = 0;
 	public boolean[] var_395 = new boolean[5];
@@ -71,19 +71,19 @@ public class MyCanvas extends Canvas5 implements Runnable {
 	public int[] var_b57;
 	public int var_ba9 = 0;
 	private Image logoImage;
-	public Image var_c21;
+	public Image bgImage;
 	public Image championsBg = null;
 	public Image warriorImage = null;
 	private Image var_ced;
-	private Image var_d15;
+	private Image _image;
 	private Image optionBg;
 	private Image var_d92 = null;
-	private Image var_de4;
-	private Image var_e3e;
+	private Image battleImage;
+	private Image overImage;
 	private int var_e7f = 0;
 	private int[] var_ec4;
 	private int[] var_ef3;
-	public Image[] var_f45;
+	public Image[] headsImage;
 	public Image[] var_f8e;
 	public int var_fa2;
 	public int var_fb7;
@@ -159,7 +159,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 	public boolean var_26b0 = false;
 	public boolean var_270a = false;
 	private boolean var_2717 = false;
-	private Image[] var_28d9;
+	private Image[] _images;
 	private int var_28fd;
 	private int var_2923;
 	private int var_296c;
@@ -196,7 +196,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 	public boolean _chall = false;
 	public boolean var_3103 = false;
 	private boolean var_3124 = false;
-	private Image var_3133 = null;
+	private Image resultImage = null;
 	private Music music;
 	private boolean var_31be = false;
 	private boolean var_31f0 = false;
@@ -228,7 +228,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 	private int var_375d;
 	public boolean var_37be = false;
 	private int var_3817 = 0;
-	private static int var_3870 = 45;
+	private static int value45 = 45;
 	private long var_3882 = 0L;
 	private boolean var_38d3 = true;
 
@@ -282,20 +282,20 @@ public class MyCanvas extends Canvas5 implements Runnable {
 		this.sub_630();
 	}
 
-	private final void sub_15c() {
+	private void beginLoadGame() {
 		this.repaint();
 		this.serviceRepaints();
 
 		try {
 			Thread.sleep(500L);
 		} catch (Exception var2) {
-			;
+			var2.printStackTrace();
 		}
 
-		this.sub_83e();
+		this.loadGame();
 	}
 
-	private final void sub_180() {
+	private void sub_180() {
 		if (this.var_91b) {
 			if ((this.upDown == 4 || this.var_31f0) && this.var_6e8) {
 				if (this.var_32c0 < 1) {
@@ -335,7 +335,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
 			this.var_2976 = true;
 			System.gc();
-			this.var_b2f[0] = this.var_2f0;
+			this.var_b2f[0] = this.playerName;
 			this.var_b57 = new int[4];
 			this.var_b57[0] = 0;
 			if (!this.var_91b) {
@@ -388,7 +388,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 					if (this.upDown != 4 && !this.var_31f0) {
 						if (this.var_567 < 2) {
 							if (this.var_567 == 0) {
-								var6 = this.var_f45.length;
+								var6 = this.headsImage.length;
 							} else {
 								var6 = this.var_f8e.length;
 							}
@@ -766,7 +766,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 	public void mainLoop(long var1) {
 		long var3 = System.currentTimeMillis();
 		if (this.var_844 == 5) {
-			this.sub_15c();
+			this.beginLoadGame();
 		} else if (this.var_3463) {
 			return;
 		}
@@ -948,9 +948,9 @@ public class MyCanvas extends Canvas5 implements Runnable {
 				try {
 					Image var5;
 					if (this.var_3657[var4] != 0) {
-						var5 = this.var_f45[this.var_1f6c[this.var_3657[var4] - 1][0] - 1];
+						var5 = this.headsImage[this.var_1f6c[this.var_3657[var4] - 1][0] - 1];
 					} else {
-						var5 = this.var_f45[this.var_234[0]];
+						var5 = this.headsImage[this.var_234[0]];
 					}
 
 					var1.drawImage(var5, 5, 55 + (var4 - this.var_692) * 23, 0);
@@ -1023,18 +1023,18 @@ public class MyCanvas extends Canvas5 implements Runnable {
 			int var4;
 			try {
 				for (var4 = 0; var4 < 3; ++var4) {
-					var2 = this.arena.sub_dc(270 + var4 * 2);
-					var3 = this.arena.sub_dc(271 + var4 * 2) - 41;
+					var2 = this.arena.getParameter(270 + var4 * 2);
+					var3 = this.arena.getParameter(271 + var4 * 2) - 41;
 					var1.setClip(var2, var3, 18, 41);
 					if (this.var_3657[var4] != 0) {
 						var1.drawImage(
-								this.var_f45[this.var_1f6c[this.var_3657[var4] - 1][0] - 1],
+								this.headsImage[this.var_1f6c[this.var_3657[var4] - 1][0] - 1],
 								var2, var3, 0);
 						var1.drawImage(
 								this.var_f8e[this.var_1f6c[this.var_3657[var4] - 1][1] - 1],
 								var2, var3 + 18, 0);
 					} else {
-						var1.drawImage(this.var_f45[this.var_234[0]], var2,
+						var1.drawImage(this.headsImage[this.var_234[0]], var2,
 								var3, 0);
 						var1.drawImage(this.var_f8e[this.var_234[1]], var2,
 								var3 + 18, 0);
@@ -1108,7 +1108,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
 			try {
 				g.setClip(this.width - 15 - 18, 39, 18, 41);
-				g.drawImage(this.var_f45[this.var_234[0]],
+				g.drawImage(this.headsImage[this.var_234[0]],
 						this.width - 15 - 18, 39, 0);
 				g.drawImage(this.var_f8e[this.var_234[1]],
 						this.width - 15 - 18, 57, 0);
@@ -1139,10 +1139,10 @@ public class MyCanvas extends Canvas5 implements Runnable {
 			g.setColor(255, 255, 255);
 			this.paintString(g, this.var_2ae9, 15, 17, this.width - 28);
 			g.setColor(0, 0, 0);
-			this.paintString(g, this.var_2f0, 14, 38, this.width - 17 - 14);
-			this.paintString(g, this.var_2f0, 16, 40, this.width - 17 - 16);
+			this.paintString(g, this.playerName, 14, 38, this.width - 17 - 14);
+			this.paintString(g, this.playerName, 16, 40, this.width - 17 - 16);
 			g.setColor(255, 200, 200);
-			this.paintString(g, this.var_2f0, 15, 39, this.width - 17 - 15);
+			this.paintString(g, this.playerName, 15, 39, this.width - 17 - 15);
 			g.setColor(0, 0, 0);
 			this.paintString(g, this.var_5a4 + " " + this.var_234[7], 14, 54,
 					this.width - 17 - 14);
@@ -1152,7 +1152,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 			this.paintString(g, this.var_5a4 + " " + this.var_234[7], 15, 55,
 					this.width - 17 - 15);
 			g.setClip(this.width - 17 - 18, 39, 18, 41);
-			g.drawImage(this.var_f45[this.var_234[0]],
+			g.drawImage(this.headsImage[this.var_234[0]],
 					this.width - 17 - 18, 39, 0);
 			g.drawImage(this.var_f8e[this.var_234[1]],
 					this.width - 17 - 18, 57, 0);
@@ -1283,7 +1283,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 		if (this.var_a72) {
 			++this.var_2a41;
 			g.setClip(0, 0, this.width, this.height);
-			g.drawImage(this.var_c21, this.var_2c78 / this.var_11d4,
+			g.drawImage(this.bgImage, this.var_2c78 / this.var_11d4,
 					this.var_2cdb / this.var_11fa, 0);
 			g.setClip(0, 0, this.width, this.height);
 			this.var_1c70.paint(g);
@@ -1456,7 +1456,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 					this.var_2b6c = false;
 				} else {
 					if (this.var_a17) {
-						if (this.var_d15 == null) {
+						if (this._image == null) {
 							this.var_11c8 /= 2;
 						} else if (this.var_11c8 < this.width) {
 							this.var_11c8 = Math.max(this.var_11c8 + 2,
@@ -1464,15 +1464,15 @@ public class MyCanvas extends Canvas5 implements Runnable {
 						}
 
 						if (this.var_11c8 < this.width) {
-							g.drawImage(this.var_de4,
-									(this.width - this.var_de4.getWidth())
+							g.drawImage(this.battleImage,
+									(this.width - this.battleImage.getWidth())
 											/ 2 + this.var_11c8, this.height
-											/ 2 - this.var_de4.getHeight(), 0);
-							g.drawImage(this.var_e3e,
-									(this.width - this.var_e3e.getWidth())
+											/ 2 - this.battleImage.getHeight(), 0);
+							g.drawImage(this.overImage,
+									(this.width - this.overImage.getWidth())
 											/ 2 - this.var_11c8,
 									this.height / 2, 0);
-						} else if (this.var_d15 != null) {
+						} else if (this._image != null) {
 							if (this.var_11c8 > this.width) {
 								this.var_e7f = Math.min(
 										(this.getheight() - this.var_e7f) / 2
@@ -1481,8 +1481,8 @@ public class MyCanvas extends Canvas5 implements Runnable {
 							}
 
 							g.setClip(0, 0, this.width, this.var_e7f);
-							g.drawImage(this.var_d15, 0, this.var_e7f
-									- this.var_d15.getHeight(), 0);
+							g.drawImage(this._image, 0, this.var_e7f
+									- this._image.getHeight(), 0);
 						}
 					} else if (this.var_9b6 > 0L) {
 						g.setColor(30, 30, 30);
@@ -1569,20 +1569,20 @@ public class MyCanvas extends Canvas5 implements Runnable {
 	public void initLogo() {
 		Class_202.sub_2c(this);
 		Class_2b8.sub_3eb(this.arena);
-		this.fonts[0] = Font.getFont(32, this.arena.sub_dc(401) == 0 ? 0
-				: 1, this.sub_587(this.arena.sub_dc(400)));
-		this.fonts[1] = Font.getFont(64, this.arena.sub_dc(403) == 0 ? 0
-				: 1, this.sub_587(this.arena.sub_dc(402)));
-		this.fonts[2] = Font.getFont(64, this.arena.sub_dc(405) == 0 ? 0
-				: 1, this.sub_587(this.arena.sub_dc(404)));
-		this.fonts[3] = Font.getFont(64, this.arena.sub_dc(407) == 0 ? 0
-				: 1, this.sub_587(this.arena.sub_dc(406)));
-		this.fonts[4] = Font.getFont(64, (this.arena.sub_dc(409) == 0 ? 0
-				: 1) | 4, this.sub_587(this.arena.sub_dc(408)));
-		this.fonts[5] = Font.getFont(32, this.arena.sub_dc(411) == 0 ? 0
-				: 1, this.sub_587(this.arena.sub_dc(410)));
-		this.fonts[6] = Font.getFont(32, this.arena.sub_dc(413) == 0 ? 0
-				: 1, this.sub_587(this.arena.sub_dc(412)));
+		this.fonts[0] = Font.getFont(32, this.arena.getParameter(401) == 0 ? 0
+				: 1, this.sub_587(this.arena.getParameter(400)));
+		this.fonts[1] = Font.getFont(64, this.arena.getParameter(403) == 0 ? 0
+				: 1, this.sub_587(this.arena.getParameter(402)));
+		this.fonts[2] = Font.getFont(64, this.arena.getParameter(405) == 0 ? 0
+				: 1, this.sub_587(this.arena.getParameter(404)));
+		this.fonts[3] = Font.getFont(64, this.arena.getParameter(407) == 0 ? 0
+				: 1, this.sub_587(this.arena.getParameter(406)));
+		this.fonts[4] = Font.getFont(64, (this.arena.getParameter(409) == 0 ? 0
+				: 1) | 4, this.sub_587(this.arena.getParameter(408)));
+		this.fonts[5] = Font.getFont(32, this.arena.getParameter(411) == 0 ? 0
+				: 1, this.sub_587(this.arena.getParameter(410)));
+		this.fonts[6] = Font.getFont(32, this.arena.getParameter(413) == 0 ? 0
+				: 1, this.sub_587(this.arena.getParameter(412)));
 		System.gc();
 		this.logoImage = this.openImage(2);
 		this.var_844 = 5;
@@ -1647,7 +1647,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 		} else {
 			if (Thread.currentThread() == this.var_2f12) {
 				this.arena.sub_47a(this.sub_1092(this.var_2a7b, 0),
-						this.var_2f0);
+						this.playerName);
 				this.var_2f12 = null;
 				this.sub_1035();
 			} else if (Thread.currentThread() == this.var_2f3f) {
@@ -1731,7 +1731,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 	}
 
 	private void sub_737(int var1) {
-		this.sub_ffe();
+		this.threadToNull();
 		this.var_a67 = false;
 		this.var_3594 = true;
 		System.gc();
@@ -1753,7 +1753,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 		this.var_24b6 = this.var_2510 = this.var_23a7 = this.var_23cd = 0;
 		this.var_1c98 = null;
 		this.var_1cdd = null;
-		this.var_d15 = null;
+		this._image = null;
 		this.var_1e1d.clear();
 		this.var_3386 = true;
 		this.var_3103 = false;
@@ -1777,8 +1777,8 @@ public class MyCanvas extends Canvas5 implements Runnable {
 		System.gc();
 		System.gc();
 		this.sub_b71(20);
-		if (this.var_c21 == null) {
-			this.var_c21 = this.openImage(163);
+		if (this.bgImage == null) {
+			this.bgImage = this.openImage(163);
 		}
 
 		this.sub_f23();
@@ -1788,7 +1788,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
 		try {
 			DataInputStream var2 = new DataInputStream(this.arena.getAssets().
-					open("l" + var1 + var_139[this.var_891] + ".lvl"));
+					open("l" + var1 + typesBattles[this.var_891] + ".lvl"));
 			this.var_1d1c = var2.readByte();
 			this.var_1d37 = var2.readByte();
 			this.var_1c98 = new byte[this.var_1d1c * this.var_1d37];
@@ -1983,7 +1983,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
 			this.sub_b71(80);
 			this.var_1efb[0] = new Class_2b8(new MySprite(
-					this.var_f45[this.var_234[0]], 18, 18), new MySprite(
+					this.headsImage[this.var_234[0]], 18, 18), new MySprite(
 					this.var_f8e[this.var_234[1]], 18, 23), 50, 20,
 					this.var_234[2] * 5 + 20, (this.var_234[3] / 2 + 3)
 					* this.var_3e7 / this.var_3fd,
@@ -2004,7 +2004,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 						int var26 = this.var_20f8[var13 - 1] / 10 + 2;
 						this.var_1efb[var13] = new Class_2b8(
 								new MySprite(
-										this.var_f45[this.var_1f6c[this.var_b57[var13] - 1][0] - 1],
+										this.headsImage[this.var_1f6c[this.var_b57[var13] - 1][0] - 1],
 										18, 18),
 								new MySprite(
 										this.var_f8e[this.var_1f6c[this.var_b57[var13] - 1][1] - 1],
@@ -2033,7 +2033,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 					try {
 						this.var_1efb[var13] = new Class_2b8(
 								new MySprite(
-										this.var_f45[this.var_1f6c[this.var_b57[var13] - 1][0] - 1],
+										this.headsImage[this.var_1f6c[this.var_b57[var13] - 1][0] - 1],
 										18, 18),
 								new MySprite(
 										this.var_f8e[this.var_1f6c[this.var_b57[var13] - 1][1] - 1],
@@ -2061,9 +2061,9 @@ public class MyCanvas extends Canvas5 implements Runnable {
 			}
 
 			this.var_11d4 = this.var_1d1c * 15
-					/ (this.var_c21.getWidth() - this.width);
+					/ (this.bgImage.getWidth() - this.width);
 			this.var_11fa = this.var_1d37 * 15
-					/ (this.var_c21.getHeight() - this.height);
+					/ (this.bgImage.getHeight() - this.height);
 		} catch (Exception var20) {
 			;
 		}
@@ -2128,13 +2128,14 @@ public class MyCanvas extends Canvas5 implements Runnable {
 		this.var_1c70.setPosition(var2, var3);
 	}
 
-	public void sub_83e() {
+	@Override
+	public void loadGame() {
 		if (!this.var_3124 && this.var_2e63 == Thread.currentThread()) {
-			this.sub_116d(true);
+			this._setLight(true);
 			this.sub_fea();
 			this.var_eb = 20;
 			this.var_3559 = false;
-			this.sub_b50(0);
+			this.setPercent2(0);
 			this.sub_e9a();
 			this.sub_f23();
 
@@ -2146,61 +2147,60 @@ public class MyCanvas extends Canvas5 implements Runnable {
 			}
 
 			System.gc();
-			this.sub_b50(10);
+			this.setPercent2(10);
 			System.gc();
-			this.var_c21 = this.openImage(163);
-			this.sub_b50(15);
+			this.bgImage = this.openImage(163);
+			this.setPercent2(15);
 			System.gc();
-			this.sub_b50(20);
-			this.sub_b50(30);
+			this.setPercent2(20);
+			this.setPercent2(30);
 			this.sub_8c4();
 			System.gc();
-			this.sub_b50(35);
-			this.var_458 = (byte) this.arena.sub_dc(417);
-			this.var_40e = (byte) this.arena.sub_dc(470);
-			this.var_44a = (byte) this.arena.sub_dc(471);
-			this.var_3e7 = (byte) this.arena.sub_dc(418);
-			this.var_3fd = (byte) this.arena.sub_dc(419);
+			this.setPercent2(35);
+			this.var_458 = (byte) this.arena.getParameter(417);
+			this.var_40e = (byte) this.arena.getParameter(470);
+			this.var_44a = (byte) this.arena.getParameter(471);
+			this.var_3e7 = (byte) this.arena.getParameter(418);
+			this.var_3fd = (byte) this.arena.getParameter(419);
 			this.var_fb7 = this.sub_160();
 			this.var_1011 = this.sub_160();
 			this.var_1074 = this.sub_160();
-			this.sub_b50(55);
+			this.setPercent2(55);
 			System.gc();
-			this.var_de4 = this.openImage(166);
-			this.var_e3e = this.openImage(169);
-			this.sub_b50(60);
+			this.battleImage = this.openImage(166);
+			this.overImage = this.openImage(169);
+			this.setPercent2(60);
 			String[] var29 = null;
-			int[][] var2 = (int[][]) null;
+			int[][] var2 = null;
 			RecordStore var3 = null;
 
-			int var5;
-			int var7;
-			int var8;
-			int var9;
+			int i;
+			int i1;
+			int i2;
+			int i3;
 			try {
-				var3 = RecordStore.openRecordStore(this.var_12d[5], false);
+				var3 = RecordStore.openRecordStore(this.recStorages[5], false);
 				this.var_733 = 0;
 				if (var3 != null) {
 					this.var_733 = var3.getNumRecords();
 					var29 = new String[this.var_733];
 					var2 = new int[this.var_733][9];
 					RecordEnumeration var4 = var3
-							.enumerateRecords((RecordFilter) null,
-									(RecordComparator) null, false);
+							.enumerateRecords(null, null, false);
 
-					for (var5 = 0; var5 < this.var_733; ++var5) {
+					for (i = 0; i < this.var_733; ++i) {
 						byte[] var6 = var4.nextRecord();
-						var7 = this.var_733 - var5 - 1;
-						var29[var7] = "";
+						i1 = this.var_733 - i - 1;
+						var29[i1] = "";
 
-						for (var8 = 1; var8 < 1 + var6[0]; ++var8) {
-							var29[var7] = var29[var7] + (char) var6[var8];
+						for (i2 = 1; i2 < 1 + var6[0]; ++i2) {
+							var29[i1] = var29[i1] + (char) var6[i2];
 						}
 
-						var8 = 0;
+						i2 = 0;
 
-						for (var9 = var29[var7].length() + 1; var9 < var6.length; ++var9) {
-							var2[var7][var8++] = var6[var9];
+						for (i3 = var29[i1].length() + 1; i3 < var6.length; ++i3) {
+							var2[i1][i2++] = var6[i3];
 						}
 					}
 				}
@@ -2221,23 +2221,23 @@ public class MyCanvas extends Canvas5 implements Runnable {
 			}
 
 			byte var32;
-			DataInputStream var30;
+			DataInputStream dataInputStream;
 			try {
 				var32 = 0;
 				Image[] var33 = null;
-				var30 = this.arena.sub_1c4(this.var_12d[4]);
-				if (var30 != null) {
-					var32 = var30.readByte();
+				dataInputStream = this.arena.getDIStream(this.recStorages[4]);
+				if (dataInputStream != null) {
+					var32 = dataInputStream.readByte();
 					var33 = new Image[var32];
 
-					for (var7 = 0; var7 < var32; ++var7) {
-						var33[var7] = Image.createImage(18, 18);
+					for (i1 = 0; i1 < var32; ++i1) {
+						var33[i1] = Image.createImage(18, 18);
 
-						for (var8 = 0; var8 < 18; ++var8) {
-							for (var9 = 0; var9 < 18; ++var9) {
-								int var10 = 255 & var30.readByte()
-										| (255 & var30.readByte()) << 8
-										| (255 & var30.readByte()) << 16;
+						for (i2 = 0; i2 < 18; ++i2) {
+							for (i3 = 0; i3 < 18; ++i3) {
+								int var10 = 255 & dataInputStream.readByte()
+										| (255 & dataInputStream.readByte()) << 8
+										| (255 & dataInputStream.readByte()) << 16;
 								if (var10 == 7799014) {
 									var10 &= 16777215;
 								} else {
@@ -2245,31 +2245,31 @@ public class MyCanvas extends Canvas5 implements Runnable {
 								}
 
 								com.siemens.mp.lcdui.Image.setPixelColor(
-										var33[var7], var8, var9, var10);
+										var33[i1], i2, i3, var10);
 							}
 						}
 					}
 				}
 
-				if (var30 != null) {
-					var30.close();
+				if (dataInputStream != null) {
+					dataInputStream.close();
 				}
 
-				this.var_f45 = new Image[4 + var32];
+				this.headsImage = new Image[4 + var32];
 				System.gc();
 
-				for (var7 = 0; var7 < 4; ++var7) {
-					this.var_f45[var7] = this.openImage(177 + var7);
+				for (i1 = 0; i1 < 4; ++i1) {
+					this.headsImage[i1] = this.openImage(177 + i1);
 				}
 
-				for (var7 = 0; var7 < var32; ++var7) {
-					this.var_f45[4 + var7] = this.sub_f5e(var33[var7]);
+				for (i1 = 0; i1 < var32; ++i1) {
+					this.headsImage[4 + i1] = this.createHeadImage(var33[i1]);
 				}
 			} catch (Exception var26) {
 				var26.printStackTrace();
 			}
 
-			this.sub_b50(70);
+			this.setPercent2(70);
 			this.var_f8e = new Image[4];
 			System.gc();
 
@@ -2277,60 +2277,59 @@ public class MyCanvas extends Canvas5 implements Runnable {
 				this.var_f8e[var31] = this.openImage(16 + var31);
 			}
 
-			this.sub_b50(80);
-			var30 = this.arena.sub_1c4(this.var_12d[0]);
-			if (var30 == null) {
+			this.setPercent2(80);
+			dataInputStream = this.arena.getDIStream(this.recStorages[0]);
+			if (dataInputStream == null) {
 				this.sub_a84(true);
 			} else {
 				try {
-					this.var_2f0 = var30.readUTF();
+					this.playerName = dataInputStream.readUTF();
 
-					for (var5 = 0; var5 < this.var_234.length; ++var5) {
-						this.var_234[var5] = var30.readInt();
+					for (i = 0; i < this.var_234.length; ++i) {
+						this.var_234[i] = dataInputStream.readInt();
 					}
 
-					var30.close();
+					dataInputStream.close();
 				} catch (Exception var25) {
 					var25.printStackTrace();
 				}
 			}
 
-			this.sub_b50(90);
+			this.setPercent2(90);
 			var32 = 0;
 
 			int var34;
 			try {
-				var30 = new DataInputStream(this.arena.getAssets()
-						.open("warrior.dat"));
-				var32 = var30.readByte();
+				dataInputStream = new DataInputStream(this.arena.getAssets().open("warrior.dat"));
+				var32 = dataInputStream.readByte();
 				this.var_1f6c = new byte[var32 + this.var_733][9];
 
 				for (var34 = 0; var34 < var32; ++var34) {
-					for (var7 = 0; var7 < 9; ++var7) {
-						this.var_1f6c[var34][var7] = var30.readByte();
-						if (var7 == 1
-								&& (this.var_1f6c[var34][var7] < 1 || this.var_1f6c[var34][var7] > 4)) {
-							this.var_1f6c[var34][var7] = 1;
+					for (i1 = 0; i1 < 9; ++i1) {
+						this.var_1f6c[var34][i1] = dataInputStream.readByte();
+						if (i1 == 1
+								&& (this.var_1f6c[var34][i1] < 1 || this.var_1f6c[var34][i1] > 4)) {
+							this.var_1f6c[var34][i1] = 1;
 						}
 					}
 				}
 
-				var30.close();
+				dataInputStream.close();
 			} catch (Exception var24) {
 				var24.printStackTrace();
 			}
 
 			if (var2 != null) {
 				for (var34 = 0; var34 < this.var_733; ++var34) {
-					for (var7 = 0; var7 < 9; ++var7) {
-						this.var_1f6c[var34 + var32][var7] = (byte) var2[var34][var7];
+					for (i1 = 0; i1 < 9; ++i1) {
+						this.var_1f6c[var34 + var32][i1] = (byte) var2[var34][i1];
 					}
 				}
 			}
 
-			this.sub_b50(95);
+			this.setPercent2(95);
 			this.var_b2f = new String[this.var_eb + 1 + this.var_733];
-			this.var_b2f[0] = this.var_2f0;
+			this.var_b2f[0] = this.playerName;
 
 			for (var34 = 0; var34 < this.var_eb; ++var34) {
 				this.var_b2f[var34 + 1] = this.arena.getStr(500 + var34);
@@ -2344,12 +2343,11 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
 			this.var_eb += this.var_733;
 			this.optionBg = this.openImage(168);
-			this.sub_b50(100);
-			this.arena.sub_371();
+			this.setPercent2(100);
 			this.sub_107d();
 			this.var_3124 = true;
 			this.sub_8ab();
-			this.sub_ffe();
+			this.threadToNull();
 			System.gc();
 			Arena2.sub_3ee();
 		}
@@ -2616,7 +2614,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 			this.sub_6c0();
 		}
 
-		if (this.var_a89 > 10 && this.var_d15 == null) {
+		if (this.var_a89 > 10 && this._image == null) {
 			if ((this.var_91b || this.var_92a) && this.var_91b) {
 				this.var_3309 = true;
 			}
@@ -2664,42 +2662,40 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
 			try {
 				System.gc();
-				this.var_d15 = Image.createImage(this.width, this.getheight());
-				Graphics var11 = arena.canvasView.getGraphics();
-				var11.setClip(0, 0, this.width, this.height);
-				var11.drawImage(this.optionBg, 0, 0, 0);
-				var11.drawImage(this.var_3133,
-						(this.width - this.var_3133.getWidth()) / 2, 15, 0);
-				var11.setFont(this.fonts[1]);
+				this._image = Image.createImage(this.width, this.getheight());
+				Graphics g = _image.getGraphics();
+				g.setClip(0, 0, this.width, this.height);
+				g.drawImage(this.optionBg, 0, 0, 0);
+				g.drawImage(this.resultImage,
+						(this.width - this.resultImage.getWidth()) / 2, 15, 0);
+				g.setFont(this.fonts[1]);
 				if (this.var_891 != 5) {
 					for (var4 = 0; var4 < this.var_326a.length; ++var4) {
 						if (this.var_b57[this.var_326a[var4]] == 0) {
-							var11.setColor(255, 50, 50);
+							g.setColor(255, 50, 50);
 						} else {
-							var11.setColor(230, 230, 230);
+							g.setColor(230, 230, 230);
 						}
 
-						var11.setClip(8, 28 + var4 * 20, 18, 18);
+						g.setClip(8, 28 + var4 * 20, 18, 18);
 
 						try {
 							var5 = this.var_326a[var4];
-							var11.drawImage(
-									var5 != 0 ? this.var_f45[this.var_1f6c[this.var_b57[var5] - 1][0] - 1]
-											: this.var_f45[this.var_234[0]], 8,
+							g.drawImage(
+									var5 != 0 ? this.headsImage[this.var_1f6c[this.var_b57[var5] - 1][0] - 1]
+											: this.headsImage[this.var_234[0]], 8,
 									28 + var4 * 20, 0);
 						} catch (Exception var8) {
 							var8.printStackTrace();
 						}
 
 						this.paintString(
-								var11,
-								var4
-										+ 1
-										+ ". "
+								g,
+								var4 + 1 + ". "
 										+ this.var_b2f[this.var_b57[this.var_326a[var4]]],
 								25, 31 + var4 * 20, 70);
 						this.paintString(
-								var11,
+								g,
 								(this.var_1efb[this.var_326a[var4]].var_a1b < 10 ? "0"
 										: "")
 										+ this.var_1efb[this.var_326a[var4]].var_a1b,
@@ -2709,10 +2705,10 @@ public class MyCanvas extends Canvas5 implements Runnable {
 					var4 = this.var_1f25.var_a1b
 							* (this.var_20f8 != null ? this.var_20f8[0] / 5 + 5
 							: 5) / 5;
-					var11.setColor(0, 0, 0);
-					var11.drawString(this.getStr(295) + " " + var4, 19, 31, 0);
-					var11.setColor(200, 200, 200);
-					var11.drawString(this.getStr(295) + " " + var4, 20, 32, 0);
+					g.setColor(0, 0, 0);
+					g.drawString(this.getStr(295) + " " + var4, 19, 31, 0);
+					g.setColor(200, 200, 200);
+					g.drawString(this.getStr(295) + " " + var4, 20, 32, 0);
 					this.sub_c2e();
 					if (this.var_2a7b != null) {
 						var5 = this.sub_1092(this.var_2a7b, 0);
@@ -2725,26 +2721,26 @@ public class MyCanvas extends Canvas5 implements Runnable {
 					}
 
 					RecordStore var6 = RecordStore.openRecordStore(
-							this.var_12d[7], true);
+							this.recStorages[7], true);
 					RecordEnumeration var7 = var6.enumerateRecords(null, null, false);
 					if (var7.numRecords() > 0) {
-						var11.setColor(0, 0, 0);
-						this.paintString(var11, this.getStr(1) + ": " + var5, 19,
+						g.setColor(0, 0, 0);
+						this.paintString(g, this.getStr(1) + ": " + var5, 19,
 								49, this.width - 36);
 						if (var5 >= this.var_1f25.var_a1b) {
-							var11.setColor(250, 150, 150);
+							g.setColor(250, 150, 150);
 						} else {
-							var11.setColor(150, 250, 150);
+							g.setColor(150, 250, 150);
 						}
 
-						this.paintString(var11, this.getStr(1) + ": " + var5, 20,
+						this.paintString(g, this.getStr(1) + ": " + var5, 20,
 								50, this.width - 36);
 					} else {
-						var11.setColor(0, 0, 0);
-						var11.setFont(this.fonts[0]);
-						var11.drawString(super.arena.getStr(287), 15, 44, 0);
-						var11.setColor(200, 200, 200);
-						var11.drawString(super.arena.getStr(287), 16, 45, 0);
+						g.setColor(0, 0, 0);
+						g.setFont(this.fonts[0]);
+						g.drawString(super.arena.getStr(287), 15, 44, 0);
+						g.setColor(200, 200, 200);
+						g.drawString(super.arena.getStr(287), 16, 45, 0);
 					}
 
 					var6.closeRecordStore();
@@ -2752,7 +2748,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 			} catch (Exception var9) {
 				var9.printStackTrace();
 			}
-		} else if (this.var_a17 && this.var_d15 != null && this.var_a89 > 10) {
+		} else if (this.var_a17 && this._image != null && this.var_a89 > 10) {
 			if (this.var_92a) {
 				this.var_2a29 = true;
 			}
@@ -2871,33 +2867,33 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
 	public void sub_a65() {
 		try {
-			this.var_b2f[0] = this.var_2f0;
+			this.var_b2f[0] = this.playerName;
 			ByteArrayOutputStream var1 = new ByteArrayOutputStream();
 			DataOutputStream var2 = new DataOutputStream(var1);
-			var2.writeUTF(this.var_2f0);
+			var2.writeUTF(this.playerName);
 
-			for (int var3 = 0; var3 < this.var_234.length; ++var3) {
-				var2.writeInt(this.var_234[var3]);
+			for (int aVar_234 : this.var_234) {
+				var2.writeInt(aVar_234);
 			}
 
-			this.arena.sub_201(this.var_12d[0], var1.toByteArray());
+			this.arena.saveRecordStore(this.recStorages[0], var1.toByteArray());
 			var2.close();
 			if (this.var_4c6) {
 				var1 = new ByteArrayOutputStream();
 				DataOutputStream var5 = new DataOutputStream(var1);
 				var5.writeByte(0);
-				this.arena.sub_201(this.var_12d[1], var1.toByteArray());
+				this.arena.saveRecordStore(this.recStorages[1], var1.toByteArray());
 				var5.close();
 			}
 		} catch (Exception var4) {
-			;
+			var4.printStackTrace();
 		}
 
 	}
 
 	public void sub_a84(boolean var1) {
 		try {
-			this.var_2f0 = this.getStr(525);
+			this.playerName = this.getStr(525);
 
 			for (int var2 = 0; var2 < this.var_234.length; ++var2) {
 				this.var_234[var2] = 10;
@@ -2911,13 +2907,13 @@ public class MyCanvas extends Canvas5 implements Runnable {
 			if (var1) {
 				ByteArrayOutputStream var6 = new ByteArrayOutputStream();
 				DataOutputStream var3 = new DataOutputStream(var6);
-				var3.writeUTF(this.var_2f0);
+				var3.writeUTF(this.playerName);
 
 				for (int var4 = 0; var4 < this.var_234.length; ++var4) {
 					var3.writeInt(this.var_234[var4]);
 				}
 
-				this.arena.sub_201(this.var_12d[0], var6.toByteArray());
+				this.arena.saveRecordStore(this.recStorages[0], var6.toByteArray());
 				var3.close();
 			}
 		} catch (Exception var5) {
@@ -2937,12 +2933,12 @@ public class MyCanvas extends Canvas5 implements Runnable {
 	}
 
 	public void sub_af9() {
-		DataInputStream var1 = this.arena.sub_1c4(this.var_12d[0]);
+		DataInputStream var1 = this.arena.getDIStream(this.recStorages[0]);
 		if (var1 == null) {
 			this.sub_a84(true);
 		} else {
 			try {
-				this.var_2f0 = var1.readUTF();
+				this.playerName = var1.readUTF();
 
 				for (int var2 = 0; var2 < this.var_234.length; ++var2) {
 					this.var_234[var2] = var1.readInt();
@@ -2968,7 +2964,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 		}
 	}
 
-	private void sub_b50(int var1) {
+	private void setPercent2(int var1) {
 		this.var_3559 = true;
 		this.percent = var1;
 		this.repaint();
@@ -2976,7 +2972,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 	}
 
 	private void sub_b71(int var1) {
-		this.sub_ffe();
+		this.threadToNull();
 		this.var_38d3 = true;
 		this.percent = var1;
 		this.repaint();
@@ -3040,7 +3036,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 		RecordStore var1 = null;
 
 		try {
-			var1 = RecordStore.openRecordStore(this.var_12d[7], true);
+			var1 = RecordStore.openRecordStore(this.recStorages[7], true);
 			RecordEnumeration var2 = var1.enumerateRecords((RecordFilter) null,
 					(RecordComparator) null, false);
 			this.var_2a7b = var2.nextRecord();
@@ -3089,7 +3085,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 		RecordStore var19 = null;
 
 		try {
-			var19 = RecordStore.openRecordStore(this.var_12d[7], true);
+			var19 = RecordStore.openRecordStore(this.recStorages[7], true);
 			RecordEnumeration var18 = var19.enumerateRecords(
 					(RecordFilter) null, (RecordComparator) null, false);
 			var18.destroy();
@@ -3283,7 +3279,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 				}
 			}
 
-			this.arena.sub_201(this.var_12d[1], var1.toByteArray());
+			this.arena.saveRecordStore(this.recStorages[1], var1.toByteArray());
 			var2.close();
 		} catch (Exception var4) {
 			;
@@ -3293,7 +3289,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
 	private void sub_d9b() {
 		try {
-			DataInputStream var1 = this.arena.sub_1c4(this.var_12d[1]);
+			DataInputStream var1 = this.arena.getDIStream(this.recStorages[1]);
 			var1.readByte();
 			this.var_3612 = var1.readByte();
 			this.var_3706 = var1.readByte();
@@ -3313,7 +3309,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 			}
 
 			this.var_36a6 = new String[var6];
-			this.var_36a6[0] = this.var_2f0;
+			this.var_36a6[0] = this.playerName;
 
 			for (var4 = 1; var4 < var6; ++var4) {
 				this.var_36a6[var4] = this.var_b2f[var4];
@@ -3332,7 +3328,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 		boolean var1 = false;
 
 		try {
-			DataInputStream var2 = this.arena.sub_1c4(this.var_12d[1]);
+			DataInputStream var2 = this.arena.getDIStream(this.recStorages[1]);
 			var1 = var2 != null && var2.readByte() == 1;
 			var2.close();
 		} catch (Exception var3) {
@@ -3354,7 +3350,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
 	public void sub_e9a() {
 		try {
-			String var1 = this.arena.sub_13f(this.var_12d[2]);
+			String var1 = this.arena.sub_13f(this.recStorages[2]);
 			if (var1 == null) {
 				this.sub_e41();
 			} else {
@@ -3372,12 +3368,12 @@ public class MyCanvas extends Canvas5 implements Runnable {
 			;
 		}
 
-		this.sub_116d(this.var_395[1]);
+		this._setLight(this.var_395[1]);
 	}
 
 	public void sub_ec7() {
 		try {
-			StringBuffer var1 = new StringBuffer();
+			StringBuilder var1 = new StringBuilder();
 
 			for (int var2 = 0; var2 < 5; ++var2) {
 				if (this.var_395[var2]) {
@@ -3387,9 +3383,9 @@ public class MyCanvas extends Canvas5 implements Runnable {
 				}
 			}
 
-			this.arena.sub_f0(this.var_12d[2], var1.toString(), true);
+			this.arena.sub_f0(this.recStorages[2], var1.toString(), true);
 		} catch (Exception var3) {
-			;
+			var3.printStackTrace();
 		}
 
 		this.sub_f23();
@@ -3401,15 +3397,15 @@ public class MyCanvas extends Canvas5 implements Runnable {
 	}
 
 	public void sub_f51(Image var1) {
-		Image[] var2 = new Image[this.var_f45.length + 1];
+		Image[] var2 = new Image[this.headsImage.length + 1];
 
 		int var3;
-		for (var3 = 0; var3 < this.var_f45.length; ++var3) {
-			var2[var3] = this.var_f45[var3];
+		for (var3 = 0; var3 < this.headsImage.length; ++var3) {
+			var2[var3] = this.headsImage[var3];
 		}
 
-		var2[var2.length - 1] = this.sub_f5e(var1);
-		this.var_f45 = var2;
+		var2[var2.length - 1] = this.createHeadImage(var1);
+		this.headsImage = var2;
 		var3 = var1.getWidth();
 		int var4 = var1.getHeight();
 		int[] var5 = new int[var3 * var4];
@@ -3433,7 +3429,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 			}
 		}
 
-		DataInputStream var15 = this.arena.sub_1c4(this.var_12d[4]);
+		DataInputStream var15 = this.arena.getDIStream(this.recStorages[4]);
 		boolean var16 = var15 == null;
 		byte[] var9 = null;
 		byte var10 = 0;
@@ -3460,7 +3456,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 			}
 
 			var12.write(var6);
-			this.arena.sub_201(this.var_12d[4], var11.toByteArray());
+			this.arena.saveRecordStore(this.recStorages[4], var11.toByteArray());
 			var12.close();
 		} catch (Exception var13) {
 			;
@@ -3468,7 +3464,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
 	}
 
-	private Image sub_f5e(Image var1) {
+	private Image createHeadImage(Image var1) {
 		Image var2 = Image.createImage(36, 18);
 
 		for (int var3 = 0; var3 < 18; ++var3) {
@@ -3481,8 +3477,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
 				com.siemens.mp.lcdui.Image.setPixelColor(var2, 35 - var4, var3,
 						var5);
-				com.siemens.mp.lcdui.Image
-						.setPixelColor(var2, var4, var3, var5);
+				com.siemens.mp.lcdui.Image.setPixelColor(var2, var4, var3, var5);
 			}
 		}
 
@@ -3530,17 +3525,17 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
 				this.setPercent(25);
 				System.gc();
-				Image var17 = Image.createRGBImage(var8, this.arena.var_de1,
+				Image image = Image.createRGBImage(var8, this.arena.var_de1,
 						this.arena.var_de1, true);
 				this.setPercent(30);
-				this.sub_f51(var17);
+				this.sub_f51(image);
 				this.setPercent(40);
 				Image var18 = Image.createImage(20, 20);
 				this.setPercent(50);
-				var18.getGraphics().drawImage(var17, 4, 4, 0);
+				var18.getGraphics().drawImage(image, 4, 4, 0);
 				this.sub_f99(var18);
 				this.setPercent(70);
-				var7 = (byte) this.var_f45.length;
+				var7 = (byte) this.headsImage.length;
 			}
 
 			byte[] var16 = new byte[10 + var2.length()];
@@ -3555,7 +3550,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 			var16[7 + var2.length()] = (byte) (60 + Class_2b8.sub_62(80));
 			var16[8 + var2.length()] = (byte) Class_2b8.sub_62(2);
 			var16[9 + var2.length()] = (byte) (Class_2b8.sub_62(2) + 1);
-			RecordStore var19 = RecordStore.openRecordStore(this.var_12d[5],
+			RecordStore var19 = RecordStore.openRecordStore(this.recStorages[5],
 					true);
 			if (var3) {
 				var19.setRecord(this.arena.var_bd9, var16, 0, var16.length);
@@ -3592,102 +3587,93 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
 			this.var_1f6c = var22;
 		} catch (Exception var14) {
-			;
+			var14.printStackTrace();
 		}
 
 	}
 
-	public void sub_f99(Image var1) {
-		int var2 = var1.getWidth();
-		int var3 = var1.getHeight();
-		if (this.var_28d9 == null) {
-			this.var_28d9 = new Image[0];
+	public void sub_f99(Image image) {
+		int var2 = image.getWidth();
+		int var3 = image.getHeight();
+		if (this._images == null) {
+			this._images = new Image[0];
 		}
 
-		Image[] var4 = new Image[this.var_28d9.length + 1];
-		System.arraycopy(this.var_28d9, 0, var4, 0, this.var_28d9.length);
-		var4[this.var_28d9.length] = var1;
-		this.var_28d9 = var4;
-		var4 = null;
+		Image[] images = new Image[this._images.length + 1];
+		System.arraycopy(this._images, 0, images, 0, this._images.length);
+		images[this._images.length] = image;
+		this._images = images;
 		int[] var5 = new int[var2 * var3];
 		byte[] var6 = new byte[var2 * var3 * 3];
-		int var7 = var2;
-		int var8 = var3;
 
-		for (int var9 = 0; var9 < var7; ++var9) {
-			for (int var10 = 0; var10 < var8; ++var10) {
-				var5[var9 * var7 + var10] = com.siemens.mp.lcdui.Image
-						.getPixelColor(var1, var9, var10);
-				if (var5[var9 * var7 + var10] >> 24 == 0) {
-					var5[var9 * var7 + var10] = 7799014;
+		for (int var9 = 0; var9 < var2; ++var9) {
+			for (int var10 = 0; var10 < var3; ++var10) {
+				var5[var9 * var2 + var10] = com.siemens.mp.lcdui.Image
+						.getPixelColor(image, var9, var10);
+				if (var5[var9 * var2 + var10] >> 24 == 0) {
+					var5[var9 * var2 + var10] = 7799014;
 				}
 
-				var6[(var9 * var7 + var10) * 3] = (byte) (var5[var9 * var7
+				var6[(var9 * var2 + var10) * 3] = (byte) (var5[var9 * var2
 						+ var10] & 255);
-				var6[(var9 * var7 + var10) * 3 + 1] = (byte) (var5[var9 * var7
+				var6[(var9 * var2 + var10) * 3 + 1] = (byte) (var5[var9 * var2
 						+ var10] >> 8 & 255);
-				var6[(var9 * var7 + var10) * 3 + 2] = (byte) (var5[var9 * var7
+				var6[(var9 * var2 + var10) * 3 + 2] = (byte) (var5[var9 * var2
 						+ var10] >> 16 & 255);
 			}
 		}
 
 		try {
-			RecordStore var12 = RecordStore.openRecordStore(this.var_12d[6],
-					true);
+			RecordStore var12 = RecordStore.openRecordStore(this.recStorages[6], true);
 			var12.addRecord(var6, 0, var6.length);
 			var12.closeRecordStore();
 		} catch (Exception var11) {
-			;
+			var11.printStackTrace();
 		}
 
 	}
 
 	private int sub_fea() {
 		try {
-			RecordStore var2 = RecordStore.openRecordStore(this.var_12d[6],
-					true);
-			RecordEnumeration var3 = var2.enumerateRecords((RecordFilter) null,
-					(RecordComparator) null, false);
-			var3.reset();
-			int var11 = var2.getNumRecords();
-			if (var11 <= 0) {
+			RecordStore store = RecordStore.openRecordStore(this.recStorages[6], true);
+			RecordEnumeration enumeration = store.enumerateRecords(null, null, false);
+			enumeration.reset();
+			int countImages = store.getNumRecords();
+			if (countImages <= 0) {
 				return 0;
 			} else {
-				this.var_28d9 = new Image[var11];
+				this._images = new Image[countImages];
+				for (int i = 0; i < countImages; ++i) {
+					this._images[countImages - i - 1] = Image.createImage(value45, value45);
+					byte[] data = enumeration.nextRecord();
+					int i2 = 0;
 
-				for (int var4 = 0; var4 < var11; ++var4) {
-					this.var_28d9[var11 - var4 - 1] = Image.createImage(
-							var_3870, var_3870);
-					byte[] var5 = var3.nextRecord();
-					int var6 = 0;
-
-					for (int var7 = 0; var7 < var_3870; ++var7) {
-						for (int var8 = 0; var8 < var_3870; ++var8) {
-							int var9 = 255 & var5[var6++]
-									| (255 & var5[var6++]) << 8
-									| (255 & var5[var6++]) << 16;
-							if (var9 == 7799014) {
-								var9 &= 16777215;
+					for (int x = 0; x < value45; ++x) {
+						for (int y = 0; y < value45; ++y) {
+							int col = 255 & data[i2++]
+									| (255 & data[i2++]) << 8
+									| (255 & data[i2++]) << 16;
+							if (col == 7799014) {
+								col &= 16777215;
 							} else {
-								var9 |= -16777216;
+								col |= -16777216;
 							}
 
 							com.siemens.mp.lcdui.Image.setPixelColor(
-									this.var_28d9[var11 - var4 - 1], var7,
-									var8, var9);
+									this._images[countImages - i - 1], x, y, col);
 						}
 					}
 				}
 
-				var2.closeRecordStore();
-				return var11;
+				store.closeRecordStore();
+				return countImages;
 			}
 		} catch (Exception var10) {
 			return 0;
 		}
 	}
 
-	public void sub_ffe() {
+	public void threadToNull() {
 		this.var_2f3f = null;
 	}
 
@@ -3762,8 +3748,8 @@ public class MyCanvas extends Canvas5 implements Runnable {
 		int var7;
 		for (var7 = 0; var7 < this.var_22ea.length; ++var7) {
 			this.var_22ea[var7] = new MySprite(this.openImage(198 + var7),
-					this.arena.sub_dc(223 + var7 * 2),
-					this.arena.sub_dc(224 + var7 * 2));
+					this.arena.getParameter(223 + var7 * 2),
+					this.arena.getParameter(224 + var7 * 2));
 		}
 
 		this.var_23fa = new int[5];
@@ -3809,15 +3795,15 @@ public class MyCanvas extends Canvas5 implements Runnable {
 			try {
 				System.gc();
 				this.var_254a[var7] = new MySprite(this.openImage(224 + var7),
-						this.arena.sub_dc(250 + var7 * 2),
-						this.arena.sub_dc(251 + var7 * 2));
+						this.arena.getParameter(250 + var7 * 2),
+						this.arena.getParameter(251 + var7 * 2));
 			} catch (Exception var4) {
-				;
+				var4.printStackTrace();
 			}
 		}
 
 		this.setPercent(85);
-		this.var_3133 = this.openImage(167);
+		this.resultImage = this.openImage(167);
 		this.setPercent(95);
 		System.gc();
 		if (this.panelImage == null) {
@@ -3847,8 +3833,8 @@ public class MyCanvas extends Canvas5 implements Runnable {
 		return 0;
 	}
 
-	public void sub_116d(boolean var1) {
-		this.sub_1e0(0, var1);
+	public void _setLight(boolean var1) {
+		this.setLight(0, var1);
 	}
 
 	@Override
@@ -3861,7 +3847,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 	}
 
 	public void sub_11d4(int var1) {
-		super.sub_196((long) var1);
+		super.vibrate((long) var1);
 	}
 
 }

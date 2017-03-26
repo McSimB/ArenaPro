@@ -448,11 +448,11 @@ public abstract class Canvas1 extends Canvas {
 		return 176;
 	}
 
-	public void sub_196(long var1) {
+	public void vibrate(long var1) {
 		Display.getDisplay(this.arena).vibrate((int) var1);
 	}
 
-	public void sub_1e0(int var1, boolean var2) {
+	public void setLight(int var1, boolean var2) {
 		if (0 == var1) {
 			if (var2) {
 				//Light.setLightOn();

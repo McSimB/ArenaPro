@@ -38,7 +38,6 @@ public class Graphics {
 		int color = paint.getColor();
 		paint.set(font.paint);
 		paint.setColor(color);
-
 	}
 
 	public int getClipX() {

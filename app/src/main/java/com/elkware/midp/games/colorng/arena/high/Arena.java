@@ -60,7 +60,7 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 	private List var_6a4;
 	private List tournamentList;
 	private List tournamentNextMatchList;
-	private List var_787;
+	private List selectPhotoList;
 	private int var_845;
 	private int var_8c5;
 	private String var_91e;
@@ -73,16 +73,12 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 	private boolean var_aa0 = false;
 	private Thread var_ab2 = new ExitTimer(this);
 	public boolean var_af2 = false;
-	private Class_177 var_b43 = null;
 	private boolean var_b9f = false;
 	public int var_bd9 = -1;
-	private int var_c15 = 0;
 	private byte[] var_c76 = null;
-	private byte[][] var_cb0 = null;
-	private boolean[] var_cf4 = null;
 	private String var_d05;
 	private boolean var_d38;
-	private boolean var_d64 = true;
+	private boolean noExcept = true;
 	public Image var_d78;
 	public int var_de1 = 18;
 	public boolean var_e61 = false;
@@ -212,7 +208,7 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 			this.settingsList.addCommand(this.settingsBack);
 			this.settingsList.setCommandListener(this);
 
-			this.warriorNameTextBox = new TextBox(this.getStr(219), this.myCanvas.var_2f0, 12, 0, this);
+			this.warriorNameTextBox = new TextBox(this.getStr(219), this.myCanvas.playerName, 12, 0, this);
 			this.warriorNameTextBox.addCommand(this.warriorNameScreenCommand);
 			this.warriorNameTextBox.addCommand(this.textBoxBack);
 			this.warriorNameTextBox.setCommandListener(this);
@@ -242,7 +238,7 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 					new String[]{this.getStr(281)}, this);
 			this.tournamentNextMatchList.setCommandListener(this);
 
-			this.var_a8d = this.sub_dc(472) == 1;
+			this.var_a8d = this.getParameter(472) == 1;
 			String[] var2;
 			if (this.var_a8d) {
 				var2 = new String[]{this.getStr(202), this.getStr(203),
@@ -328,7 +324,7 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 			this.myCanvas.playMusic(0, 64, -1, true);
 		}
 
-		this.myCanvas.sub_ffe();
+		this.myCanvas.threadToNull();
 		this.var_af2 = true;
 		this.commandManage(10);
 	}
@@ -338,7 +334,7 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 		this.myCanvas.var_92a = false;
 		this.myCanvas.warriorImage = null;
 		this.myCanvas.sub_54();
-		this.myCanvas.sub_ffe();
+		this.myCanvas.threadToNull();
 		this.var_af2 = true;
 		this.commandManage(10);
 	}
@@ -539,7 +535,7 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 					this.myCanvas.var_92a = false;
 					this.myCanvas.warriorImage = null;
 					this.myCanvas.sub_54();
-					this.myCanvas.sub_ffe();
+					this.myCanvas.threadToNull();
 					this.var_af2 = true;
 					this.commandManage(10);
 				} else {
@@ -565,7 +561,7 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 							this.setCurrentDisp(this.myCanvas);
 							return;
 						case 1:
-							this.myCanvas.sub_ffe();
+							this.myCanvas.threadToNull();
 							this.myCanvas.var_2f12 = new Thread(this.myCanvas);
 							this.myCanvas.var_2f12.start();
 							return;
@@ -602,7 +598,7 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 						this.myCanvas.playMusic(0, 64, 10, true); // intro
 					}
 
-					this.myCanvas.sub_116d(this.myCanvas.var_395[1]);
+					this.myCanvas._setLight(this.myCanvas.var_395[1]);
 					this.commandManage(10);
 				} else {
 					if (command == this.helpScreenCommand) {
@@ -653,7 +649,7 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 							if (command == this.warriorNameScreenCommand) {
 								this.myCanvas.sub_a84(false);
 								var3 = this.warriorNameTextBox.getString().replace('\n', ' ');
-								this.myCanvas.var_2f0 = var3.substring(0,
+								this.myCanvas.playerName = var3.substring(0,
 										Math.min(var3.length(), 10));
 								this.commandManage(19);
 							} else if (command == this.commandAccept) {
@@ -673,8 +669,7 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 								sendForm.addCommand(this.settingsBack);
 								sendForm.setCommandListener(this);
 								this.setCurrentDisp(sendForm);
-								(new Class_236(this, var3, null))
-										.start();
+								(new aThread(this, var3, null)).start();
 							}
 						}
 					} else {
@@ -701,7 +696,7 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 						this.myCanvas.serviceRepaints();
 						this.var_af2 = true;
 						this.commandManage(10);
-						this.myCanvas.sub_ffe();
+						this.myCanvas.threadToNull();
 					}
 
 				}
@@ -806,7 +801,7 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 			switch (var1) {
 				case 10:
 					this.myCanvas.gameOverBg = null;
-					this.myCanvas.sub_ffe();
+					this.myCanvas.threadToNull();
 					System.gc();
 					if (this.myCanvas.var_3463) {
 						this.setPauseDisplay();
@@ -944,22 +939,6 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 		}
 	}
 
-	public void sub_371() {
-		this.var_8c5 = this.sub_dc(5105);
-		if (this.var_b43 == null) {
-			this.var_b43 = new Class_177(this, String.valueOf(this.var_8c5));
-			this.var_b43.start();
-		}
-
-	}
-
-	public void sub_3d5() {
-	}
-
-	public void sub_41d(byte[] var1) {
-		this.sub_4ab(var1);
-	}
-
 	@Override
 	public boolean sub_447() {
 		return false;
@@ -1015,105 +994,40 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 		this.myCanvas.var_2f12 = null;
 	}
 
-	public boolean sub_485() {
-		return true;
-	}
-
-	public void sub_4ab(byte[] var1) {
-		if (this.var_cf4 == null) {
-			this.var_cf4 = new boolean[5];
-			this.var_cb0 = new byte[5][];
-			this.var_c15 = 5;
-		}
-
-		this.var_cf4[var1[0]] = true;
-		this.var_c15 = var1[1] == 1 ? var1[0] : this.var_c15;
-		this.var_cb0[var1[0]] = new byte[var1.length - 2];
-		System.arraycopy(var1, 2, this.var_cb0[var1[0]], 0, var1.length - 2);
-		System.gc();
-
-		int var2;
-		for (var2 = 0; var2 <= this.var_c15; ++var2) {
-			if (!this.var_cf4[var2]) {
-				return;
-			}
-		}
-
-		var2 = 0;
-
-		int var3;
-		for (var3 = 0; var3 <= this.var_c15; ++var3) {
-			var2 += this.var_cb0[var3].length;
-		}
-
-		this.var_c76 = new byte[var2];
-		var3 = 0;
-
-		int var4;
-		for (var4 = 0; var4 <= this.var_c15; ++var4) {
-			System.arraycopy(this.var_cb0[var4], 0, this.var_c76, var3,
-					this.var_cb0[var4].length);
-			var3 += this.var_cb0[var4].length;
-		}
-
-		this.var_cb0 = null;
-		this.var_cf4 = null;
-		System.gc();
-		this.var_bd9 = -1;
-		this.var_d05 = "";
-
-		for (var4 = 1; var4 < 1 + this.var_c76[0]; ++var4) {
-			this.var_d05 = this.var_d05 + (char) this.var_c76[var4];
-		}
-
-		this.var_b9f = false;
-
-		for (var4 = 0; var4 < this.myCanvas.var_733; ++var4) {
-			if (this.var_d05
-					.compareTo(this.myCanvas.var_b2f[this.myCanvas.var_b2f.length
-							- this.myCanvas.var_733 + var4]) == 0) {
-				this.var_bd9 = var4;
-				this.var_b9f = true;
-			}
-		}
-
-		this.var_d38 = true;
-	}
-
-	private boolean sub_4f0() {
-		this.var_d64 = true;
-		this.var_787 = new List(this.getStr(401), 3, this);
+	private boolean hasPhotos() {
+		this.noExcept = true;
+		this.selectPhotoList = new List(this.getStr(401), 3, this);
 
 		try {
-			FileConnection var1 = (FileConnection) Connector.open(
-					"file:///0:/Pictures", 3);
+			FileConnection connection =
+					(FileConnection) Connector.open("file:///0:/Pictures", Connector.READ_WRITE);
 			this.myCanvas.setPercent(35);
-			Enumeration var2 = var1.list("*.jpg", false);
+			Enumeration enumeration = connection.list("*.jpg", false);
 			System.gc();
 			this.myCanvas.setPercent(40);
 
-			while (var2.hasMoreElements()) {
-				String var3 = (String) var2.nextElement();
+			while (enumeration.hasMoreElements()) {
+				String var3 = (String) enumeration.nextElement();
 				if (!var3.endsWith("/")) {
-					this.var_787.append(var3);
+					this.selectPhotoList.append(var3);
 				}
 			}
 
-			if (this.var_787.size() == 0) {
+			if (this.selectPhotoList.size() == 0) {
 				return false;
 			}
 
-			var1.close();
+			connection.close();
 			this.myCanvas.setPercent(80);
 		} catch (Exception var4) {
-			this.var_d64 = false;
+			this.noExcept = false;
 			this.sub_24e(var4.toString());
 		}
 
 		this.myCanvas.setPercent(100);
-		this.var_787.addCommand(this.textBoxBack);
-		this.var_787.setCommandListener(this);
-		return this.var_787.size() > 0;
+		this.selectPhotoList.addCommand(this.textBoxBack);
+		this.selectPhotoList.setCommandListener(this);
+		return this.selectPhotoList.size() > 0;
 	}
 
 	private void sub_532(Image var1, int var2) {
@@ -1184,7 +1098,7 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 		try {
 			this.myCanvas.setPercent(10);
 			this.var_d78 = null;
-			this.myCanvas.var_c21 = null;
+			this.myCanvas.bgImage = null;
 			System.gc();
 			this.myCanvas.setPercent(20);
 			if (this.var_de1 == 18) {
@@ -1205,7 +1119,6 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 						"0:/pictures/headTmp.bmp");
 				this.myCanvas.setPercent(70);
 				this.var_d78 = var2;
-				var2 = null;
 				this.myCanvas.setPercent(80);
 			}
 
@@ -1219,8 +1132,8 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 	}
 
 	private byte[] sub_5a0() {
-		String var1 = this.myCanvas.var_2f0.substring(0,
-				Math.min(50, this.myCanvas.var_2f0.length()));
+		String var1 = this.myCanvas.playerName.substring(0,
+				Math.min(50, this.myCanvas.playerName.length()));
 		byte[] var2 = var1.getBytes();
 		byte var3 = (byte) this.myCanvas.var_234[0];
 		byte[] var4 = new byte[1];
@@ -1234,18 +1147,18 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 		byte[] var5 = new byte[7 + var2.length + var4.length + var_ebf];
 		this.myCanvas.setPercent(20);
 		if (var4.length > 1) {
-			Image var6 = null;
+			Image image = null;
 
 			try {
-				var6 = this.myCanvas.var_f45[var3];
+				image = this.myCanvas.headsImage[var3];
 			} catch (Exception var13) {
 				var13.printStackTrace();
 			}
 
 			byte[] var7 = new byte[3];
-			int var8 = var6.getWidth();
-			int[] var9 = new int[var8 * var6.getHeight()];
-			var6.getRGB(var9, 0, var8, 0, 0, var8, var6.getHeight());
+			int var8 = image.getWidth();
+			int[] var9 = new int[var8 * image.getHeight()];
+			image.getRGB(var9, 0, var8, 0, 0, var8, image.getHeight());
 
 			for (int var10 = 0; var10 < 18; ++var10) {
 				for (int var11 = 0; var11 < 17; ++var11) {
@@ -1301,11 +1214,9 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 	}
 
 	@Override
-	public Canvas3 getCanvas() {
+	public Canvas3 createCanvas() {
 		try {
 			myCanvas = new MyCanvas(this);
-			//myCanvas.addCommand(new Command("", 1, 0));
-			//myCanvas.addCommand(new Command("", 2, 0));
 			canvasView.initView(myCanvas);
 			return this.myCanvas;
 		} catch (Exception var2) {
@@ -1373,11 +1284,6 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 
 	@Override
 	public void destroyApp(boolean var1) {
-		if (this.var_b43 != null) {
-			this.var_b43.sub_9d();
-			this.var_b43 = null;
-		}
-
 		this.myCanvas.sub_267();
 		this.notifyDestroyed();
 	}
@@ -1390,15 +1296,15 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 		return arena.var_aa0;
 	}
 
-	static MyCanvas sub_6af(Arena var0) {
-		return var0.myCanvas;
+	static MyCanvas getMyCanvas(Arena arena) {
+		return arena.myCanvas;
 	}
 
 	static boolean sub_6eb(Arena var0, Image var1, String var2) {
 		return var0.sub_5f0(var1, var2);
 	}
 
-	static void sub_6f7(Arena var0, Displayable var1) {
+	static void setCurDispStatic(Arena var0, Displayable var1) {
 		var0.setCurrentDisp(var1);
 	}
 
@@ -1414,23 +1320,23 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 		return var0.var_91e = var1;
 	}
 
-	static List sub_814(Arena var0) {
-		return var0.var_787;
+	static List getSelectPhotoList(Arena var0) {
+		return var0.selectPhotoList;
 	}
 
-	static boolean sub_865(Arena var0) {
-		return var0.sub_4f0();
+	static boolean hasPhotoStatic(Arena var0) {
+		return var0.hasPhotos();
 	}
 
-	static boolean sub_884(Arena var0) {
-		return var0.var_d64;
+	static boolean isNoExcept(Arena var0) {
+		return var0.noExcept;
 	}
 
-	static List sub_8c9(Arena var0, List var1) {
-		return var0.var_787 = var1;
+	static List setSelectPhotoList(Arena var0, List var1) {
+		return var0.selectPhotoList = var1;
 	}
 
-	static Command sub_8f2(Arena var0) {
+	static Command getCommandBack(Arena var0) {
 		return var0.textBoxBack;
 	}
 

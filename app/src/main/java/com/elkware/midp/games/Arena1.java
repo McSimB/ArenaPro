@@ -38,6 +38,7 @@ import static javax.microedition.lcdui.Display.SCALE;
 
 public abstract class Arena1 extends Activity {
 
+	public static final String APP_DATA_DIR = "Arena Pro";
 	public MyCanvas myCanvas;
 	public Display display;
 	public String appID = null;
@@ -140,14 +141,6 @@ public abstract class Arena1 extends Activity {
 		while (menuView.getChildCount() > 3) {
 			menuView.removeViewAt(menuView.getChildCount() - 1);
 		}
-	}
-
-	public boolean sub_485() {
-		return true;
-	}
-
-	public boolean sub_cc() {
-		return true;
 	}
 
 	public byte[] sub_fb(String var1) {
@@ -253,13 +246,13 @@ public abstract class Arena1 extends Activity {
 			this.sub_28a(var1);
 		}
 
-		if (this.sub_cc() && !this.sub_4af(null)) {
+		if (!this.sub_4af(null)) {
 			return false;
 		} else {
 			this.sub_309();
 			this.sub_486(var1, this.sub_3e1());
 			boolean var2;
-			if (this.sub_485() && this.sub_5af() == 1) {
+			if (this.sub_5af() == 1) {
 				var2 = this.sub_2b9(var1);
 				String var3 = this.sub_309();
 				if (var3 == null) {
@@ -278,7 +271,7 @@ public abstract class Arena1 extends Activity {
 				var2 = true;
 			}
 
-			this.sub_571();
+			this.saveHighscore();
 			return var2;
 		}
 	}
@@ -415,7 +408,7 @@ public abstract class Arena1 extends Activity {
 
 	public abstract boolean sub_53f(int var1);
 
-	public abstract void sub_571();
+	public abstract void saveHighscore();
 
 	abstract int sub_5af();
 

@@ -1,15 +1,12 @@
 package javax.microedition.rms;
 
 
-public class RecordStoreException extends Exception
-{
+public class RecordStoreException extends Exception {
 
-	public RecordStoreException(String message)
-	{
+	public RecordStoreException(String message) {
 		super(message);
 	}
 
-	public RecordStoreException()
-	{
+	public RecordStoreException() {
 	}
 }

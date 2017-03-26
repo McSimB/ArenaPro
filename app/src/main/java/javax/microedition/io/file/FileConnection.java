@@ -1,93 +1,43 @@
 package javax.microedition.io.file;
 
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Enumeration;
 
-public interface FileConnection {
+import javax.microedition.io.Connection;
 
-	public abstract boolean isOpen();
+public class FileConnection extends Connection {
 
-	public abstract InputStream openInputStream()
-			throws IOException;
+	private File file;
 
-	public abstract DataInputStream openDataInputStream()
-			throws IOException;
+	public FileConnection(File file) {
+		this.file = file;
+	}
 
-	public abstract OutputStream openOutputStream()
-			throws IOException;
+	public DataInputStream openDataInputStream() throws IOException {
+		return null;
+	}
 
-	public abstract DataOutputStream openDataOutputStream()
-			throws IOException;
+	public Enumeration list(final String s, boolean flag) throws IOException {
+		String[] files = file.list(new FilenameFilter() {
+			@Override
+			public boolean accept(File dir, String filename) {
+				return s.equals(filename);
+			}
+		});
+		return Collections.enumeration(Arrays.asList(files));
+	}
 
-	public abstract OutputStream openOutputStream(long l)
-			throws IOException;
+	public String getName() {
+		return null;
+	}
 
-	public abstract long totalSize();
+	@Override
+	public void close() {
+	}
 
-	public abstract long availableSize();
-
-	public abstract long usedSize();
-
-	public abstract long directorySize(boolean flag)
-			throws IOException;
-
-	public abstract long fileSize()
-			throws IOException;
-
-	public abstract boolean canRead();
-
-	public abstract boolean canWrite();
-
-	public abstract boolean isHidden();
-
-	public abstract void setReadable(boolean flag)
-			throws IOException;
-
-	public abstract void setWritable(boolean flag)
-			throws IOException;
-
-	public abstract void setHidden(boolean flag)
-			throws IOException;
-
-	public abstract Enumeration list()
-			throws IOException;
-
-	public abstract Enumeration list(String s, boolean flag)
-			throws IOException;
-
-	public abstract void create()
-			throws IOException;
-
-	public abstract void mkdir()
-			throws IOException;
-
-	public abstract boolean exists();
-
-	public abstract boolean isDirectory();
-
-	public abstract void delete()
-			throws IOException;
-
-	public abstract void rename(String s)
-			throws IOException;
-
-	public abstract void truncate(long l)
-			throws IOException;
-
-	public abstract void setFileConnection(String s)
-			throws IOException;
-
-	public abstract String getName();
-
-	public abstract String getPath();
-
-	public abstract String getURL();
-
-	public abstract long lastModified();
-
-	void close();
 }

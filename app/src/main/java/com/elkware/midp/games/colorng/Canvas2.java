@@ -125,8 +125,8 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 
 			this.var_66e[14] = this.sub_462(5015);
 			this.var_66e[15] = this.sub_462(5016);
-			this.var_1df = var1.sub_dc(5032) == 1;
-			if (var1.sub_dc(5051) == 1) {
+			this.var_1df = var1.getParameter(5032) == 1;
+			if (var1.getParameter(5051) == 1) {
 				this.menuCom = new Command(var1.getStr(43), 4, 0);
 				this.setCommandListener(this);
 			}
@@ -136,7 +136,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 	}
 
 	int sub_15() {
-		if ((this.var_831 = super.arena.sub_dc(5030)) == -1) {
+		if ((this.var_831 = super.arena.getParameter(5030)) == -1) {
 			this.var_831 = 15;
 		}
 
@@ -234,7 +234,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 			super.arena.var_e8 = var2;
 		} else if (var1 == this.var_813) {
 			super.arena.var_105 = var2;
-			this.sub_1e0(0, var2);
+			this.setLight(0, var2);
 		}
 
 	}
@@ -315,7 +315,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 			this.sub_29e();
 
 			try {
-				this.sub_83e();
+				this.loadGame();
 				this.var_34f = true;
 				if (this.menuCom != null) {
 					this.addCommand(this.menuCom);
@@ -376,7 +376,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 		}
 	}
 
-	public abstract void sub_83e();
+	public abstract void loadGame();
 
 	public void sub_2d3() {
 		long var1 = System.currentTimeMillis();
@@ -565,7 +565,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 	}
 
 	public int sub_462(int var1) {
-		return super.arena.sub_dc(var1);
+		return super.arena.getParameter(var1);
 	}
 
 	public void commandAction(Command var1, Displayable var2) {

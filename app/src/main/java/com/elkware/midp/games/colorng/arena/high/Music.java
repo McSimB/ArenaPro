@@ -4,6 +4,7 @@ import com.elkware.midp.games.colorng.Arena3;
 
 import java.io.IOException;
 
+import javax.microedition.media.Manager;
 import javax.microedition.media.MediaException;
 import javax.microedition.media.Player;
 import javax.microedition.media.PlayerListener;
@@ -18,7 +19,7 @@ public class Music implements PlayerListener {
 
 	public Music(Arena3 var1) {
 		this.arena3 = var1;
-		int var2 = var1.sub_dc(5034); // 15
+		int var2 = var1.getParameter(5034); // 15
 		if (var2 < 0) {
 			try {
 				throw new IOException(
@@ -43,7 +44,7 @@ public class Music implements PlayerListener {
 				int i = this.createPlayer(name);
 				this._startedPlayers[i] = var4;
 				this.players[i].setLoopCount(loopCount);
-				//this.players[i].start();
+				this.players[i].start();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -90,10 +91,10 @@ public class Music implements PlayerListener {
 			return i;
 		}
 
-		//this.players[i] = Manager.createPlayer("_" + Integer.toHexString(name)
-		//		.toUpperCase(), arena3);
-		//this.players[i].addPlayerListener(this);
-		//this.players[i].prefetch();
+		this.players[i] = Manager.createPlayer("_" + Integer.toHexString(name)
+				.toUpperCase(), arena3);
+		this.players[i].addPlayerListener(this);
+		this.players[i].prefetch();
 		return i;
 	}
 

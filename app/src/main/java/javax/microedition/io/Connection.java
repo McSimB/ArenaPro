@@ -2,7 +2,8 @@ package javax.microedition.io;
 
 import java.io.IOException;
 
-public interface Connection {
+public abstract class Connection {
 
 	public abstract void close() throws IOException;
+
 }
