@@ -32,7 +32,7 @@ public abstract class Canvas1 extends Canvas {
 		try {
 			this.draw(var1);
 		} catch (Exception var3) {
-			this.arena.sub_4e9("paintFrame: " + var3);
+			this.arena.makeAlert("paintFrame: " + var3);
 		}
 	}
 

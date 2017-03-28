@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -48,6 +50,10 @@ public abstract class Arena1 extends Activity {
 	private TextView title;
 	private EditText editText;
 	private ListView listView;
+	private CheckBox checkBox1;
+	private CheckBox checkBox2;
+	private CheckBox checkBox3;
+	private boolean[] selectedArray;
 	private ArrayAdapter<String> adapter;
 
 	public void startApp() {
@@ -83,32 +89,57 @@ public abstract class Arena1 extends Activity {
 				display.getCurrent().callKeyPressed(KEY_DISPLAY2);
 			}
 		});
-		/*Button b3 = (Button) findViewById(R.id.button3);
-		b3.setOnClickListener(new View.OnClickListener() {
+		checkBox1 = (CheckBox) menuView.findViewById(R.id.checkBox1);
+		checkBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
-			public void onClick(View v) {
-				myCanvas.keyPressed(KEY_DISPLAY1);
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				selectedArray[0] = isChecked;
 			}
 		});
-		Button b4 = (Button) findViewById(R.id.button4);
-		b4.setOnClickListener(new View.OnClickListener() {
+		checkBox2 = (CheckBox) menuView.findViewById(R.id.checkBox2);
+		checkBox2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
-			public void onClick(View v) {
-				myCanvas.keyPressed(KEY_DISPLAY2);
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				selectedArray[1] = isChecked;
 			}
-		});*/
+		});
+		checkBox3 = (CheckBox) menuView.findViewById(R.id.checkBox3);
+		checkBox3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				selectedArray[2] = isChecked;
+			}
+		});
+		selectedArray = new boolean[3];
 	}
 
-	public void initList(String title, ArrayList<String> items) {
+	public void initList(String title, ArrayList<String> items, int type, boolean[] selArray) {
 		editText.setVisibility(View.INVISIBLE);
-		listView.setVisibility(View.VISIBLE);
-		listView.setMinimumHeight(HEIGHT * SCALE);
 		this.title.setText(title);
-		adapter.clear();
-		for (String s : items) {
-			adapter.add(s);
+		if (type == 2) {
+			listView.setVisibility(View.INVISIBLE);
+			checkBox1.setVisibility(View.VISIBLE);
+			checkBox2.setVisibility(View.VISIBLE);
+			checkBox3.setVisibility(View.VISIBLE);
+			checkBox1.setText(items.get(0));
+			checkBox2.setText(items.get(1));
+			checkBox3.setText(items.get(2));
+			checkBox1.setChecked(selArray[0]);
+			checkBox2.setChecked(selArray[1]);
+			checkBox3.setChecked(selArray[2]);
+			selectedArray = selArray;
+		} else {
+			checkBox1.setVisibility(View.GONE);
+			checkBox2.setVisibility(View.GONE);
+			checkBox3.setVisibility(View.GONE);
+			listView.setVisibility(View.VISIBLE);
+			listView.setMinimumHeight(HEIGHT * SCALE);
+			adapter.clear();
+			for (String s : items) {
+				adapter.add(s);
+			}
+			removeScrollView();
 		}
-		removeScrollView();
 	}
 
 	public void initTextBox(String title, String hint) {
@@ -138,7 +169,7 @@ public abstract class Arena1 extends Activity {
 	}
 
 	private void removeScrollView() {
-		while (menuView.getChildCount() > 3) {
+		while (menuView.getChildCount() > 6) {
 			menuView.removeViewAt(menuView.getChildCount() - 1);
 		}
 	}
@@ -265,7 +296,7 @@ public abstract class Arena1 extends Activity {
 				}
 
 				if (var3 != null) {
-					this.sub_4e9(var3);
+					this.makeAlert(var3);
 				}
 			} else {
 				var2 = true;
@@ -404,7 +435,7 @@ public abstract class Arena1 extends Activity {
 
 	public abstract boolean sub_4af(Alert var1);
 
-	abstract void sub_4e9(String var1);
+	abstract void makeAlert(String var1);
 
 	public abstract boolean sub_53f(int var1);
 

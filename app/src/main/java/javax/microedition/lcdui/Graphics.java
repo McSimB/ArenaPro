@@ -147,8 +147,8 @@ public class Graphics {
 						int var2, int var3, int var5, int var6, boolean b) {
 	}
 
-	public int getDisplayColor(int var2) {
-		return 0;
+	public int getDisplayColor(int color) {
+		return color;
 	}
 
 }

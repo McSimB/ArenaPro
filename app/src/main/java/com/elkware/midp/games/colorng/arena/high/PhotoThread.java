@@ -43,39 +43,39 @@ class PhotoThread extends Thread {
 		case 2:
 			try {
 				Arena.getMyCanvas(this.arena).threadToNull();
-				this.arena.var_e61 = true;
+				this.arena.boolPhoto = true;
 				Arena.getMyCanvas(this.arena).var_535 = true;
 				Arena.getMyCanvas(this.arena).setPercent(0);
 				Arena.setCurDispStatic(this.arena, Arena.getMyCanvas(this.arena));
 				Arena.getMyCanvas(this.arena).setPercent(10);
-				Arena.sub_7b8(
+				Arena.setPhotoString(
 						this.arena,
 						Arena.getSelectPhotoList(this.arena).getString(
 								Arena.getSelectPhotoList(this.arena).getSelectedIndex()));
-				this.arena.var_de1 = 45;
-				Arena.sub_760(this.arena, Arena.sub_731(this.arena));
+				this.arena.photoSize = 45;
+				Arena.computeImageStatic(this.arena, Arena.getPhotoString(this.arena));
 			} catch (Exception var2) {
 				var2.printStackTrace();
 			}
 
 			Arena.getMyCanvas(this.arena).setPercent(100);
-			this.arena.var_e61 = false;
+			this.arena.boolPhoto = false;
 			Arena.getMyCanvas(this.arena).var_3246 = true;
-			Arena.getMyCanvas(this.arena).sub_6c0();
+			Arena.getMyCanvas(this.arena).oneTimeLoop();
 			return;
 		case 3:
 			Arena.setCurDispStatic(this.arena, Arena.getMyCanvas(this.arena));
 			Arena.getMyCanvas(this.arena).setPercent(0);
-			Arena.getMyCanvas(this.arena).sub_f99(this.arena.var_d78);
-			this.arena.var_d78 = null;
+			Arena.getMyCanvas(this.arena).addPhotoToStore(this.arena.image);
+			this.arena.image = null;
 			System.gc();
-			this.arena.var_de1 = 18;
-			this.arena.var_e61 = true;
-			Arena.sub_760(this.arena, Arena.sub_731(this.arena));
-			this.arena.var_e61 = false;
+			this.arena.photoSize = 18;
+			this.arena.boolPhoto = true;
+			Arena.computeImageStatic(this.arena, Arena.getPhotoString(this.arena));
+			this.arena.boolPhoto = false;
 			Arena.getMyCanvas(this.arena).var_535 = false;
 			Arena.getMyCanvas(this.arena).setPercent(95);
-			Arena.getMyCanvas(this.arena).sub_f51(this.arena.var_d78);
+			Arena.getMyCanvas(this.arena).addHeadImage(this.arena.image);
 			this.arena.commandManage(25);
 			Arena.getMyCanvas(this.arena).setPercent(100);
 			return;

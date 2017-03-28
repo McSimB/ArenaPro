@@ -32,7 +32,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 	private String var_1d6 = "Afgh6Sg";
 	public Command quitStr;
 	Hashtable var_247 = new Hashtable();
-	Alert var_2a5;
+	Alert alert;
 	public String[] stringResources = new String[0];
 	byte[] var_310;
 	byte[] var_33f;
@@ -352,11 +352,11 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 	}
 
 	@Override
-	public void sub_4e9(String var1) {
-		this.var_2a5 = new Alert(this.getStr(25), var1, null, null);
-		this.var_2a5.setTimeout('\uea60');
+	public void makeAlert(String s) {
+		this.alert = new Alert(this.getStr(25), s, null, null);
+		this.alert.setTimeout('\uea60');
 		//TODO Alert
-		Display.getDisplay(this).setCurrent(this.var_2a5);
+		Display.getDisplay(this).setCurrent(this.alert);
 	}
 
 	public boolean sub_2a7() {

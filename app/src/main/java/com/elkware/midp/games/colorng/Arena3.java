@@ -34,7 +34,7 @@ public abstract class Arena3 extends Arena2 implements CommandListener {
 			try {
 				this.canvasView3 = this.createCanvas();
 			} catch (Exception var2) {
-				this.sub_4e9("getGameCanvas: " + var2);
+				this.makeAlert("getGameCanvas: " + var2);
 				return;
 			}
 

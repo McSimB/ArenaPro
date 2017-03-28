@@ -332,7 +332,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 					this.redraw();
 				}
 			} catch (Exception var6) {
-				super.arena.sub_4e9("initGame: " + var6);
+				super.arena.makeAlert("initGame: " + var6);
 			}
 		} else if (var1 == this.var_35) {
 			synchronized (this) {
@@ -393,7 +393,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 				try {
 					this.mainLoop(var3);
 				} catch (Exception var9) {
-					super.arena.sub_4e9("update: " + var9);
+					super.arena.makeAlert("update: " + var9);
 					return;
 				}
 

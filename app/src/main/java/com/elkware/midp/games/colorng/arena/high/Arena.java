@@ -63,7 +63,7 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 	private List selectPhotoList;
 	private int var_845;
 	private int var_8c5;
-	private String var_91e;
+	private String photoString;
 	private TextBox warriorNameTextBox;
 	private TextBox phoneNumberTextBox;
 	public boolean isNotMyCanvasCurrent = true;
@@ -79,9 +79,9 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 	private String var_d05;
 	private boolean var_d38;
 	private boolean noExcept = true;
-	public Image var_d78;
-	public int var_de1 = 18;
-	public boolean var_e61 = false;
+	public Image image;
+	public int photoSize = 18;
+	public boolean boolPhoto = false;
 	private TextBox receiverTextBox = null;
 
 	public Arena() {
@@ -340,7 +340,7 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 	}
 
 	public void sub_1b1() {
-		this.var_d78 = null;
+		this.image = null;
 		System.gc();
 		this.myCanvas.var_535 = false;
 		this.commandManage(14);
@@ -387,7 +387,7 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 						this.myCanvas.setPercent(0);
 						this.setCurrentDisp(this.myCanvas);
 						this.myCanvas._chall = true;
-						this.myCanvas.sub_6c0();
+						this.myCanvas.oneTimeLoop();
 						this.myCanvas.var_92a = true;
 						this.myCanvas.var_91b = false;
 						this.myCanvas.var_a17 = true;
@@ -655,7 +655,7 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 							} else if (command == this.commandAccept) {
 								this.myCanvas.var_4ee = false;
 								this.setCurrentDisp(this.myCanvas);
-								this.myCanvas.sub_6c0();
+								this.myCanvas.oneTimeLoop();
 							} else if (this.var_845 == 23) {
 								this.setCurrentDisp(this.myCanvas);
 								this.commandManage(24);
@@ -763,7 +763,7 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 
 	public void sub_24e(String var1) {
 		try {
-			this.sub_4e9(var1);
+			this.makeAlert(var1);
 			Thread.currentThread();
 			Thread.sleep(5000L);
 		} catch (Exception var3) {
@@ -858,7 +858,7 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 					}
 
 					this.setCurrentDisp(this.myCanvas);
-					this.myCanvas.sub_6c0();
+					this.myCanvas.oneTimeLoop();
 					break;
 				case 15:
 					this.settingsList.setSelectedFlags(new boolean[]{
@@ -900,7 +900,7 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 					this.myCanvas.var_4ee = true;
 					this.myCanvas.sub_aad();
 					this.setCurrentDisp(this.myCanvas);
-					this.myCanvas.sub_6c0();
+					this.myCanvas.oneTimeLoop();
 					break;
 				case 20:
 					this.setCurrentDisp(this.myCanvas);
@@ -1030,95 +1030,91 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 		return this.selectPhotoList.size() > 0;
 	}
 
-	private void sub_532(Image var1, int var2) {
-		int[] var3 = new int[3];
-		int var4 = var1.getWidth();
-		int var5 = var1.getHeight();
-		short var6 = 200;
+	private void colorImage(Image image, int c) {
+		int[] rgb = new int[3];
+		int w = image.getWidth();
+		int h = image.getHeight();
+		short thr = 200;
 
-		int var8;
-		int var9;
-		for (int var7 = 0; var7 < var4; ++var7) {
-			for (var8 = 0; var8 < var5; ++var8) {
-				var9 = com.siemens.mp.lcdui.Image.getPixelColor(var1, var7,
-						var8);
-				var3[0] = var9 & 255;
-				var3[1] = var9 >> 8 & 255;
-				var3[2] = var9 >> 16 & 255;
-				if (var3[0] > var6 && var3[1] > var6 && var3[2] > var6) {
-					com.siemens.mp.lcdui.Image.setPixelColor(var1, var7, var8,
-							var2);
+		int i1;
+		int i2;
+		for (int i = 0; i < w; ++i) {
+			for (i1 = 0; i1 < h; ++i1) {
+				i2 = com.siemens.mp.lcdui.Image.getPixelColor(image, i, i1);
+				rgb[0] = i2 & 255;
+				rgb[1] = i2 >> 8 & 255;
+				rgb[2] = i2 >> 16 & 255;
+				if (rgb[0] > thr && rgb[1] > thr && rgb[2] > thr) {
+					com.siemens.mp.lcdui.Image.setPixelColor(image, i, i1, c);
 				}
 			}
 		}
 
-		Graphics var13 = var1.getGraphics();
-		var8 = var13.getDisplayColor(var2) | -16777216;
-		var9 = var4 / 2;
+		Graphics g = image.getGraphics();
+		i1 = g.getDisplayColor(c) | -16777216;
+		i2 = w / 2;
 
-		for (int var10 = 0; var10 < var5; ++var10) {
-			int var11;
-			int var12;
-			for (var11 = var9; var11 > 1; --var11) {
+		for (int i3 = 0; i3 < h; ++i3) {
+			int i4;
+			int i5;
+			for (i4 = i2; i4 > 1; --i4) {
 				if (com.siemens.mp.lcdui.Image
-						.getPixelColor(var1, var11, var10) == var8
-						&& com.siemens.mp.lcdui.Image.getPixelColor(var1,
-						var11 - 1, var10) == var8
-						&& com.siemens.mp.lcdui.Image.getPixelColor(var1,
-						var11 - 2, var10) == var8) {
-					for (var12 = var11; var12 >= 0; --var12) {
-						com.siemens.mp.lcdui.Image.setPixelColor(var1, var12,
-								var10, var2);
+						.getPixelColor(image, i4, i3) == i1
+						&& com.siemens.mp.lcdui.Image.getPixelColor(image,
+						i4 - 1, i3) == i1
+						&& com.siemens.mp.lcdui.Image.getPixelColor(image,
+						i4 - 2, i3) == i1) {
+					for (i5 = i4; i5 >= 0; --i5) {
+						com.siemens.mp.lcdui.Image.setPixelColor(image, i5,
+								i3, c);
 					}
 
-					var11 = 0;
+					i4 = 0;
 				}
 			}
 
-			for (var11 = var9; var11 < var4 - 2; ++var11) {
+			for (i4 = i2; i4 < w - 2; ++i4) {
 				if (com.siemens.mp.lcdui.Image
-						.getPixelColor(var1, var11, var10) == var8
-						&& com.siemens.mp.lcdui.Image.getPixelColor(var1,
-						var11 + 1, var10) == var8
-						&& com.siemens.mp.lcdui.Image.getPixelColor(var1,
-						var11 + 2, var10) == var8) {
-					for (var12 = var11; var12 < var4; ++var12) {
-						com.siemens.mp.lcdui.Image.setPixelColor(var1, var12,
-								var10, var2);
+						.getPixelColor(image, i4, i3) == i1
+						&& com.siemens.mp.lcdui.Image.getPixelColor(image,
+						i4 + 1, i3) == i1
+						&& com.siemens.mp.lcdui.Image.getPixelColor(image,
+						i4 + 2, i3) == i1) {
+					for (i5 = i4; i5 < w; ++i5) {
+						com.siemens.mp.lcdui.Image.setPixelColor(image, i5,
+								i3, c);
 					}
 
-					var11 = var4;
+					i4 = w;
 				}
 			}
 		}
 
 	}
 
-	private boolean sub_552(String var1) {
+	private boolean computeImage(String str) {
 		try {
 			this.myCanvas.setPercent(10);
-			this.var_d78 = null;
+			this.image = null;
 			this.myCanvas.bgImage = null;
 			System.gc();
 			this.myCanvas.setPercent(20);
-			if (this.var_de1 == 18) {
-				this.var_d78 = com.siemens.mp.lcdui.Image.createImageFromFile(
-						"0:/pictures/headTmp.bmp", this.var_de1, this.var_de1);
-				this.sub_532(this.var_d78, 7799014);
+			if (this.photoSize == 18) {
+				this.image = com.siemens.mp.lcdui.Image.createImageFromFile(
+						"headTmp.png", this.photoSize, this.photoSize);
+				this.colorImage(this.image, 7799014);
 			} else {
-				this.var_d78 = com.siemens.mp.lcdui.Image.createImageFromFile(
-						"0:/pictures/" + var1, 64, 48);
+				this.image = com.siemens.mp.lcdui.Image.createImageFromFile("/" + str, 64, 48);
 				this.myCanvas.setPercent(30);
-				Image var2 = Image.createImage(this.var_de1, this.var_de1);
+				Image image = Image.createImage(this.photoSize, this.photoSize);
 				this.myCanvas.setPercent(40);
-				var2.getGraphics().drawImage(this.var_d78, -9, -2, 0);
+				image.getGraphics().drawImage(this.image, -9, -2, 0);
 				this.myCanvas.setPercent(50);
-				this.sub_532(var2, -1);
+				this.colorImage(image, -1);
 				this.myCanvas.setPercent(60);
-				com.siemens.mp.lcdui.Image.writeBmpToFile(var2,
-						"0:/pictures/headTmp.bmp");
+				com.siemens.mp.lcdui.Image.writePngToFile(image, "headTmp.png");
 				this.myCanvas.setPercent(70);
-				this.var_d78 = var2;
+				this.image = image;
 				this.myCanvas.setPercent(80);
 			}
 
@@ -1126,7 +1122,7 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 			this.myCanvas.setPercent(90);
 			return true;
 		} catch (Exception var3) {
-			this.sub_4e9("computeImage: " + var3);
+			this.makeAlert("computeImage: " + var3);
 			return false;
 		}
 	}
@@ -1308,16 +1304,16 @@ public class Arena extends Arena3 implements CommandListener, View.OnTouchListen
 		var0.setCurrentDisp(var1);
 	}
 
-	static String sub_731(Arena var0) {
-		return var0.var_91e;
+	static String getPhotoString(Arena var0) {
+		return var0.photoString;
 	}
 
-	static boolean sub_760(Arena var0, String var1) {
-		return var0.sub_552(var1);
+	static boolean computeImageStatic(Arena var0, String var1) {
+		return var0.computeImage(var1);
 	}
 
-	static String sub_7b8(Arena var0, String var1) {
-		return var0.var_91e = var1;
+	static String setPhotoString(Arena var0, String var1) {
+		return var0.photoString = var1;
 	}
 
 	static List getSelectPhotoList(Arena var0) {

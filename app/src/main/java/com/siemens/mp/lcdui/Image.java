@@ -1,23 +1,56 @@
 package com.siemens.mp.lcdui;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+
+import static com.elkware.midp.games.Arena1.APP_DATA_DIR;
 
 public class Image extends com.siemens.mp.ui.Image {
 
 	public static final int TYPE_BMP = 1;
 	public static final int TYPE_JPG = 2;
 
-	public static void writeBmpToFile(javax.microedition.lcdui.Image image,
-									  String s) throws IOException {
+	public static void writePngToFile(javax.microedition.lcdui.Image image, String name)
+			throws IOException {
+		String path = Environment.getExternalStorageDirectory().getAbsolutePath() +
+				APP_DATA_DIR;
+		File dir = new File(path);
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
+		File file = new File(dir, name);
+		FileOutputStream fOut = new FileOutputStream(file);
+
+		image.getBitmap().compress(Bitmap.CompressFormat.PNG, 85, fOut);
+		fOut.flush();
+		fOut.close();
 	}
 
 	public static void writeImageToFile(javax.microedition.lcdui.Image image,
 										String s, int i) throws IOException {
 	}
 
-	public static javax.microedition.lcdui.Image createImageFromFile(String s, int i, int j)
+	public static javax.microedition.lcdui.Image createImageFromFile(String name, int w, int h)
 			throws IOException {
-		return null;
+		String path = Environment.getExternalStorageDirectory().getAbsolutePath() +
+				APP_DATA_DIR;
+		File dir = new File(path);
+		if (!dir.exists()) {
+			throw new IOException();
+		}
+		File file = new File(dir, name);
+		FileInputStream fIn = new FileInputStream(file);
+		Bitmap bitmap = BitmapFactory.decodeStream(fIn);
+		fIn.close();
+
+		return javax.microedition.lcdui.Image.createImage(Bitmap.createScaledBitmap(
+				bitmap, w, h, false));
 	}
 
 	public static int getPixelColor(javax.microedition.lcdui.Image image, int x, int y)

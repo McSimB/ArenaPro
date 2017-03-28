@@ -159,7 +159,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 	public boolean var_26b0 = false;
 	public boolean var_270a = false;
 	private boolean var_2717 = false;
-	private Image[] _images;
+	private Image[] photoImages;
 	private int var_28fd;
 	private int var_2923;
 	private int var_296c;
@@ -1076,7 +1076,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 		g.setClip(0, 0, 200, 200);
 		g.drawImage(this.statIcons, 25 - this.statIcons.getWidth(), 100, 0);
 		if (this.var_535) {
-			if (this.arena.var_e61) {
+			if (this.arena.boolPhoto) {
 				this.var_2b6c = false;
 				return;
 			}
@@ -1088,15 +1088,15 @@ public class MyCanvas extends Canvas5 implements Runnable {
 			g.drawString(this.var_5fb, 12, 14, 20);
 			g.setColor(255, 0, 0);
 			g.fillRect(
-					(this.width - this.arena.var_d78.getWidth()) / 2,
-					(this.height - this.arena.var_d78.getHeight()) / 2,
-					this.arena.var_de1, this.arena.var_de1);
-			g.setClip((this.width - this.arena.var_d78.getWidth()) / 2,
-					(this.height - this.arena.var_d78.getHeight()) / 2,
-					this.arena.var_de1, 15 + this.arena.var_de1);
-			g.drawImage(this.arena.var_d78,
-					(this.width - this.arena.var_d78.getWidth()) / 2,
-					(this.height - this.arena.var_d78.getHeight()) / 2, 0);
+					(this.width - this.arena.image.getWidth()) / 2,
+					(this.height - this.arena.image.getHeight()) / 2,
+					this.arena.photoSize, this.arena.photoSize);
+			g.setClip((this.width - this.arena.image.getWidth()) / 2,
+					(this.height - this.arena.image.getHeight()) / 2,
+					this.arena.photoSize, 15 + this.arena.photoSize);
+			g.drawImage(this.arena.image,
+					(this.width - this.arena.image.getWidth()) / 2,
+					(this.height - this.arena.image.getHeight()) / 2, 0);
 		} else if (this.var_4ee) {
 			g.setFont(this.fonts[2]);
 			g.setColor(220, 220, 220);
@@ -1708,7 +1708,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 		}
 	}
 
-	public void sub_6c0() {
+	public void oneTimeLoop() {
 		try {
 			this.mainLoop(0L);
 			this.repaint();
@@ -2399,7 +2399,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 				this.arena.sub_a7();
 			} else {
 				if (this.var_844 == 2) {
-					if (this.var_535 && !this.arena.var_e61 && this.var_3246) {
+					if (this.var_535 && !this.arena.boolPhoto && this.var_3246) {
 						if (key == -4) {
 							this.var_3246 = false;
 							this.arena.setSaveMenu2();
@@ -2533,7 +2533,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
 		super.keyPressed(var1);
 		if (this.var_31f0 && this.var_4ee) {
-			this.sub_6c0();
+			this.oneTimeLoop();
 		}
 
 	}
@@ -2611,7 +2611,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 		}
 
 		if (this.var_844 == 2 || this.var_844 == 4) {
-			this.sub_6c0();
+			this.oneTimeLoop();
 		}
 
 		if (this.var_a89 > 10 && this._image == null) {
@@ -3396,72 +3396,67 @@ public class MyCanvas extends Canvas5 implements Runnable {
 		this.var_270a = this.var_395[4] || this.var_395[0];
 	}
 
-	public void sub_f51(Image var1) {
-		Image[] var2 = new Image[this.headsImage.length + 1];
+	public void addHeadImage(Image image) {
+		Image[] images = new Image[this.headsImage.length + 1];
 
-		int var3;
-		for (var3 = 0; var3 < this.headsImage.length; ++var3) {
-			var2[var3] = this.headsImage[var3];
+		int i;
+		for (i = 0; i < this.headsImage.length; ++i) {
+			images[i] = this.headsImage[i];
 		}
 
-		var2[var2.length - 1] = this.createHeadImage(var1);
-		this.headsImage = var2;
-		var3 = var1.getWidth();
-		int var4 = var1.getHeight();
-		int[] var5 = new int[var3 * var4];
-		byte[] var6 = new byte[var5.length * 3];
-		var1.getRGB(var5, 0, var3, 0, 0, var3, var4);
+		images[images.length - 1] = this.createHeadImage(image);
+		this.headsImage = images;
+		i = image.getWidth();
+		int h = image.getHeight();
+		int[] pix = new int[i * h];
+		byte[] bytes = new byte[pix.length * 3];
+		image.getRGB(pix, 0, i, 0, 0, i, h);
 
-		for (int var7 = 0; var7 < var3; ++var7) {
-			for (int var8 = 0; var8 < var4; ++var8) {
-				var5[var7 * var3 + var8] = com.siemens.mp.lcdui.Image
-						.getPixelColor(var1, var7, var8);
-				if (var5[var7 * var3 + var8] >> 24 == 0) {
-					var5[var7 * var3 + var8] = 7799014;
+		for (int i1 = 0; i1 < i; ++i1) {
+			for (int i2 = 0; i2 < h; ++i2) {
+				pix[i1 * i + i2] = com.siemens.mp.lcdui.Image.getPixelColor(image, i1, i2);
+				if (pix[i1 * i + i2] >> 24 == 0) {
+					pix[i1 * i + i2] = 7799014;
 				}
 
-				var6[(var7 * var3 + var8) * 3] = (byte) (var5[var7 * var3
-						+ var8] & 255);
-				var6[(var7 * var3 + var8) * 3 + 1] = (byte) (var5[var7 * var3
-						+ var8] >> 8 & 255);
-				var6[(var7 * var3 + var8) * 3 + 2] = (byte) (var5[var7 * var3
-						+ var8] >> 16 & 255);
+				bytes[(i1 * i + i2) * 3] = (byte) (pix[i1 * i + i2] & 255);
+				bytes[(i1 * i + i2) * 3 + 1] = (byte) (pix[i1 * i + i2] >> 8 & 255);
+				bytes[(i1 * i + i2) * 3 + 2] = (byte) (pix[i1 * i + i2] >> 16 & 255);
 			}
 		}
 
-		DataInputStream var15 = this.arena.getDIStream(this.recStorages[4]);
-		boolean var16 = var15 == null;
-		byte[] var9 = null;
-		byte var10 = 0;
+		DataInputStream diStream = this.arena.getDIStream(this.recStorages[4]);
+		boolean isDiSNull = diStream == null;
+		byte[] bytes1 = null;
+		byte b = 0;
 
 		try {
-			if (!var16) {
-				var10 = var15.readByte();
-				var9 = new byte[var6.length * var10];
-				var15.read(var9);
-				var15.close();
+			if (!isDiSNull) {
+				b = diStream.readByte();
+				bytes1 = new byte[bytes.length * b];
+				diStream.read(bytes1);
+				diStream.close();
 			}
 		} catch (Exception var14) {
-			;
+			var14.printStackTrace();
 		}
 
 		try {
-			ByteArrayOutputStream var11 = new ByteArrayOutputStream();
-			DataOutputStream var12 = new DataOutputStream(var11);
-			if (var16) {
-				var12.writeByte(1);
+			ByteArrayOutputStream baoStream = new ByteArrayOutputStream();
+			DataOutputStream doStream = new DataOutputStream(baoStream);
+			if (isDiSNull) {
+				doStream.writeByte(1);
 			} else {
-				var12.writeByte(var10 + 1);
-				var12.write(var9);
+				doStream.writeByte(b + 1);
+				doStream.write(bytes1);
 			}
 
-			var12.write(var6);
-			this.arena.saveRecordStore(this.recStorages[4], var11.toByteArray());
-			var12.close();
+			doStream.write(bytes);
+			this.arena.saveRecordStore(this.recStorages[4], baoStream.toByteArray());
+			doStream.close();
 		} catch (Exception var13) {
-			;
+			var13.printStackTrace();
 		}
-
 	}
 
 	private Image createHeadImage(Image var1) {
@@ -3500,13 +3495,13 @@ public class MyCanvas extends Canvas5 implements Runnable {
 			int var9;
 			int var12;
 			if (var15 >= 4) {
-				this.arena.var_de1 = 18;
-				int[] var8 = new int[this.arena.var_de1
-						* this.arena.var_de1];
+				this.arena.photoSize = 18;
+				int[] var8 = new int[this.arena.photoSize
+						* this.arena.photoSize];
 
-				for (var9 = 0; var9 < this.arena.var_de1; ++var9) {
-					for (int var10 = 0; var10 < this.arena.var_de1; ++var10) {
-						if (var10 < this.arena.var_de1 - 1) {
+				for (var9 = 0; var9 < this.arena.photoSize; ++var9) {
+					for (int var10 = 0; var10 < this.arena.photoSize; ++var10) {
+						if (var10 < this.arena.photoSize - 1) {
 							byte var11 = var1[var4++];
 							var12 = -16777216;
 							var12 = var12 | (var11 >> 5 & 255) << 5 << 16
@@ -3516,24 +3511,24 @@ public class MyCanvas extends Canvas5 implements Runnable {
 								var12 &= 16777215;
 							}
 
-							var8[var10 + var9 * this.arena.var_de1] = var12;
+							var8[var10 + var9 * this.arena.photoSize] = var12;
 						} else {
-							var8[var10 + var9 * this.arena.var_de1] = 7799014;
+							var8[var10 + var9 * this.arena.photoSize] = 7799014;
 						}
 					}
 				}
 
 				this.setPercent(25);
 				System.gc();
-				Image image = Image.createRGBImage(var8, this.arena.var_de1,
-						this.arena.var_de1, true);
+				Image image = Image.createRGBImage(var8, this.arena.photoSize,
+						this.arena.photoSize, true);
 				this.setPercent(30);
-				this.sub_f51(image);
+				this.addHeadImage(image);
 				this.setPercent(40);
 				Image var18 = Image.createImage(20, 20);
 				this.setPercent(50);
 				var18.getGraphics().drawImage(image, 4, 4, 0);
-				this.sub_f99(var18);
+				this.addPhotoToStore(var18);
 				this.setPercent(70);
 				var7 = (byte) this.headsImage.length;
 			}
@@ -3592,41 +3587,37 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
 	}
 
-	public void sub_f99(Image image) {
-		int var2 = image.getWidth();
-		int var3 = image.getHeight();
-		if (this._images == null) {
-			this._images = new Image[0];
+	public void addPhotoToStore(Image image) {
+		int w = image.getWidth();
+		int h = image.getHeight();
+		if (this.photoImages == null) {
+			this.photoImages = new Image[0];
 		}
 
-		Image[] images = new Image[this._images.length + 1];
-		System.arraycopy(this._images, 0, images, 0, this._images.length);
-		images[this._images.length] = image;
-		this._images = images;
-		int[] var5 = new int[var2 * var3];
-		byte[] var6 = new byte[var2 * var3 * 3];
+		Image[] images = new Image[this.photoImages.length + 1];
+		System.arraycopy(this.photoImages, 0, images, 0, this.photoImages.length);
+		images[this.photoImages.length] = image;
+		this.photoImages = images;
+		int[] pixels = new int[w * h];
+		byte[] bytes = new byte[w * h * 3];
 
-		for (int var9 = 0; var9 < var2; ++var9) {
-			for (int var10 = 0; var10 < var3; ++var10) {
-				var5[var9 * var2 + var10] = com.siemens.mp.lcdui.Image
-						.getPixelColor(image, var9, var10);
-				if (var5[var9 * var2 + var10] >> 24 == 0) {
-					var5[var9 * var2 + var10] = 7799014;
+		for (int i = 0; i < w; ++i) {
+			for (int i1 = 0; i1 < h; ++i1) {
+				pixels[i * w + i1] = com.siemens.mp.lcdui.Image.getPixelColor(image, i, i1);
+				if (pixels[i * w + i1] >> 24 == 0) {
+					pixels[i * w + i1] = 7799014;
 				}
 
-				var6[(var9 * var2 + var10) * 3] = (byte) (var5[var9 * var2
-						+ var10] & 255);
-				var6[(var9 * var2 + var10) * 3 + 1] = (byte) (var5[var9 * var2
-						+ var10] >> 8 & 255);
-				var6[(var9 * var2 + var10) * 3 + 2] = (byte) (var5[var9 * var2
-						+ var10] >> 16 & 255);
+				bytes[(i * w + i1) * 3] = (byte) (pixels[i * w + i1] & 255);
+				bytes[(i * w + i1) * 3 + 1] = (byte) (pixels[i * w + i1] >> 8 & 255);
+				bytes[(i * w + i1) * 3 + 2] = (byte) (pixels[i * w + i1] >> 16 & 255);
 			}
 		}
 
 		try {
-			RecordStore var12 = RecordStore.openRecordStore(this.recStorages[6], true);
-			var12.addRecord(var6, 0, var6.length);
-			var12.closeRecordStore();
+			RecordStore store = RecordStore.openRecordStore(this.recStorages[6], true);
+			store.addRecord(bytes, 0, bytes.length);
+			store.closeRecordStore();
 		} catch (Exception var11) {
 			var11.printStackTrace();
 		}
@@ -3642,9 +3633,9 @@ public class MyCanvas extends Canvas5 implements Runnable {
 			if (countImages <= 0) {
 				return 0;
 			} else {
-				this._images = new Image[countImages];
+				this.photoImages = new Image[countImages];
 				for (int i = 0; i < countImages; ++i) {
-					this._images[countImages - i - 1] = Image.createImage(value45, value45);
+					this.photoImages[countImages - i - 1] = Image.createImage(value45, value45);
 					byte[] data = enumeration.nextRecord();
 					int i2 = 0;
 
@@ -3660,7 +3651,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 							}
 
 							com.siemens.mp.lcdui.Image.setPixelColor(
-									this._images[countImages - i - 1], x, y, col);
+									this.photoImages[countImages - i - 1], x, y, col);
 						}
 					}
 				}

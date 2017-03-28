@@ -30,6 +30,9 @@ public class List extends Displayable {
 		this.listType = listType;
 		if (listType != 3 && listType != 1 && listType != 2)
 			throw new IllegalArgumentException();
+		if (listType == 2) {
+			selectedArray = new boolean[items.length];
+		}
 	}
 
 	public List(String title, int listType, Arena3 arena3) {
@@ -46,7 +49,12 @@ public class List extends Displayable {
 
 	public int append(String stringPart) {
 		items.add(stringPart);
-		return 0;
+		if (listType == 2) {
+			boolean[] selArray = new boolean[selectedArray.length + 1];
+			System.arraycopy(selectedArray, 0, selArray, 0, selectedArray.length);
+			selectedArray = selArray;
+		}
+		return items.indexOf(stringPart);
 	}
 
 	public void set(int elementNum, String stringPart) {
@@ -87,7 +95,7 @@ public class List extends Displayable {
 
 	@Override
 	public View getView() {
-		arena1.initList(title, items);
+		arena1.initList(title, items, listType, selectedArray);
 		return arena1.menuView;
 	}
 

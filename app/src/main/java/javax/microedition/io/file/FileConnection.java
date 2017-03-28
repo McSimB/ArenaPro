@@ -26,14 +26,10 @@ public class FileConnection extends Connection {
 		String[] files = file.list(new FilenameFilter() {
 			@Override
 			public boolean accept(File dir, String filename) {
-				return s.equals(filename);
+				return filename.endsWith(".jpg");
 			}
 		});
 		return Collections.enumeration(Arrays.asList(files));
-	}
-
-	public String getName() {
-		return null;
 	}
 
 	@Override

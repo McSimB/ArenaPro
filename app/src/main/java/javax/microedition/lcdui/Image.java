@@ -36,6 +36,10 @@ public class Image {
 		bitmap = Bitmap.createBitmap(rgb, width, height, Bitmap.Config.ARGB_8888);
 	}
 
+	private Image(Bitmap bitmap) {
+		this.bitmap = bitmap;
+	}
+
 	public static Image createImage(int width, int height) {
 		if(width <= 0 || height <= 0)
 			throw new IllegalArgumentException();
@@ -59,6 +63,10 @@ public class Image {
 		else {
 			return new Image(imageData, imageOffset, imageLength);
 		}
+	}
+
+	public static Image createImage(Bitmap bitmap) {
+		return new Image(bitmap);
 	}
 
 	public Bitmap getBitmap() {
