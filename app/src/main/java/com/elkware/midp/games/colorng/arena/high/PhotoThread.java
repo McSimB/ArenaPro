@@ -29,7 +29,7 @@ class PhotoThread extends Thread {
 				Arena.setCurDispStatic(this.arena, Arena.getSelectPhotoList(this.arena));
 			} else if (Arena.isNoExcept(this.arena)) {
 				Arena.setSelectPhotoList(this.arena, null);
-				Form selectFotoForm = new Form(this.arena.getStr(401), arena);
+				Form selectFotoForm = new Form(this.arena.getStr(401));
 				selectFotoForm.append(this.arena.getStr(403)); // There are no images in the camera's directory.
 				selectFotoForm.setCommandListener(this.listener);
 				selectFotoForm.addCommand(Arena.getCommandBack(this.arena));

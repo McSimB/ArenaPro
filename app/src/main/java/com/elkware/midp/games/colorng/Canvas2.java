@@ -1,6 +1,6 @@
 package com.elkware.midp.games.colorng;
 
-import com.elkware.midp.games.colorng.arena.high.Arena;
+import com.elkware.midp.games.Arena2;
 
 import java.io.IOException;
 import java.util.Vector;
@@ -35,13 +35,13 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 	boolean var_401;
 	boolean var_454 = true;
 	public int var_4a2 = 16777215;
-	public int var_4d3 = this.getwidth() / 3;
-	public int var_50d = this.getheight() - 20;
-	public int var_543 = this.getwidth() / 3;
+	public int var_4d3 = this.getWidth() / 3;
+	public int var_50d = this.getHeight() - 20;
+	public int var_543 = this.getWidth() / 3;
 	public int var_556 = 6;
 	public int var_56f = 0;
-	int var_5a0 = this.getwidth() - 10;
-	int var_5d6 = this.getheight() - 7;
+	int var_5a0 = this.getWidth() - 10;
+	int var_5d6 = this.getHeight() - 7;
 	boolean var_635;
 	private int[] var_66e = new int[]{48, 49, 50, 51, 52, 53, 54, 55, 56, 57,
 			42, 35, 0, 0, 0, 0, -3, -4, -1, -2, -5, -5, 42, 48, 35};
@@ -61,7 +61,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 	protected long var_933;
 	private boolean var_970;
 
-	public Canvas2(Arena var1) {
+	public Canvas2(Arena3 var1) {
 		super(var1);
 		int var2;
 		if ((var2 = this.sub_462(5036)) != -1) {
@@ -136,7 +136,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 	}
 
 	int sub_15() {
-		if ((this.var_831 = super.arena.getParameter(5030)) == -1) {
+		if ((this.var_831 = super.arena3.getParameter(5030)) == -1) {
 			this.var_831 = 15;
 		}
 
@@ -171,7 +171,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 	}
 
 	public void sub_e9a() {
-		String var1 = super.arena.sub_13f("cfg");
+		String var1 = super.arena3.sub_13f("cfg");
 		if (var1 == null) {
 			var1 = "1111";
 		}
@@ -190,7 +190,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 			var1 = var1 + (aVar_8b4 ? '1' : '0');
 		}
 
-		super.arena.sub_f0("cfg", var1, true);
+		super.arena3.sub_f0("cfg", var1, true);
 	}
 
 	public void sub_af(boolean[] var1) {
@@ -214,9 +214,9 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 	public void sub_2e9(int var1, boolean var2) {
 		this.var_8b4[var1] = var2;
 		if (var1 == this.var_6fb) {
-			super.arena._forPlayMus1 = var2;
+			super.arena3._forPlayMus1 = var2;
 			if (!this.var_1df) {
-				super.arena._forPlayMus = var2;
+				super.arena3._forPlayMus = var2;
 				if (!var2) {
 					this.stopPlayers(0);
 				}
@@ -226,14 +226,14 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 				this.stopPlayers(1);
 			}
 		} else if (var1 == this.var_75e) {
-			super.arena._forPlayMus = var2;
+			super.arena3._forPlayMus = var2;
 			if (!var2) {
 				this.stopPlayers(0);
 			}
 		} else if (var1 == this.var_7c0) {
-			super.arena.var_e8 = var2;
+			super.arena3.var_e8 = var2;
 		} else if (var1 == this.var_813) {
-			super.arena.var_105 = var2;
+			super.arena3.var_105 = var2;
 			this.setLight(0, var2);
 		}
 
@@ -245,7 +245,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 
 	public abstract void stopPlayers(int var1);
 
-	public Image openImage(int var1) throws IOException {
+	/*public Image openImage22(int var1) throws IOException {
 		try {
 			if (var1 == 2) {
 				byte[] var3 = arena.sub_499(var1);
@@ -259,6 +259,19 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 			System.out.print("Image 0x" + Integer.toHexString(var1) + " not found!");
 		}
 		throw new IOException();
+	}*/
+
+	public Image openImage(int var1) throws IOException {
+		try {
+			return Image.createImage("/_" + Integer.toHexString(var1).toUpperCase() + ".png");
+		} catch (Exception var4) {
+			byte[] var3 = Arena2.sub_499(var1);
+			if(var3 != null) {
+				return Image.createImage(var3, 0, var3.length);
+			} else {
+				throw new IOException("Image 0x" + Integer.toHexString(var1) + " not found!");
+			}
+		}
 	}
 
 	public int sub_160() {
@@ -332,7 +345,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 					this.redraw();
 				}
 			} catch (Exception var6) {
-				super.arena.makeAlert("initGame: " + var6);
+				super.arena3.makeAlert("initGame: " + var6);
 			}
 		} else if (var1 == this.var_35) {
 			synchronized (this) {
@@ -359,16 +372,16 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 			this.var_28e = Image.createImage(this.var_543, this.var_556);
 			this.var_28e.getGraphics().drawImage(
 					this.var_260,
-					(this.getwidth() - this.var_260.getWidth()) / 2
+					(this.getWidth() - this.var_260.getWidth()) / 2
 							- this.var_4d3,
-					(this.getheight() - this.var_260.getHeight()) / 2
+					(this.getHeight() - this.var_260.getHeight()) / 2
 							- this.var_50d, 20);
 			this.var_2ca = Image.createImage(10, 10);
 			this.var_2ca.getGraphics().drawImage(
 					this.var_260,
-					(this.getwidth() - this.var_260.getWidth()) / 2
+					(this.getWidth() - this.var_260.getWidth()) / 2
 							- this.var_5a0,
-					(this.getheight() - this.var_260.getHeight()) / 2
+					(this.getHeight() - this.var_260.getHeight()) / 2
 							- this.var_5d6, 20);
 			this.redraw();
 		} catch (Exception var2) {
@@ -387,13 +400,13 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 			var1 = var5;
 			if (var_d3) {
 				var_d3 = false;
-				this.sub_359(super.arena.sub_239(this.sub_1148()));
+				this.sub_359(super.arena3.sub_239(this.sub_1148()));
 				this.var_3ef = 1;
 			} else {
 				try {
 					this.mainLoop(var3);
 				} catch (Exception var9) {
-					super.arena.makeAlert("update: " + var9);
+					super.arena3.makeAlert("update: " + var9);
 					return;
 				}
 
@@ -428,7 +441,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 	public abstract void sub_2dd();
 
 	public void setCurDisp(Displayable var1) {
-		Display var2 = Display.getDisplay(super.arena);
+		Display var2 = Display.getDisplay(super.arena3);
 		if (var2 != null) {
 			var2.setCurrent(var1);
 		}
@@ -561,11 +574,11 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 	}
 
 	public String getStr(int var1) {
-		return super.arena.getStr(var1);
+		return super.arena3.getStr(var1);
 	}
 
 	public int sub_462(int var1) {
-		return super.arena.getParameter(var1);
+		return super.arena3.getParameter(var1);
 	}
 
 	public void commandAction(Command var1, Displayable var2) {

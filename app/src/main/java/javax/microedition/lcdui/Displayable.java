@@ -1,123 +1,182 @@
+/*
+ * Copyright 2012 Kulikov Dmitriy
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package javax.microedition.lcdui;
 
+import java.util.ArrayList;
+
+import javax.microedition.lcdui.event.CommandActionEvent;
+
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
-import com.elkware.midp.games.Arena1;
-
-import static javax.microedition.lcdui.Canvas.KEY_DISPLAY1;
-import static javax.microedition.lcdui.Canvas.KEY_DISPLAY2;
-import static javax.microedition.lcdui.Display.HEIGHT;
-import static javax.microedition.lcdui.Display.WIDTH;
-
-public abstract class Displayable {
-
-	Display currentDisplay;
-	Command[] commands;
-	int numCommands;
-	CommandListener listener;
-	Arena1 arena1;
-
-	public Displayable() {
+public abstract class Displayable
+{
+	private MicroActivity parent;
+	private String title;
+	
+	private ArrayList<Command> commands;
+	private CommandListener listener;
+	
+	private EventQueue queue;
+	
+	public Displayable()
+	{
+		commands = new ArrayList();
+		listener = null;
+		
+		queue = new EventQueue();
 	}
 
-	public void addCommand(Command cmd) {
-		if (cmd == null)
-			throw new NullPointerException();
-		addCommandImpl(cmd);
-	}
-
-	public void removeCommand(Command cmd) {
-		removeCommandImpl(cmd);
-	}
-
-	public void setCommandListener(CommandListener l) {
-		listener = l;
-	}
-
-	public int getwidth() {
-		return WIDTH;
-	}
-
-	public int getheight() {
-		return HEIGHT;
-	}
-
-	void addCommandImpl(Command cmd) {
-		for (int i = 0; i < numCommands; i++)
-			if (commands[i] == cmd)
-				return;
-
-		if (commands == null || numCommands == commands.length) {
-			Command[] newCommands = new Command[numCommands + 4];
-			if (commands != null)
-				System.arraycopy(commands, 0, newCommands, 0, numCommands);
-			commands = newCommands;
+	public void setParentActivity(MicroActivity activity)
+	{
+		parent = activity;
+		
+		if(activity != null)
+		{
+			queue.startProcessing();
 		}
-		commands[numCommands] = cmd;
-		numCommands++;
-		updateCommandSet();
+		else
+		{
+			queue.stopProcessing();
+		}
+		
+		clearDisplayableView();
 	}
-
-	void removeCommandImpl(Command cmd) {
-		int i = 0;
-		do {
-			if (i >= numCommands)
-				break;
-			if (commands[i] == cmd) {
-				commands[i] = commands[--numCommands];
-				commands[numCommands] = null;
-				updateCommandSet();
-				break;
-			}
-			i++;
-		} while (true);
+	
+	public MicroActivity getParentActivity()
+	{
+		if(parent == null)
+		{
+			throw new IllegalStateException("call setParentActivity() before calling getParentActivity()");
+		}
+		
+		return parent;
 	}
-
-	void updateCommandSet() {
-		if (currentDisplay != null && currentDisplay.isShown())
-			currentDisplay.updateCommandSet();
+	
+	public boolean hasParentActivity()
+	{
+		return parent != null;
 	}
-
-	Command[] getCommands() {
-		return commands;
-	}
-
-	int getCommandCount() {
-		return numCommands;
-	}
-
-	public void callKeyPressed(int key) {
-		if (key == KEY_DISPLAY1) {
-			Command[] commands = getCommands();
-			if (commands != null) {
-				for (int i = 0; i < getCommandCount(); i++) {
-					Command command = getCommands()[i];
-					if (command != null && (command.getCommandType() == Command.SCREEN
-							| command.getCommandType() == Command.OK
-							| command.getCommandType() == Command.HELP
-							| command.getCommandType() == Command.ITEM)) {
-						listener.commandAction(command, this);
-						break;
-					}
-				}
-			}
-		} else if (key == KEY_DISPLAY2) {
-			Command[] commands = getCommands();
-			if (commands != null) {
-				for (int i = 0; i < getCommandCount(); i++) {
-					Command command = getCommands()[i];
-					if (command != null && (command.getCommandType() == Command.BACK
-							| command.getCommandType() == Command.CANCEL
-							| command.getCommandType() == Command.STOP
-							| command.getCommandType() == Command.EXIT)) {
-						listener.commandAction(command, this);
-						break;
-					}
-				}
-			}
+	
+	public void setTitle(String title)
+	{
+		this.title = title;
+		
+		if(parent != null)
+		{
+			parent.setTitle(title);
 		}
 	}
-
-	public abstract View getView();
-
+	
+	public String getTitle()
+	{
+		return title;
+	}
+	
+	public boolean isShown()
+	{
+		if(parent != null)
+		{
+			return parent.isVisible() && parent.getCurrent() == this;
+		}
+		
+		return false;
+	}
+	
+	public abstract View getDisplayableView();
+	public abstract void clearDisplayableView();
+	
+	public void addCommand(Command cmd)
+	{
+		commands.add(cmd);
+	}
+	
+	public void removeCommand(Command cmd)
+	{
+		commands.remove(cmd);
+	}
+	
+	public void removeAllCommands()
+	{
+		commands.clear();
+	}
+	
+	public int countCommands()
+	{
+		return commands.size();
+	}
+	
+	public Command[] getCommands()
+	{
+		return commands.toArray(new Command[0]);
+	}
+	
+	public void setCommandListener(CommandListener listener)
+	{
+		this.listener = listener;
+	}
+	
+	public void fireCommandAction(Command c, Displayable d)
+	{
+		if(listener != null)
+		{
+			queue.postEvent(CommandActionEvent.getInstance(listener, c, d));
+		}
+	}
+	
+	public void populateMenu(Menu menu)
+	{
+		menu.clear();
+		
+		for(Command cmd : commands)
+		{
+			menu.add(Menu.NONE, cmd.hashCode(), cmd.getPriority(), cmd.getLabel());
+		}
+	}
+	
+	public boolean menuItemSelected(MenuItem item)
+	{
+		if(listener == null)
+		{
+			return false;
+		}
+		
+		int id = item.getItemId();
+		
+		for(Command cmd : commands)
+		{
+			if(cmd.hashCode() == id)
+			{
+				queue.postEvent(CommandActionEvent.getInstance(listener, cmd, this));
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public EventQueue getEventQueue()
+	{
+		return queue;
+	}
+	
+	public void postEvent(Event event)
+	{
+		queue.postEvent(event);
+	}
 }

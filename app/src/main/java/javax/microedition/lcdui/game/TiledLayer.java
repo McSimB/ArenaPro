@@ -1,13 +1,10 @@
 package javax.microedition.lcdui.game;
 
-import android.graphics.Rect;
-
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 
 public class TiledLayer extends Layer {
 
-	int sc = 1;
 	private int cellHeight;
 	private int cellWidth;
 	private int rows;
@@ -27,7 +24,9 @@ public class TiledLayer extends Layer {
 	private int y_dest[];
 
 	public TiledLayer(int columns, int rows, Image image, int tileWidth, int tileHeight) {
-		super(columns >= 1 && tileWidth >= 1 ? columns * tileWidth : -1, rows >= 1 && tileHeight >= 1 ? rows * tileHeight : -1);
+		super(columns >= 1 && tileWidth >= 1 ? columns * tileWidth :
+				-1, rows >= 1 && tileHeight >= 1 ? rows * tileHeight : -1,
+				tileWidth, tileWidth, true);
 		updated = true;
 		x_src = null;
 		y_src = null;
@@ -68,7 +67,7 @@ public class TiledLayer extends Layer {
 	public synchronized void paint(Graphics g) {
 		if (g == null)
 			throw new NullPointerException();
-		if (visible) {
+		if (isVisible()) {
 			int tileIndex;
 			if (updated) {
 				int arrayLength = 0;
@@ -90,10 +89,10 @@ public class TiledLayer extends Layer {
 				tileArrayLength = arrayLength;
 				updated = false;
 			}
-			int ty = y;
+			int ty = getY();
 			int arrayIndex = 0;
 			for (int row = 0; row < cellMatrix.length; ) {
-				int tx = x;
+				int tx = getX();
 				int totalCols = cellMatrix[row].length;
 				for (int column = 0; column < totalCols; ) {
 					tileIndex = cellMatrix[row][column];
@@ -113,16 +112,21 @@ public class TiledLayer extends Layer {
 				row++;
 				ty += cellHeight;
 			}
-			//drawTiledRegion(g, sourceImage, tileArrayLength, x_src, y_src, cellWidth, cellHeight, 0, x_dest, y_dest, 20);
+			//drawTiledRegion(g, sourceImage, tileArrayLength, x_src, y_src, cellWidth, cellHeight,
+			//0, x_dest, y_dest, 20);
 			for (int i = 0; i < tileArrayLength; i++) {
-				Rect dst = new Rect(x_dest[i] * sc, y_dest[i] * sc, (x_dest[i] + cellWidth) * sc, (y_dest[i] + cellHeight) * sc);
-				Rect src = new Rect(x_src[i] * sc, y_src[i] * sc, (x_src[i] + cellWidth) * sc, (y_src[i] + cellHeight) * sc);
-				g.canvas.drawBitmap(sourceImage.getBitmap(), src, dst, null);
+				/*Rect dst = new Rect(x_dest[i] * sc, y_dest[i] * sc, (x_dest[i] + cellWidth) * sc,
+						(y_dest[i] + cellHeight) * sc);
+				Rect src = new Rect(x_src[i] * sc, y_src[i] * sc, (x_src[i] + cellWidth) * sc,
+						(y_src[i] + cellHeight) * sc);*/
+				g.drawRegion(sourceImage, x_src[i], y_src[i], cellWidth, cellHeight, 0,
+						x_dest[i], y_dest[i], 20);
 			}
 		}
 	}
 
-	private void createStaticSet(Image image, int noOfFrames, int tileWidth, int tileHeight, boolean maintainIndices) {
+	private void createStaticSet(Image image, int noOfFrames, int tileWidth, int tileHeight,
+								 boolean maintainIndices) {
 		cellWidth = tileWidth;
 		cellHeight = tileHeight;
 		int imageW = image.getWidth();

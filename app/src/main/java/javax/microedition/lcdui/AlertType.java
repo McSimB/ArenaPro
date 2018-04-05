@@ -1,21 +1,30 @@
+/*
+ * Copyright 2012 Kulikov Dmitriy
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package javax.microedition.lcdui;
 
-public class AlertType {
-
-	private AlertType(int type) {
-		this.type = type;
+public class AlertType
+{
+	public static final AlertType ALARM = new AlertType();
+	public static final AlertType CONFIRMATION = new AlertType();
+	public static final AlertType ERROR = new AlertType();
+	public static final AlertType INFO = new AlertType();
+	public static final AlertType WARNING = new AlertType();
+	
+	public void playSound(Display display)
+	{
 	}
-
-	static final int ALERT_INFO = 1;
-	static final int ALERT_WARN = 2;
-	static final int ALERT_ERR = 3;
-	static final int ALERT_ALRM = 4;
-	static final int ALERT_CFM = 5;
-	public static final AlertType INFO = new AlertType(1);
-	public static final AlertType WARNING = new AlertType(2);
-	public static final AlertType ERROR = new AlertType(3);
-	public static final AlertType ALARM = new AlertType(4);
-	public static final AlertType CONFIRMATION = new AlertType(5);
-	private int type;
-
 }

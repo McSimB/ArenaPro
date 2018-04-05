@@ -1,95 +1,144 @@
-package javax.microedition.lcdui;
+/*
+ * Copyright 2012 Kulikov Dmitriy
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import android.app.Activity;
-import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+package javax.microedition.lcdui;
 
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.microedition.lcdui.game.Sprite;
+import javax.microedition.util.ContextHolder;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+
 public class Image {
+    private Bitmap bitmap;
+    private Canvas canvas;
 
-	private Bitmap bitmap;
+    public Image(Bitmap bitmap) {
+        if (bitmap == null) {
+            throw new NullPointerException();
+        }
 
-	private Image(byte[] imageData, int imageOffset, int imageLength) {
-		bitmap = BitmapFactory.decodeByteArray(imageData, imageOffset, imageLength);
-	}
+        this.bitmap = bitmap;
+    }
 
-	private Image(int width, int height) {
-		bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-	}
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
 
-	private Image(String name, Activity activity) {
-		AssetManager assetManager = activity.getAssets();
-		InputStream inputStream;
-		try {
-			inputStream = assetManager.open(name);
-			bitmap = BitmapFactory.decodeStream(inputStream);
-			inputStream.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+    public Canvas getCanvas() {
+        if (canvas == null) {
+            canvas = new Canvas(bitmap);
+        }
 
-	private Image(int[] rgb, int width, int height, boolean processAlpha) {
-		bitmap = Bitmap.createBitmap(rgb, width, height, Bitmap.Config.ARGB_8888);
-	}
+        return canvas;
+    }
 
-	private Image(Bitmap bitmap) {
-		this.bitmap = bitmap;
-	}
+    public static Image createImage(int width, int height) {
+        return new Image(Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888));
+    }
 
-	public static Image createImage(int width, int height) {
-		if(width <= 0 || height <= 0)
-			throw new IllegalArgumentException();
-		else
-			return new Image(width, height);
-	}
+    public static Image createImage(int id) {
+        return new Image(BitmapFactory.decodeResource(ContextHolder.getContext().getResources(), id));
+    }
 
-	public static Image createImage(String name, Activity activity) {
-		return new Image(name, activity);
-	}
+    public static Image createImage(String resname) throws IOException {
+        if (resname.startsWith("/")) {
+            resname = resname.substring(1);
+        }
 
-	public static Image createRGBImage(int[] rgb, int width, int height, boolean processAlpha) {
-		return new Image(rgb, width, height, processAlpha);
-	}
+        InputStream is = ContextHolder.getContext().getAssets().open(resname);
+        Bitmap bitmap = BitmapFactory.decodeStream(is);
+        is.close();
 
-	public static Image createImage(byte imageData[], int imageOffset, int imageLength) {
-		if (imageOffset < 0 || imageOffset >= imageData.length || imageLength < 0 ||
-				imageOffset + imageLength > imageData.length) {
-			throw new ArrayIndexOutOfBoundsException();
-		}
-		else {
-			return new Image(imageData, imageOffset, imageLength);
-		}
-	}
+        return new Image(bitmap);
+    }
 
-	public static Image createImage(Bitmap bitmap) {
-		return new Image(bitmap);
-	}
+    public static Image createImage(InputStream stream) {
+        return new Image(BitmapFactory.decodeStream(stream));
+    }
 
-	public Bitmap getBitmap() {
-		return bitmap;
-	}
+    public static Image createImage(byte[] imageData, int imageOffset, int imageLength) {
+        return new Image(BitmapFactory.decodeByteArray(imageData, imageOffset, imageLength));
+    }
 
-	public int getWidth() {
-		return bitmap.getWidth();
-	}
+    public static Image createImage(Image image, int x, int y, int width, int height, int transform) {
+        return new Image(Bitmap.createBitmap(image.bitmap, x, y, width, height, Sprite.transformMatrix(null, transform, width / 2f, height / 2f), true));
+    }
 
-	public int getHeight() {
-		return bitmap.getHeight();
-	}
+    public static Image createRGBImage(int[] rgb, int width, int height, boolean processAlpha) {
+        return new Image(Bitmap.createBitmap(rgb, width, height, Bitmap.Config.ARGB_8888));
+    }
 
-	public Graphics getGraphics() {
-		android.graphics.Canvas bufCanvas = new android.graphics.Canvas(bitmap);
-		Graphics g = new Graphics(bitmap.getWidth(), bitmap.getHeight());
-		g.canvas = bufCanvas;
-		g.firstSave = true;
-		return g;
-	}
+    /**
+     * Функция масштабирования изображений.
+     * <p>
+     * Если один из конечных размеров меньше 0,
+     * он вычисляется на основе другого с сохранением пропорций.
+     * <p>
+     * Если оба конечных размера меньше 0,
+     * или они равны размеру исходной картинки,
+     * возвращается исходная картинка.
+     *
+     * @param destw  конечная ширина
+     * @param desth  конечная высота
+     * @param filter true, если нужно использовать интерполяцию
+     * @return масштабированная картинка
+     */
+    public Image scale(int destw, int desth, boolean filter) {
+        int srcw = getWidth();
+        int srch = getHeight();
 
-	public void getRGB(int[] var5, int i, int var3, int i1, int i2, int var31, int var4) {
-	}
+        if (srcw == destw && srch == desth) {
+            return this;
+        }
 
+        if (destw < 0) {
+            if (desth < 0) {
+                return this;
+            } else {
+                destw = srcw * desth / srch;
+            }
+        } else if (desth < 0) {
+            desth = srch * destw / srcw;
+        }
+
+        return new Image(Bitmap.createScaledBitmap(bitmap, destw, desth, filter));
+    }
+
+    public Graphics getGraphics() {
+        return new Graphics(getCanvas());
+    }
+
+    public boolean isMutable() {
+        return bitmap.isMutable();
+    }
+
+    public int getWidth() {
+        return bitmap.getWidth();
+    }
+
+    public int getHeight() {
+        return bitmap.getHeight();
+    }
+
+    public void getRGB(int[] rgbData, int offset, int scanlength, int x, int y, int width, int height) {
+        bitmap.getPixels(rgbData, offset, scanlength, x, y, width, height);
+    }
 }

@@ -5,7 +5,7 @@ import java.io.InterruptedIOException;
 
 import javax.microedition.io.Connection;
 
-public abstract class MessageConnection extends Connection {
+public abstract class MessageConnection implements Connection {
 
 	public abstract Message newMessage(String s);
 

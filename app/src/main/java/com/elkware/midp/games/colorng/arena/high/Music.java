@@ -1,13 +1,16 @@
 package com.elkware.midp.games.colorng.arena.high;
 
+import com.elkware.midp.games.Arena2;
 import com.elkware.midp.games.colorng.Arena3;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.microedition.media.Manager;
 import javax.microedition.media.MediaException;
 import javax.microedition.media.Player;
 import javax.microedition.media.PlayerListener;
+import javax.microedition.util.ContextHolder;
 
 public class Music implements PlayerListener {
 
@@ -91,8 +94,32 @@ public class Music implements PlayerListener {
 			return i;
 		}
 
-		this.players[i] = Manager.createPlayer("_" + Integer.toHexString(name)
-				.toUpperCase(), arena3);
+		InputStream var3 = Arena2.sub_439(name);
+		int var4;
+		String[] var5;
+		if(var3 != null) {
+			var4 = arena3.sub_37b() - 3;
+		} else {
+			var5 = new String[]{"mid", "wav", "mmf", "spf", "mp3"};
+
+			for(var4 = 0; var4 < var5.length; ++var4) {
+				//var3 = this.getClass().getResourceAsStream
+				// ("/_" + Integer.toHexString(var1).toUpperCase() + "." + var5[var4]);
+				var3 = ContextHolder.getResourceAsStream("/_" +
+						Integer.toHexString(name).toUpperCase() + "." + var5[var4]);
+				if(var3 != null) {
+					break;
+				}
+			}
+
+			if(var3 == null) {
+				throw new IOException("sound not found!");
+			}
+		}
+
+		var5 = new String[]{"audio/midi", "audio/x-wav", "audio/mmf", "audio/x-smaf", "audio/mp3"};
+
+		this.players[i] = Manager.createPlayer(var3, var5[var4]);
 		this.players[i].addPlayerListener(this);
 		this.players[i].prefetch();
 		return i;
