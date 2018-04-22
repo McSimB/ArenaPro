@@ -59,5 +59,4 @@ public class Image {
             throws IllegalArgumentException {
         image.getBitmap().setPixel(x, y, col);
     }
-
 }

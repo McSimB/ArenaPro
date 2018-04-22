@@ -2,7 +2,14 @@
   <dictionary name="McSimB">
     <words>
       <w>arenapro</w>
+      <w>colorng</w>
+      <w>disp</w>
+      <w>dlet</w>
+      <w>elkware</w>
+      <w>lcdui</w>
+      <w>microedition</w>
       <w>midlet</w>
+      <w>midp</w>
     </words>
   </dictionary>
 </component>

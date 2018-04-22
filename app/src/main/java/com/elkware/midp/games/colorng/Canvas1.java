@@ -18,7 +18,7 @@ public abstract class Canvas1 extends Canvas {
 
 	public Canvas1(Arena3 arena3) {
 		this.arena3 = arena3;
-		setFullScreenMode(true);
+		setFullScreenMode();
 		this.sub_44(0, 0, this.getWidth(), this.getHeight());
 	}
 
@@ -455,7 +455,6 @@ public abstract class Canvas1 extends Canvas {
 
 	public void setLight(int var1, boolean var2) {
 		if (0 == var1) {
-			//noinspection StatementWithEmptyBody
 			if (var2) {
 				//Light.setLightOn();
 			} else {
@@ -463,5 +462,4 @@ public abstract class Canvas1 extends Canvas {
 			}
 		}
 	}
-
 }

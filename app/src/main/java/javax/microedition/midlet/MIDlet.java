@@ -16,32 +16,28 @@
 package javax.microedition.midlet;
 
 import android.app.Application;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Bundle;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Locale;
 import java.util.TreeMap;
-import javax.microedition.io.ConnectionNotFoundException;
+
 import javax.microedition.util.ContextHolder;
 
 public abstract class MIDlet extends Application {
 
-    private TreeMap<String, String> properties = new TreeMap();
-    private Locale locale;
+    private TreeMap<String, String> properties = new TreeMap<>();
 
     @Override
     public void onCreate() {
         super.onCreate();
-
-        ContextHolder.setContext(this);
-
+        //ContextHolder.setContext(this);
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(getAssets().open("META-INF/MANIFEST.MF")));
+            BufferedReader br = new BufferedReader(new InputStreamReader(getAssets()
+                    .open("META-INF/MANIFEST.MF")));
 
             String line;
             int index;
@@ -67,42 +63,16 @@ public abstract class MIDlet extends Application {
     }
 
     public void notifyPaused() {
-        ContextHolder.notifyPaused();
+        //ContextHolder.notifyPaused();
     }
 
     public void notifyDestroyed() {
-        ContextHolder.notifyDestroyed();
+        //ContextHolder.notifyDestroyed();
     }
 
     public abstract void initApp();
 
     public abstract void startApp();
-
-    public void setLocale(String language) {
-        locale = new Locale(language);
-        updateConfiguration();
-    }
-
-    public static String getDefaultLocale() {
-        return Locale.getDefault().getCountry();
-    }
-
-    public void updateConfiguration() {
-        Resources res = getResources();
-        Configuration conf = res.getConfiguration();
-
-        if (locale != null) {
-            conf.locale = locale;
-        }
-
-        res.updateConfiguration(conf, res.getDisplayMetrics());
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration conf) {
-        super.onConfigurationChanged(conf);
-        updateConfiguration();
-    }
 
     public void startActivity(Class cls) {
         startActivity(cls, null);
@@ -119,15 +89,5 @@ public abstract class MIDlet extends Application {
         }
 
         startActivity(intent);
-    }
-
-    public boolean platformRequest(String url) throws ConnectionNotFoundException {
-        try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-        } catch (ActivityNotFoundException e) {
-            throw new ConnectionNotFoundException();
-        }
-
-        return true;
     }
 }

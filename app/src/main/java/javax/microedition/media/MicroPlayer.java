@@ -48,8 +48,8 @@ public class MicroPlayer implements Player, MediaPlayer.OnPreparedListener,
         protected static HashMap<Integer, String> androidMetaToMIDP;
 
         static {
-            androidMetaKeys = new ArrayList<Integer>();
-            androidMetaToMIDP = new HashMap<Integer, String>();
+            androidMetaKeys = new ArrayList<>();
+            androidMetaToMIDP = new HashMap<>();
 
             mapMetaKey(MediaMetadataRetriever.METADATA_KEY_CD_TRACK_NUMBER, TRACK_NUMBER_KEY);
             mapMetaKey(MediaMetadataRetriever.METADATA_KEY_ALBUM, ALBUM_KEY);
@@ -78,8 +78,8 @@ public class MicroPlayer implements Player, MediaPlayer.OnPreparedListener,
         protected HashMap<String, String> metadata;
 
         public InternalMetaData() {
-            metakeys = new ArrayList<String>();
-            metadata = new HashMap<String, String>();
+            metakeys = new ArrayList<>();
+            metadata = new HashMap<>();
         }
 
         public void updateMetaData(MediaMetadataRetriever retriever) {
@@ -215,8 +215,8 @@ public class MicroPlayer implements Player, MediaPlayer.OnPreparedListener,
         metadata = new InternalMetaData();
         equalizer = new InternalEqualizer(player.getAudioSessionId());
 
-        listeners = new ArrayList<PlayerListener>();
-        controls = new HashMap<String, Control>();
+        listeners = new ArrayList<>();
+        controls = new HashMap<>();
 
         controls.put(VolumeControl.class.getName(), this);
         controls.put(PanControl.class.getName(), this);
@@ -273,7 +273,7 @@ public class MicroPlayer implements Player, MediaPlayer.OnPreparedListener,
     public synchronized void onCompletion(MediaPlayer mp) {
         postEvent(PlayerListener.END_OF_MEDIA);
 
-        player.seekTo(0);
+        //player.seekTo(0);
 
         if (loopCount == 1) {
             state = PREFETCHED;

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.elkware.midp.games.colorng.arena.high">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.elkware.midp.games.colorng.arena.high" >
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -8,19 +9,29 @@
     <application
         android:name="com.elkware.midp.games.colorng.arena.high.Arena"
         android:allowBackup="true"
-        android:allowClearUserData="true"
-        android:hasCode="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:theme="@style/Theme.Device.Light">
-        <activity android:name="javax.microedition.shell.ConfigActivity">
+
+        <activity
+            android:name="javax.microedition.util.MainActivity"
+            android:screenOrientation="reverseLandscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="javax.microedition.lcdui.Display$ScreenActivity" />
-        <activity android:name="javax.microedition.lcdui.Display$CanvasActivity" />
+
+        <activity android:name="javax.microedition.lcdui.MicroActivity" />
+
+        <activity
+            android:name="javax.microedition.lcdui.Display$ScreenActivity"
+            android:screenOrientation="reverseLandscape"/>
+
+        <activity
+            android:name="javax.microedition.lcdui.Display$CanvasActivity"
+            android:screenOrientation="reverseLandscape"/>
+
     </application>
 
 </manifest>

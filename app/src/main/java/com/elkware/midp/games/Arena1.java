@@ -87,8 +87,7 @@ public abstract class Arena1 extends MIDlet {
 
         for (int var5 = 0; var5 < var3; ++var5) {
             if (var1[var5 * 2 + var2 + 1] != 0) {
-                var4 = var4
-                        + (char) (((var1[var5 * 2 + var2] & 255) << 8) + (var1[var5
+                var4 = var4 + (char) (((var1[var5 * 2 + var2] & 255) << 8) + (var1[var5
                         * 2 + var2 + 1] & 255));
             }
         }
@@ -301,14 +300,16 @@ public abstract class Arena1 extends MIDlet {
     public void destroyApp(boolean b) {
     }
 
+    @Override
     public void notifyDestroyed() {
     }
 
+    @Override
     public void notifyPaused() {
     }
 
+    @Override
     public String getAppProperty(String s) {
-        return "";
+        return super.getAppProperty(s);
     }
-
 }

@@ -323,8 +323,8 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 
 	@Override
 	public void run() {
-		Thread var1 = Thread.currentThread();
-		if (var1 == this.var_207) {
+		Thread thread = Thread.currentThread();
+		if (thread == this.var_207) {
 			this.sub_29e();
 
 			try {
@@ -347,7 +347,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 			} catch (Exception var6) {
 				super.arena3.makeAlert("initGame: " + var6);
 			}
-		} else if (var1 == this.var_35) {
+		} else if (thread == this.var_35) {
 			synchronized (this) {
 				this.var_260 = null;
 				this.var_28e = this.var_2ca = null;
@@ -487,8 +487,9 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 				break;
 			case 7:
 				this.setCurDisp(this);
-				this.var_207 = new Thread(this);
-				this.var_207.start();
+				// TODO : Thread
+				//this.var_207 = new Thread(this);
+				//this.var_207.start();
 		}
 
 		this.var_368 = var1;

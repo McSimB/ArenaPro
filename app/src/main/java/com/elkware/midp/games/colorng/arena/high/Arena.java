@@ -155,8 +155,15 @@ public class Arena extends Arena3 implements CommandListener {
                 var4 = "";
             }
 
-            this.aboutForm.append("(c) 2003/2004\nelkware &\nSiemens mobile\n\ndeveloped by\nelkware GmbH\n\nwww.elkware.com\n\nVersion "
-                    + var4 + "\nDate " + "02.06.04");
+            this.aboutForm.append("(c) 2003/2004\n" +
+                    "elkware &\n" +
+                    "Siemens mobile\n\n" +
+                    "developed by\n" +
+                    "elkware GmbH\n\n" +
+                    "www.elkware.com\n\n" +
+                    "Version "
+                    + var4 + "\n" +
+                    "Date " + "02.06.04");
             this.aboutForm.addCommand(this.aboutBack);
             this.aboutForm.setCommandListener(this);
 
