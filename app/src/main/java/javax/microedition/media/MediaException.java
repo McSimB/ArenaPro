@@ -1,12 +1,12 @@
 package javax.microedition.media;
 
-
 public class MediaException extends Exception {
 
-	public MediaException() {
-	}
+    public MediaException(Exception e) {
+        super(e);
+    }
 
-	public MediaException(String reason) {
-		super(reason);
-	}
+    public MediaException(String message) {
+        super(message);
+    }
 }

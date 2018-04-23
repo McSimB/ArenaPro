@@ -21,7 +21,7 @@ public class Class_202 {
 
 			int var1;
 			for (var1 = 0; var1 < 5; ++var1) {
-				var_55[var1] = var0.arena.getParameter(350 + var1);
+				var_55[var1] = var0.arena3.getParameter(350 + var1);
 			}
 
 			var_a7 = new MySprite[var_55.length][50];
@@ -29,7 +29,7 @@ public class Class_202 {
 			var_9d = new int[2];
 
 			for (var1 = 0; var1 < 2; ++var1) {
-				var_9d[var1] = var0.arena.getParameter(300 + var1);
+				var_9d[var1] = var0.arena3.getParameter(300 + var1);
 			}
 		} catch (Exception var2) {
 			;

@@ -1,8 +1,12 @@
 package javax.microedition.lcdui;
 
 import android.view.View;
-
-import com.elkware.midp.games.Arena1;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import static javax.microedition.lcdui.Canvas.KEY_DISPLAY1;
 import static javax.microedition.lcdui.Canvas.KEY_DISPLAY2;
@@ -11,13 +15,28 @@ import static javax.microedition.lcdui.Display.WIDTH;
 
 public abstract class Displayable {
 
-	Display currentDisplay;
-	Command[] commands;
-	int numCommands;
-	CommandListener listener;
-	Arena1 arena1;
+	protected ViewGroup layout;
+	protected TextView titleView;
+	protected ListView listView;
+	protected CheckBox checkBox1;
+	protected CheckBox checkBox2;
+	protected CheckBox checkBox3;
+	protected EditText editText;
+	protected ArrayAdapter<String> adapter;
+	private Display currentDisplay;
+	private Command[] commands;
+	private int numCommands;
+	private CommandListener commandListener;
 
 	public Displayable() {
+	}
+
+	public CommandListener getCommandListener() {
+		return commandListener;
+	}
+
+	public void setCommandListener(CommandListener l) {
+		commandListener = l;
 	}
 
 	public void addCommand(Command cmd) {
@@ -28,10 +47,6 @@ public abstract class Displayable {
 
 	public void removeCommand(Command cmd) {
 		removeCommandImpl(cmd);
-	}
-
-	public void setCommandListener(CommandListener l) {
-		listener = l;
 	}
 
 	public int getwidth() {
@@ -96,7 +111,7 @@ public abstract class Displayable {
 							| command.getCommandType() == Command.OK
 							| command.getCommandType() == Command.HELP
 							| command.getCommandType() == Command.ITEM)) {
-						listener.commandAction(command, this);
+						commandListener.commandAction(command, this);
 						break;
 					}
 				}
@@ -110,7 +125,7 @@ public abstract class Displayable {
 							| command.getCommandType() == Command.CANCEL
 							| command.getCommandType() == Command.STOP
 							| command.getCommandType() == Command.EXIT)) {
-						listener.commandAction(command, this);
+						commandListener.commandAction(command, this);
 						break;
 					}
 				}
@@ -120,4 +135,9 @@ public abstract class Displayable {
 
 	public abstract View getView();
 
+	protected void removeScrollView() {
+		while (layout.getChildCount() > 6) {
+			layout.removeViewAt(layout.getChildCount() - 1);
+		}
+	}
 }

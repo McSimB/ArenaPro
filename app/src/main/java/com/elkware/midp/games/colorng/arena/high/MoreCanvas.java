@@ -7,22 +7,21 @@ import javax.microedition.lcdui.Image;
 class MoreCanvas extends Canvas {
 
 	private final Image downloadMoreImage;
-	private final Arena var_b8;
+	private final Arena arena;
 
-	MoreCanvas(Arena var1, Image var2) {
-		super(var1);
-		this.var_b8 = var1;
+	MoreCanvas(Arena arena, Image var2) {
+		this.arena = arena;
 		this.downloadMoreImage = var2;
 	}
 
 	@Override
-	protected void keyPressed(int var1) {
-		Arena.sub_64f(this.var_b8, true);
+	public void keyPressed(int var1) {
+		Arena.sub_64f(this.arena, true);
 	}
 
 	@Override
-	protected void paint(Graphics var1) {
-		int var2 = this.getwidth();
+	public void paint(Graphics var1) {
+		int var2 = this.getWidth();
 		short var3 = 176;
 		var1.setClip(0, 0, var2, var3);
 		var1.setColor(255, 0, 0);

@@ -1,8 +1,10 @@
 package javax.microedition.lcdui;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.View;
 
-import com.elkware.midp.games.colorng.arena.high.Arena;
+import javax.microedition.util.ContextHolder;
 
 public abstract class Canvas extends Displayable {
 
@@ -27,35 +29,46 @@ public abstract class Canvas extends Displayable {
 	public static final int KEY_NUM9 = 57;
 	public static final int KEY_STAR = 42;
 	public static final int KEY_POUND = 35;
-
 	public static final int KEY_DISPLAY1 = -12;
 	public static final int KEY_DISPLAY2 = -4;
 
-	public Arena arena;
+	private CanvasView canvasView;
 
-	public Canvas(Arena var1) {
-		this.arena = var1;
+	public Canvas() {
+		canvasView = new CanvasView(ContextHolder.getContext());
 	}
 
-	protected void keyPressed(int i) {
+	public void keyPressed(int i) {
 	}
 
-	protected void keyReleased(int i) {
+	public void keyReleased(int i) {
 	}
 
-	protected abstract void paint(Graphics g);
+	public void paint(Graphics g) {
+	}
 
 	public final void repaint() {
 	}
 
 	public final void serviceRepaints() {
-		arena.canvasView.postInvalidate();
+		canvasView.postInvalidate();
 	}
 
 	protected void showNotify() {
 	}
 
 	protected void hideNotify() {
+	}
+
+	public void setFullScreenMode() {
+	}
+
+	public int getHeight() {
+		return 176;
+	}
+
+	public int getWidth() {
+		return 132;
 	}
 
 	@Override
@@ -65,7 +78,44 @@ public abstract class Canvas extends Displayable {
 
 	@Override
 	public View getView() {
-		return arena.canvasView;
+		return canvasView;
 	}
 
+	public class CanvasView extends View {
+
+		private android.graphics.Canvas bufCanvas;
+		private Graphics graphics;
+		private Bitmap bitmap;
+
+		public CanvasView(Context context) {
+			super(context);
+			this.graphics = new Graphics(Display.WIDTH, Display.HEIGHT);
+			this.bitmap = Bitmap.createBitmap(Display.WIDTH, Display.HEIGHT, Bitmap.Config.ARGB_8888);
+			this.bufCanvas = new android.graphics.Canvas(bitmap);
+		}
+
+		@Override
+		protected void onDraw(android.graphics.Canvas canvas) {
+			//if (myCanvas != null) {
+				graphics.canvas = bufCanvas;
+				graphics.firstSave = true;
+				paint(graphics);
+				if (graphics.isSave) {
+					graphics.isSave = false;
+					bufCanvas.restore();
+					canvas.scale(Display.SCALE, Display.SCALE);
+					canvas.drawBitmap(bitmap, 0, 0, null);
+				}
+			//}
+		}
+
+		@Override
+		protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+			setMeasuredDimension(Display.WIDTH * Display.SCALE, Display.HEIGHT * Display.SCALE);
+		}
+
+		public Graphics getGraphics() {
+			return graphics;
+		}
+	}
 }

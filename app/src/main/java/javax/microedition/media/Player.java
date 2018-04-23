@@ -2,27 +2,37 @@ package javax.microedition.media;
 
 public interface Player {
 
-	public static final int UNREALIZED = 100;
-	public static final int REALIZED = 200;
-	public static final int PREFETCHED = 300;
-	public static final int STARTED = 400;
-	public static final int CLOSED = 0;
-	public static final long TIME_UNKNOWN = -1L;
+    int CLOSED = 0;
+    int UNREALIZED = 100;
+    int REALIZED = 200;
+    int PREFETCHED = 300;
+    int STARTED = 400;
 
-	void prefetch();
+    long TIME_UNKNOWN = -1;
 
-	void start();
+    void realize() throws MediaException;
 
-	void stop();
+    void prefetch() throws MediaException;
 
-	void deallocate();
+    void start() throws MediaException;
 
-	void close();
+    void stop() throws MediaException;
 
-	int getState();
+    void deallocate();
 
-	void setLoopCount(int i);
+    void close();
 
-	void addPlayerListener(PlayerListener playerlistener);
+    long setMediaTime(long now) throws MediaException;
 
+    long getMediaTime();
+
+    long getDuration();
+
+    void setLoopCount(int count);
+
+    int getState();
+
+    void addPlayerListener(PlayerListener playerListener);
+
+    void removePlayerListener(PlayerListener playerListener);
 }

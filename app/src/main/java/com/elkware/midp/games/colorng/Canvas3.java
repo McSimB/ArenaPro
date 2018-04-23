@@ -13,7 +13,7 @@ public abstract class Canvas3 extends Canvas2 implements PlayerListener {
 	short[] shortsPlayers;
 	boolean[] booleanPlayers;
 
-	public Canvas3(Arena var1) {
+	public Canvas3(Arena3 var1) {
 		super(var1);
 		int var2 = var1.getParameter(5034);
 		if (var2 < 0) {

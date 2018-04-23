@@ -12,6 +12,7 @@ import javax.microedition.io.Connection;
 
 public class FileConnection extends Connection {
 
+	public static final String READ_WRITE = "rw";
 	private File file;
 
 	public FileConnection(File file) {

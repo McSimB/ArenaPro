@@ -1,13 +1,12 @@
 package com.elkware.midp.games.colorng;
 
-import com.elkware.midp.games.colorng.arena.high.Arena;
-
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Graphics;
 
 public abstract class Canvas1 extends Canvas {
 
+	public Arena3 arena3;
 	public int[] var_ab;
 	public int[] var_12f;
 	public int var_16c;
@@ -17,9 +16,10 @@ public abstract class Canvas1 extends Canvas {
 	public boolean var_24f;
 	public boolean var_292 = true;
 
-	public Canvas1(Arena var1) {
-		super(var1);
-		this.sub_44(0, 0, this.getwidth(), this.getheight());
+	public Canvas1(Arena3 arena3) {
+		this.arena3 = arena3;
+		setFullScreenMode();
+		this.sub_44(0, 0, this.getWidth(), this.getHeight());
 	}
 
 	public void redraw() {
@@ -32,7 +32,7 @@ public abstract class Canvas1 extends Canvas {
 		try {
 			this.draw(var1);
 		} catch (Exception var3) {
-			this.arena.makeAlert("paintFrame: " + var3);
+			this.arena3.makeAlert("paintFrame: " + var3);
 		}
 	}
 
@@ -444,12 +444,13 @@ public abstract class Canvas1 extends Canvas {
 	}
 
 	@Override
-	public int getheight() {
+	public int getHeight() {
 		return 176;
 	}
 
 	public void vibrate(long var1) {
-		Display.getDisplay(this.arena).vibrate((int) var1);
+		Display.getDisplay(arena3);
+		Display.vibrate((int) var1);
 	}
 
 	public void setLight(int var1, boolean var2) {
@@ -461,5 +462,4 @@ public abstract class Canvas1 extends Canvas {
 			}
 		}
 	}
-
 }

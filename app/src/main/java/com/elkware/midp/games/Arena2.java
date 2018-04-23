@@ -20,6 +20,7 @@ import javax.microedition.lcdui.TextBox;
 import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
+import javax.microedition.util.ContextHolder;
 
 public abstract class Arena2 extends Arena1 implements CommandListener {
 
@@ -61,7 +62,8 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 	private int var_859;
 
 	public void readStringResources(String fileName, String var2) throws IOException {
-		DataInputStream stream = new DataInputStream(getAssets().open(fileName));
+		//DataInputStream stream = new DataInputStream(getAssets().open(fileName));
+		DataInputStream stream = new DataInputStream(ContextHolder.getResourceAsStream(fileName));
 		int _int = stream.readInt();
 		int i = 0;
 		int var7 = 4;
@@ -92,7 +94,10 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 
 	void checkLocale() {
 		String var1;
-		if ((var1 = Locale.getDefault().getLanguage()) != null) { // ==
+		/*if ((var1 = Locale.getDefault().getLanguage()) != null) { // ==
+			var1 = "";
+		}*/
+		if((var1 = System.getProperty("microedition.locale")) == null) {
 			var1 = "";
 		}
 
@@ -413,7 +418,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 		this.quitStr = new Command(this.getStr(9), 3, 10);
 		if (var2 != null) {
 			if (!(this.display.getCurrent() instanceof Form)) {
-				Form var3 = new Form(this.getStr(14), this); // Error
+				Form var3 = new Form(this.getStr(14)); // Error
 				var3.append(var2);
 				var3.setCommandListener(this);
 				var3.addCommand(this.quitStr);
@@ -487,7 +492,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 		System.gc();
 	}
 
-	public InputStream sub_439(int var0) {
+	public static InputStream sub_439(int var0) {
 		try {
 			DataInputStream var1;
 			int var2;
@@ -511,7 +516,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 
 				//var1 = new DataInputStream(var_359.getClass()
 				//		.getResourceAsStream(var_391));
-				var1 = new DataInputStream(getAssets().open(var_391));
+				var1 = new DataInputStream(ContextHolder.getResourceAsStream(var_391));
 				var1.skip(4L);
 			}
 
@@ -545,7 +550,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 		}
 	}
 
-	public synchronized byte[] sub_499(int var0) {
+	public static synchronized byte[] sub_499(int var0) {
 		try {
 			int var1;
 			if (var_541 != null) {
@@ -610,7 +615,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 
 	public void sub_4b4() {
 		this.var_590 = "";
-		this.highscoreNameTextBox = new TextBox(this.getStr(18), this.var_590, 12, 0, this);
+		this.highscoreNameTextBox = new TextBox(this.getStr(18), this.var_590, 12, 0);
 		this.saveAndSaveCom = new Command(this.getStr(20), 4, 0);
 		this.highscoreNameTextBox.addCommand(this.saveAndSaveCom);
 

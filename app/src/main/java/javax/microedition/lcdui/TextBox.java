@@ -1,18 +1,24 @@
 package javax.microedition.lcdui;
 
+import android.annotation.SuppressLint;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
-import com.elkware.midp.games.Arena1;
+import com.elkware.midp.games.colorng.arena.high.R;
+
+import javax.microedition.util.ContextHolder;
+import javax.microedition.util.MainActivity;
 
 public class TextBox extends Displayable {
 
 	private String title;
 	private String hint;
 
-	public TextBox(String s1, String s2, int i, int i1, Arena1 arena1) {
-		this.arena1 = arena1;
-		title = s1;
-		hint = s2;
+	@SuppressWarnings("unused")
+	public TextBox(String title, String hint, int maxSize, int constraints) {
+		this.title = title;
+		this.hint = hint;
 	}
 
 	public void setString(String s) {
@@ -20,7 +26,7 @@ public class TextBox extends Displayable {
 	}
 
 	public String getString() {
-		return arena1.getFromTextBox();
+		return editText.getText().toString();
 	}
 
 	@Override
@@ -28,10 +34,17 @@ public class TextBox extends Displayable {
 		super.callKeyPressed(key);
 	}
 
+	@SuppressLint("InflateParams")
 	@Override
 	public View getView() {
-		arena1.initTextBox(title, hint);
-		return arena1.menuView;
+		MainActivity context = ContextHolder.getContext();
+		LayoutInflater inflater = context.getLayoutInflater();
+		layout = (ViewGroup) inflater.inflate(R.layout.list, null, false);
+		editText.setVisibility(View.VISIBLE);
+		listView.setVisibility(View.GONE);
+		titleView.setText(title);
+		editText.setText(hint);
+		removeScrollView();
+		return layout;
 	}
-
 }

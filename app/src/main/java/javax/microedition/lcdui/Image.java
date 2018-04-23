@@ -8,6 +8,8 @@ import android.graphics.BitmapFactory;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.microedition.util.ContextHolder;
+
 public class Image {
 
 	private Bitmap bitmap;
@@ -20,8 +22,8 @@ public class Image {
 		bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 	}
 
-	private Image(String name, Activity activity) {
-		AssetManager assetManager = activity.getAssets();
+	private Image(String name) {
+		AssetManager assetManager = ContextHolder.getContext().getAssets();
 		InputStream inputStream;
 		try {
 			inputStream = assetManager.open(name);
@@ -47,8 +49,11 @@ public class Image {
 			return new Image(width, height);
 	}
 
-	public static Image createImage(String name, Activity activity) {
-		return new Image(name, activity);
+	public static Image createImage(String name) {
+		if (name.startsWith("/")) {
+			name = name.substring(1);
+		}
+		return new Image(name);
 	}
 
 	public static Image createRGBImage(int[] rgb, int width, int height, boolean processAlpha) {
