@@ -21,7 +21,7 @@ public abstract class Arena3 extends Arena2 implements CommandListener {
     @Override
     public void startApp() {
         if (this.canvas3 != null) {
-            Display.getDisplay(this).setCurrent(this.canvas3);
+            Display.getDisplay().setCurrent(this.canvas3);
             this.canvas3.showNotify();
         } else {
             super.startApp();
@@ -99,5 +99,4 @@ public abstract class Arena3 extends Arena2 implements CommandListener {
         this.canvas3.sub_ec7();
         this.notifyDestroyed();
     }
-
 }

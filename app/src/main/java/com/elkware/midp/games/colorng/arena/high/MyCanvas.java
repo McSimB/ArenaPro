@@ -1580,7 +1580,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
         this.fonts[6] = Font.getFont(32, arena.getParameter(413) == 0 ? 0
                 : 1, this.sub_587(arena.getParameter(412)));
         System.gc();
-        this.logoImage = this.openImage(2);
+        //this.logoImage = this.openImage(2);
         this.var_844 = 5;
         this.loadingStr = arena.getStr(250);
         this.width = this.getWidth();

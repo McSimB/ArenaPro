@@ -9,8 +9,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import static com.elkware.midp.games.Arena1.APP_DATA_DIR;
-
 public class Image extends com.siemens.mp.ui.Image {
 
 	public static final int TYPE_BMP = 1;
@@ -18,8 +16,7 @@ public class Image extends com.siemens.mp.ui.Image {
 
 	public static void writePngToFile(javax.microedition.lcdui.Image image, String name)
 			throws IOException {
-		String path = Environment.getExternalStorageDirectory().getAbsolutePath() +
-				APP_DATA_DIR;
+		String path = Environment.getExternalStorageDirectory().getAbsolutePath();
 		File dir = new File(path);
 		if (!dir.exists()) {
 			dir.mkdirs();
@@ -38,8 +35,7 @@ public class Image extends com.siemens.mp.ui.Image {
 
 	public static javax.microedition.lcdui.Image createImageFromFile(String name, int w, int h)
 			throws IOException {
-		String path = Environment.getExternalStorageDirectory().getAbsolutePath() +
-				APP_DATA_DIR;
+		String path = Environment.getExternalStorageDirectory().getAbsolutePath();
 		File dir = new File(path);
 		if (!dir.exists()) {
 			throw new IOException();

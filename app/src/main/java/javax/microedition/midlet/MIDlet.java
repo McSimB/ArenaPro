@@ -6,9 +6,11 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.TreeMap;
 
+import javax.microedition.util.ContextHolder;
+
 public abstract class MIDlet extends Application {
 
-    private TreeMap<String, String> properties = new TreeMap<>();
+    private TreeMap<String, String> properties = new TreeMap<String, String>();
 
     @Override
     public void onCreate() {
@@ -40,10 +42,15 @@ public abstract class MIDlet extends Application {
         return properties.get(key);
     }
 
+    public abstract void pauseApp();
+
+    public abstract void destroyApp(boolean b);
+
     public void notifyPaused() {
     }
 
     public void notifyDestroyed() {
+        ContextHolder.getContext().finish();
     }
 
     public abstract void initApp();

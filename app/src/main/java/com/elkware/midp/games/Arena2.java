@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Locale;
 
 import javax.microedition.lcdui.Alert;
 import javax.microedition.lcdui.Command;
@@ -24,19 +23,6 @@ import javax.microedition.util.ContextHolder;
 
 public abstract class Arena2 extends Arena1 implements CommandListener {
 
-	private final String[] recStores = new String[]{"RSF6", "RSHS7", "RSAD8"};
-	public boolean _forPlayMus1 = true;
-	public boolean var_e8 = true;
-	public boolean var_105 = true;
-	public boolean _forPlayMus = false;
-	boolean var_188 = false;
-	private String var_1d6 = "Afgh6Sg";
-	public Command quitStr;
-	Hashtable var_247 = new Hashtable();
-	Alert alert;
-	public String[] stringResources = new String[0];
-	byte[] var_310;
-	byte[] var_33f;
 	static Object var_359;
 	static String var_391;
 	static int var_3ae;
@@ -45,7 +31,14 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 	static byte[] var_4e6;
 	static RecordStore var_541;
 	static boolean var_562;
-	public static long var_585;
+
+	private final String[] recStores = new String[]{"RSF6", "RSHS7", "RSAD8"};
+	public boolean _forPlayMus1 = true;
+	public boolean var_e8 = true;
+	public boolean var_105 = true;
+	public boolean _forPlayMus = false;
+	public Command quitStr;
+	public String[] stringResources = new String[0];
 	public String var_590;
 	public int var_5c8 = 5;
 	public int var_5db;
@@ -58,8 +51,148 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 	public Command saveAndSaveCom;
 	public Command saveCom;
 	public Command cancelCom;
+	boolean var_188 = false;
+	Hashtable var_247 = new Hashtable();
+	Alert alert;
+	byte[] var_310;
+	byte[] var_33f;
+	private String var_1d6 = "Afgh6Sg";
 	private TextBox highscoreNameTextBox;
 	private int var_859;
+
+	public static void sub_3ee() {
+		var_43e = null;
+		var_4e6 = null;
+		if (var_541 != null) {
+			try {
+				var_541.closeRecordStore();
+			} catch (Exception var1) {
+				var1.printStackTrace();
+			}
+		}
+		System.gc();
+	}
+
+	public static InputStream sub_439(int var0) {
+		try {
+			DataInputStream var1;
+			int var2;
+			if (var_43e != null) {
+				var1 = new DataInputStream(new ByteArrayInputStream(var_43e));
+			} else {
+				if (var_541 != null) {
+					var2 = 0;
+					while ((var_4e6[var2] & 255) != var0 && var2 < var_4e6.length) {
+						var2 += 3;
+					}
+
+					if (var2 >= var_4e6.length) {
+						return null;
+					}
+
+					var_3ed = var_4e6[var2 + 1] & 255;
+					return new DataInputStream(new ByteArrayInputStream(
+							var_541.getRecord(var_4e6[var2 + 2] & 255)));
+				}
+
+				//var1 = new DataInputStream(var_359.getClass()
+				//		.getResourceAsStream(var_391));
+				var1 = new DataInputStream(ContextHolder.getResourceAsStream(var_391));
+				var1.skip(4L);
+			}
+
+			var2 = var1.read() & 255;
+			int var7 = 0;
+
+			int var3;
+			int var4;
+			int var5;
+			int var6;
+			do {
+				var3 = var1.readByte() & 255;
+				var6 = var1.readByte() & 255;
+				var4 = var1.readInt();
+				var5 = var1.readInt();
+				++var7;
+			} while (var7 < var2 && var0 != var3);
+
+			if (var0 != var3) {
+				return null;
+			} else {
+				var1.skip((long) ((var2 - var7) * 10 + var4));
+				var_3ae = var5;
+				var_3ed = var6;
+				return var1;
+			}
+		} catch (Exception var8) {
+			System.out.println("ERROR: getPackedResourceStream " + var0 + " : "
+					+ var8);
+			return null;
+		}
+	}
+
+	public static synchronized byte[] sub_499(int var0) {
+		try {
+			int var1;
+			if (var_541 != null) {
+				var1 = 0;
+				while ((var_4e6[var1] & 255) != var0 && var1 < var_4e6.length) {
+					var1 += 3;
+				}
+				if (var1 >= var_4e6.length) {
+					return null;
+				} else {
+					var_3ed = var_4e6[var1 + 1] & 255;
+					return var_541.getRecord(var_4e6[var1 + 2] & 255);
+				}
+			} else if (var_43e == null) {
+				DataInputStream var10 = (DataInputStream) sub_439(var0);
+				byte[] var11 = new byte[var_3ae];
+				if (var10 != null) {
+					var10.readFully(var11);
+					var10.close();
+				}
+				return var11;
+			} else {
+				var1 = var_43e[0] & 255;
+				int var6 = 0;
+				int var7 = 1;
+
+				int var2;
+				int var3;
+				int var4;
+				int var5;
+				do {
+					var2 = var_43e[var7] & 255;
+					var5 = var_43e[var7 + 1] & 255;
+					var3 = (var_43e[var7 + 2] & 255) << 24
+							| (var_43e[var7 + 3] & 255) << 16
+							| (var_43e[var7 + 4] & 255) << 8
+							| var_43e[var7 + 5] & 255;
+					var4 = (var_43e[var7 + 6] & 255) << 24
+							| (var_43e[var7 + 7] & 255) << 16
+							| (var_43e[var7 + 8] & 255) << 8
+							| var_43e[var7 + 9] & 255;
+					++var6;
+					var7 += 10;
+				} while (var6 < var1 && var0 != var2);
+
+				if (var0 != var2) {
+					return null;
+				} else {
+					var_3ed = var5;
+					byte[] var8 = new byte[var4];
+					var7 += (var1 - var6) * 10 + var3;
+					System.arraycopy(var_43e, var7, var8, 0, var4);
+					return var8;
+				}
+			}
+		} catch (Exception var9) {
+			System.out.println("ERROR: loadRAWFromPacked " + var0 + " : "
+					+ var9);
+			return null;
+		}
+	}
 
 	public void readStringResources(String fileName, String var2) throws IOException {
 		//DataInputStream stream = new DataInputStream(getAssets().open(fileName));
@@ -156,11 +289,6 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 		this.checkLocale();
 		if (this.var_64d == null) {
 			this.sub_1ea();
-		}
-
-		this.var_310 = sub_32f("_FF.ini");
-		if (this.var_310 != null) {
-			var_562 = this.getParameter(5050) == 1;
 		}
 
 		sub_38f(this, "res.raw");
@@ -360,8 +488,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 	public void makeAlert(String s) {
 		this.alert = new Alert(this.getStr(25), s, null, null);
 		this.alert.setTimeout('\uea60');
-		//TODO Alert
-		Display.getDisplay(this).setCurrent(this.alert);
+		Display.getDisplay().setCurrent(this.alert);
 	}
 
 	public boolean sub_2a7() {
@@ -407,7 +534,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 	}
 
 	public boolean sub_2e6() {
-		this.display = Display.getDisplay(this);
+		this.display = Display.getDisplay();
 		String var2 = null;
 		if (this.sub_2a7()) {
 			var2 = this.getStr(99);
@@ -428,24 +555,6 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 			return false;
 		} else {
 			return true;
-		}
-	}
-
-	public byte[] sub_32f(String var0) {
-		try {
-			DataInputStream var1 = new DataInputStream(getAssets().open(var0));
-			ByteArrayOutputStream var2 = new ByteArrayOutputStream();
-
-			int var3;
-			while ((var3 = var1.read()) != -1) {
-				var2.write(var3);
-			}
-
-			var1.close();
-			return var2.toByteArray();
-		} catch (Throwable var4) {
-			System.out.println("ERROR: Resource " + var0 + " not found!");
-			return null;
 		}
 	}
 
@@ -476,140 +585,6 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 			var_43e = sub_370(var1);
 			System.out.println(
 					"Caching res.raw (" + (var_43e != null ? var_43e.length : 0) + " bytes)");
-		}
-	}
-
-	public static void sub_3ee() {
-		var_43e = null;
-		var_4e6 = null;
-		if (var_541 != null) {
-			try {
-				var_541.closeRecordStore();
-			} catch (Exception var1) {
-				var1.printStackTrace();
-			}
-		}
-		System.gc();
-	}
-
-	public static InputStream sub_439(int var0) {
-		try {
-			DataInputStream var1;
-			int var2;
-			if (var_43e != null) {
-				var1 = new DataInputStream(new ByteArrayInputStream(var_43e));
-			} else {
-				if (var_541 != null) {
-					var2 = 0;
-					while ((var_4e6[var2] & 255) != var0 && var2 < var_4e6.length) {
-						var2 += 3;
-					}
-
-					if (var2 >= var_4e6.length) {
-						return null;
-					}
-
-					var_3ed = var_4e6[var2 + 1] & 255;
-					return new DataInputStream(new ByteArrayInputStream(
-							var_541.getRecord(var_4e6[var2 + 2] & 255)));
-				}
-
-				//var1 = new DataInputStream(var_359.getClass()
-				//		.getResourceAsStream(var_391));
-				var1 = new DataInputStream(ContextHolder.getResourceAsStream(var_391));
-				var1.skip(4L);
-			}
-
-			var2 = var1.read() & 255;
-			int var7 = 0;
-
-			int var3;
-			int var4;
-			int var5;
-			int var6;
-			do {
-				var3 = var1.readByte() & 255;
-				var6 = var1.readByte() & 255;
-				var4 = var1.readInt();
-				var5 = var1.readInt();
-				++var7;
-			} while (var7 < var2 && var0 != var3);
-
-			if (var0 != var3) {
-				return null;
-			} else {
-				var1.skip((long) ((var2 - var7) * 10 + var4));
-				var_3ae = var5;
-				var_3ed = var6;
-				return var1;
-			}
-		} catch (Exception var8) {
-			System.out.println("ERROR: getPackedResourceStream " + var0 + " : "
-					+ var8);
-			return null;
-		}
-	}
-
-	public static synchronized byte[] sub_499(int var0) {
-		try {
-			int var1;
-			if (var_541 != null) {
-				var1 = 0;
-				while ((var_4e6[var1] & 255) != var0 && var1 < var_4e6.length) {
-					var1 += 3;
-				}
-				if (var1 >= var_4e6.length) {
-					return null;
-				} else {
-					var_3ed = var_4e6[var1 + 1] & 255;
-					return var_541.getRecord(var_4e6[var1 + 2] & 255);
-				}
-			} else if (var_43e == null) {
-				DataInputStream var10 = (DataInputStream) sub_439(var0);
-				byte[] var11 = new byte[var_3ae];
-				if (var10 != null) {
-					var10.readFully(var11);
-					var10.close();
-				}
-				return var11;
-			} else {
-				var1 = var_43e[0] & 255;
-				int var6 = 0;
-				int var7 = 1;
-
-				int var2;
-				int var3;
-				int var4;
-				int var5;
-				do {
-					var2 = var_43e[var7] & 255;
-					var5 = var_43e[var7 + 1] & 255;
-					var3 = (var_43e[var7 + 2] & 255) << 24
-							| (var_43e[var7 + 3] & 255) << 16
-							| (var_43e[var7 + 4] & 255) << 8
-							| var_43e[var7 + 5] & 255;
-					var4 = (var_43e[var7 + 6] & 255) << 24
-							| (var_43e[var7 + 7] & 255) << 16
-							| (var_43e[var7 + 8] & 255) << 8
-							| var_43e[var7 + 9] & 255;
-					++var6;
-					var7 += 10;
-				} while (var6 < var1 && var0 != var2);
-
-				if (var0 != var2) {
-					return null;
-				} else {
-					var_3ed = var5;
-					byte[] var8 = new byte[var4];
-					var7 += (var1 - var6) * 10 + var3;
-					System.arraycopy(var_43e, var7, var8, 0, var4);
-					return var8;
-				}
-			}
-		} catch (Exception var9) {
-			System.out.println("ERROR: loadRAWFromPacked " + var0 + " : "
-					+ var9);
-			return null;
 		}
 	}
 
@@ -717,8 +692,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 		} else {
 			this.var_590 = this.sub_4c6(this.highscoreNameTextBox.getString());
 			if (this.var_590.length() < 3) {
-				//TODO Alert
-				//this.display.setCurrent(new Alert("Info", this.getStr(23), null, null));
+				this.display.setCurrent(new Alert("Info", this.getStr(23), null, null));
 			} else if (var1 == this.saveCom) {
 				this.var_859 = 2;
 			} else {
@@ -759,10 +733,4 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 			return true;
 		}
 	}
-
-	static {
-		System.gc();
-		var_585 = System.currentTimeMillis();
-	}
-
 }

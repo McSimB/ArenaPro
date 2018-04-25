@@ -5,10 +5,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
-import com.elkware.midp.games.colorng.arena.high.R;
 import com.elkware.midp.games.colorng.arena.high.MyCanvas;
+import com.elkware.midp.games.colorng.arena.high.R;
 
-import javax.microedition.midlet.MIDlet;
 import javax.microedition.util.ContextHolder;
 import javax.microedition.util.MainActivity;
 
@@ -16,18 +15,18 @@ public class Display {
 
     public static final int WIDTH = 132;
     public static final int HEIGHT = 176;
-    public static int SCALE = 4;
-
+    public static int SCALE = ContextHolder.getDisplayHeight() / HEIGHT;
     private static Display instance;
     private Displayable current;
     private boolean firstDisp;
 
-    private Display(MIDlet midlet) {
+    private Display() {
+
     }
 
-    public static Display getDisplay(MIDlet midlet) {
+    public static Display getDisplay() {
         if (instance == null) {
-            instance = new Display(midlet);
+            instance = new Display();
         }
         return instance;
     }
@@ -36,7 +35,7 @@ public class Display {
         MainActivity activity = ContextHolder.getContext();
         final RelativeLayout.LayoutParams params =
                 new RelativeLayout.LayoutParams(WIDTH * SCALE, HEIGHT * SCALE);
-        params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT);
         final ViewGroup mainLayout = activity.findViewById(R.id.mainLayout);
         boolean remove = false;
         if (current != null) remove = true;
@@ -70,17 +69,6 @@ public class Display {
     }
 
     public static void vibrate(int var1) {
-    }
-
-    public boolean isShown() {
-        return false;
-    }
-
-    public void updateCommandSet() {
-        Command[] screenCommands = current.getCommands();
-        int screenComCount = current.getCommandCount();
-        for (int i = 0; i < screenComCount; i++)
-            screenCommands[i].setInternalID(i);
     }
 
     private void initButtons(ViewGroup view) {

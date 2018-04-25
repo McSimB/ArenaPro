@@ -449,7 +449,7 @@ public abstract class Canvas1 extends Canvas {
 	}
 
 	public void vibrate(long var1) {
-		Display.getDisplay(arena3);
+		Display.getDisplay();
 		Display.vibrate((int) var1);
 	}
 

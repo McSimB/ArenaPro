@@ -108,12 +108,6 @@ public class Graphics {
 		}
 	}
 
-	public void setColor(int var_56f) {
-	}
-
-	public void drawRect(int var_4d3, int var_50d, int i, int i1) {
-	}
-
 	public void fillRect(int i, int j, int k, int l) {
 		canvas.drawRect(i, j, (i + k), (j + l), paint);
 	}
@@ -130,9 +124,6 @@ public class Graphics {
 
 	public void drawImage(Image image, int x, int y, int k) {
 		canvas.drawBitmap(image.getBitmap(), x, y, new Paint());
-	}
-
-	public void drawLine(int i, int i1, int i2, int i3) {
 	}
 
 	public int getTranslateX() {

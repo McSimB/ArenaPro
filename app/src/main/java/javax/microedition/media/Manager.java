@@ -33,6 +33,7 @@ public class Manager {
 
     private static StreamCacheCleaner cleaner = new StreamCacheCleaner();
 
+    @SuppressWarnings("unused")
     public static Player createPlayer(String locator) throws IOException {
         return new MicroPlayer(new DataSource(locator));
     }
@@ -107,8 +108,8 @@ public class Manager {
 
                     try {
                         thread.join();
-                    } catch (InterruptedException _) {
-                        _.printStackTrace();
+                    } catch (InterruptedException ee) {
+                        ee.printStackTrace();
                     }
 
                     player.setDataSource(source);

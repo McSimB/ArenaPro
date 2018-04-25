@@ -98,7 +98,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 			this.var_454 = var2 == 1;
 		}
 
-		Display.getDisplay(var1);
+		Display.getDisplay();
 		this.var_120 = var1.sub_499(5);
 		if (this.var_120 == null) {
 			try {
@@ -441,7 +441,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 	public abstract void sub_2dd();
 
 	public void setCurDisp(Displayable var1) {
-		Display var2 = Display.getDisplay(super.arena3);
+		Display var2 = Display.getDisplay();
 		if (var2 != null) {
 			var2.setCurrent(var1);
 		}

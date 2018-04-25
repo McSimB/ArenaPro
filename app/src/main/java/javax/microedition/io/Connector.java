@@ -7,8 +7,6 @@ import java.io.IOException;
 
 import javax.microedition.io.file.FileConnection;
 
-import static com.elkware.midp.games.Arena1.APP_DATA_DIR;
-
 public class Connector {
 
 	public static final int READ = 1;
@@ -24,8 +22,8 @@ public class Connector {
 
 	public static Connection open(String s, int i) throws IOException {
 		File file = new File(Environment.getExternalStorageDirectory()
-				.getAbsolutePath() + "/" + APP_DATA_DIR);
+				.getAbsolutePath());
+		// TODO : open Pictures
 		return new FileConnection(file);
 	}
-
 }

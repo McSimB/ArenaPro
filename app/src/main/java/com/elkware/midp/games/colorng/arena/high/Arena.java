@@ -365,7 +365,7 @@ public class Arena extends Arena3 implements CommandListener {
                             this.commandManage(19);
                             break;
                         case 2:
-                            Display.getDisplay(this).setCurrent(this.phoneNumberTextBox);
+                            Display.getDisplay().setCurrent(this.phoneNumberTextBox);
                             break;
                         case 3:
                             this.commandManage(23);
@@ -1210,7 +1210,6 @@ public class Arena extends Arena3 implements CommandListener {
         } catch (Exception var7) {
             var7.printStackTrace();
         }
-
         return var4;
     }
 

@@ -17,14 +17,13 @@ import javax.microedition.midlet.MIDlet;
 
 public abstract class Arena1 extends MIDlet {
 
-    public static final String APP_DATA_DIR = "Arena Pro";
     public MyCanvas myCanvas;
     public Display display;
     public String appID = null;
     private String var_198 = null;
 
     public void startApp() {
-        display = Display.getDisplay(this);
+        display = Display.getDisplay();
     }
 
     public byte[] sub_fb(String var1) {
@@ -54,7 +53,7 @@ public abstract class Arena1 extends MIDlet {
         InputStream var2;
         HttpConnection var3 = (HttpConnection) Connector.open(var1);
         var2 = var3.openInputStream();
-        //var3.getType();
+        var3.getType();
         int var6 = var3.getLength();
         String var5;
         int var8;
@@ -170,7 +169,7 @@ public abstract class Arena1 extends MIDlet {
                 var4.append(this.getStr(127));
 
                 do {
-                    Display.getDisplay(this).setCurrent(var4);
+                    Display.getDisplay().setCurrent(var4);
 
                     try {
                         Thread.currentThread();
@@ -246,8 +245,7 @@ public abstract class Arena1 extends MIDlet {
             }
         } catch (Exception var11) {
             var11.printStackTrace();
-            //TODO Alert
-            Display.getDisplay(this).setCurrent(new Alert("Info", "" + var11, null, null));
+            Display.getDisplay().setCurrent(new Alert("Info", "" + var11, null, null));
 
             try {
                 Thread.currentThread();
@@ -256,7 +254,7 @@ public abstract class Arena1 extends MIDlet {
                 var9.printStackTrace();
             }
 
-            Display.getDisplay(this).setCurrent(null);
+            Display.getDisplay().setCurrent(null);
             return false;
         }
     }
@@ -296,17 +294,6 @@ public abstract class Arena1 extends MIDlet {
     abstract int sub_5af();
 
     abstract void sub_5de(boolean var1);
-
-    public void destroyApp(boolean b) {
-    }
-
-    @Override
-    public void notifyDestroyed() {
-    }
-
-    @Override
-    public void notifyPaused() {
-    }
 
     @Override
     public String getAppProperty(String s) {

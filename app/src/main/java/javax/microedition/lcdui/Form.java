@@ -1,18 +1,13 @@
 package javax.microedition.lcdui;
 
 import android.annotation.SuppressLint;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
-import com.elkware.midp.games.colorng.arena.high.R;
 
 import java.util.ArrayList;
 
 import javax.microedition.util.ContextHolder;
-import javax.microedition.util.MainActivity;
 
 public class Form extends Displayable {
 
@@ -20,8 +15,9 @@ public class Form extends Displayable {
 	private ArrayList<String> strings;
 
 	public Form(String title) {
+		super();
 		this.title = title;
-		strings = new ArrayList<>();
+		strings = new ArrayList<String>();
 	}
 
 	public void append(String s) {
@@ -36,20 +32,17 @@ public class Form extends Displayable {
 	@SuppressLint("InflateParams")
 	@Override
 	public View getView() {
-		MainActivity context = ContextHolder.getContext();
-		LayoutInflater inflater = context.getLayoutInflater();
-		layout = (ViewGroup) inflater.inflate(R.layout.list, null, false);
-		editText.setVisibility(View.GONE);
-		listView.setVisibility(View.GONE);
-		titleView.setText(title);
+		getEditText().setVisibility(View.GONE);
+		getListView().setVisibility(View.GONE);
+		getTitleView().setText(title);
 		removeScrollView();
-		ScrollView scrollView = new ScrollView(context);
-		layout.addView(scrollView);
+		ScrollView scrollView = new ScrollView(ContextHolder.getContext());
+		getLayout().addView(scrollView);
 		for (String string : strings) {
-			TextView textView = new TextView(context);
+			TextView textView = new TextView(ContextHolder.getContext());
 			textView.setText(string);
 			scrollView.addView(textView);
 		}
-		return layout;
+		return getLayout();
 	}
 }

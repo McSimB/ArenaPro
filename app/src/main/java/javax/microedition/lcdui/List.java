@@ -1,9 +1,6 @@
 package javax.microedition.lcdui;
 
-import android.annotation.SuppressLint;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
@@ -14,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import javax.microedition.util.ContextHolder;
-import javax.microedition.util.MainActivity;
 
 public class List extends Displayable {
 
@@ -25,10 +21,12 @@ public class List extends Displayable {
     private int listType;
     private ArrayList<String> items;
     private String title;
+    private ArrayAdapter<String> adapter;
 
     public List(String title, int listType, String[] items) {
+        super();
         this.title = title;
-        this.items = new ArrayList<>();
+        this.items = new ArrayList<String>();
         Collections.addAll(this.items, items);
         selectCommand = SELECT_COMMAND;
         this.listType = listType;
@@ -37,6 +35,8 @@ public class List extends Displayable {
         if (listType == 2) {
             selectedArray = new boolean[items.length];
         }
+        adapter = new ArrayAdapter<String>(ContextHolder.getContext(), R.layout.list_item);
+        getListView().setAdapter(adapter);
     }
 
     public List(String title, int listType) {
@@ -108,40 +108,28 @@ public class List extends Displayable {
             selectCommand = null;
     }
 
-    @SuppressLint("InflateParams")
     @Override
     public View getView() {
-        MainActivity context = ContextHolder.getContext();
-        LayoutInflater inflater = context.getLayoutInflater();
-        layout = (ViewGroup) inflater.inflate(R.layout.list, null, false);
-        titleView = layout.findViewById(R.id.titleView);
-        editText = layout.findViewById(R.id.editText);
-        listView = layout.findViewById(R.id.listView);
-        adapter = new ArrayAdapter<>(context, R.layout.list_item);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 setSelectedIndex(position);
                 callKeyPressed(Canvas.FIRE);
             }
         });
-        checkBox1 = layout.findViewById(R.id.checkBox1);
-        checkBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        getCheckBox1().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 selectedArray[0] = isChecked;
             }
         });
-        checkBox2 = layout.findViewById(R.id.checkBox2);
-        checkBox2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        getCheckBox2().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 selectedArray[1] = isChecked;
             }
         });
-        checkBox3 = layout.findViewById(R.id.checkBox3);
-        checkBox3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        getCheckBox3().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 selectedArray[2] = isChecked;
@@ -149,31 +137,30 @@ public class List extends Displayable {
         });
         selectedArray = new boolean[3];
 
-        editText.setVisibility(View.INVISIBLE);
-        titleView.setText(title);
+        getEditText().setVisibility(View.INVISIBLE);
+        getTitleView().setText(title);
         if (listType == 2) {
-            listView.setVisibility(View.INVISIBLE);
-            checkBox1.setVisibility(View.VISIBLE);
-            checkBox2.setVisibility(View.VISIBLE);
-            checkBox3.setVisibility(View.VISIBLE);
-            checkBox1.setText(items.get(0));
-            checkBox2.setText(items.get(1));
-            checkBox3.setText(items.get(2));
-            checkBox1.setChecked(selectedArray[0]);
-            checkBox2.setChecked(selectedArray[1]);
-            checkBox3.setChecked(selectedArray[2]);
+            getListView().setVisibility(View.INVISIBLE);
+            getCheckBox1().setVisibility(View.VISIBLE);
+            getCheckBox2().setVisibility(View.VISIBLE);
+            getCheckBox3().setVisibility(View.VISIBLE);
+            getCheckBox1().setText(items.get(0));
+            getCheckBox2().setText(items.get(1));
+            getCheckBox3().setText(items.get(2));
+            getCheckBox1().setChecked(selectedArray[0]);
+            getCheckBox2().setChecked(selectedArray[1]);
+            getCheckBox3().setChecked(selectedArray[2]);
         } else {
-            checkBox1.setVisibility(View.GONE);
-            checkBox2.setVisibility(View.GONE);
-            checkBox3.setVisibility(View.GONE);
-            listView.setVisibility(View.VISIBLE);
-            //listView.setMinimumHeight(HEIGHT * SCALE);
+            getCheckBox1().setVisibility(View.GONE);
+            getCheckBox2().setVisibility(View.GONE);
+            getCheckBox3().setVisibility(View.GONE);
+            getListView().setVisibility(View.VISIBLE);
             adapter.clear();
             for (String s : items) {
                 adapter.add(s);
             }
             removeScrollView();
         }
-        return layout;
+        return getLayout();
     }
 }

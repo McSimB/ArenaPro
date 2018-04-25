@@ -1,34 +1,60 @@
 package javax.microedition.lcdui;
 
+import android.annotation.SuppressLint;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.elkware.midp.games.colorng.arena.high.R;
+
+import javax.microedition.util.ContextHolder;
+
 import static javax.microedition.lcdui.Canvas.KEY_DISPLAY1;
 import static javax.microedition.lcdui.Canvas.KEY_DISPLAY2;
-import static javax.microedition.lcdui.Display.HEIGHT;
-import static javax.microedition.lcdui.Display.WIDTH;
 
 public abstract class Displayable {
 
-	protected ViewGroup layout;
-	protected TextView titleView;
-	protected ListView listView;
-	protected CheckBox checkBox1;
-	protected CheckBox checkBox2;
-	protected CheckBox checkBox3;
-	protected EditText editText;
-	protected ArrayAdapter<String> adapter;
-	private Display currentDisplay;
+	private ViewGroup layout;
 	private Command[] commands;
 	private int numCommands;
 	private CommandListener commandListener;
 
+	@SuppressLint("InflateParams")
 	public Displayable() {
+		LayoutInflater inflater = ContextHolder.getContext().getLayoutInflater();
+		layout = (ViewGroup) inflater.inflate(R.layout.list, null, false);
+	}
+
+	public ViewGroup getLayout() {
+		return layout;
+	}
+
+	public TextView getTitleView() {
+		return layout.findViewById(R.id.titleView);
+	}
+
+	public ListView getListView() {
+		return layout.findViewById(R.id.listView);
+	}
+
+	public CheckBox getCheckBox1() {
+		return layout.findViewById(R.id.checkBox1);
+	}
+
+	public CheckBox getCheckBox2() {
+		return layout.findViewById(R.id.checkBox2);
+	}
+
+	public CheckBox getCheckBox3() {
+		return layout.findViewById(R.id.checkBox3);
+	}
+
+	public EditText getEditText() {
+		return layout.findViewById(R.id.editText);
 	}
 
 	public CommandListener getCommandListener() {
@@ -47,14 +73,6 @@ public abstract class Displayable {
 
 	public void removeCommand(Command cmd) {
 		removeCommandImpl(cmd);
-	}
-
-	public int getwidth() {
-		return WIDTH;
-	}
-
-	public int getheight() {
-		return HEIGHT;
 	}
 
 	void addCommandImpl(Command cmd) {
@@ -89,8 +107,10 @@ public abstract class Displayable {
 	}
 
 	void updateCommandSet() {
-		if (currentDisplay != null && currentDisplay.isShown())
-			currentDisplay.updateCommandSet();
+		Command[] screenCommands = getCommands();
+		int screenComCount = getCommandCount();
+		for (int i = 0; i < screenComCount; i++)
+			screenCommands[i].setInternalID(i);
 	}
 
 	Command[] getCommands() {

@@ -1,19 +1,28 @@
 package javax.microedition.rms;
 
-import android.os.Environment;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-import static com.elkware.midp.games.Arena1.APP_DATA_DIR;
+import javax.microedition.io.file.FileConnection;
+import javax.microedition.util.ContextHolder;
 
 public class RecordStoreFile {
 
+	@SuppressWarnings("FieldCanBeLocal")
+	private static String  DIR = "rms";
 	private static RecordStoreFile rootRSF;
+	private static String path;
+
+	static {
+		File file = new File(ContextHolder.getContext().getFilesDir() + File.separator + DIR);
+		if (!file.exists()) {
+			file.mkdir();
+		}
+		path = file.getAbsolutePath();
+	}
+
 	private String myStoragePath;
-	private String path = Environment.getExternalStorageDirectory()
-			.getAbsolutePath() + "/" + APP_DATA_DIR;;
 	private RandomAccessFile recordStream;
 
 	public RecordStoreFile() {
@@ -27,7 +36,7 @@ public class RecordStoreFile {
 	private RecordStoreFile(String uidPath) throws IOException {
 		myStoragePath = uidPath;
 		File file = new File(uidPath);
-		recordStream = new RandomAccessFile(file, "rw");
+		recordStream = new RandomAccessFile(file, FileConnection.READ_WRITE);
 	}
 
 	public RecordStoreFile newRecordStoreFile(String uidPath) throws IOException {
@@ -68,6 +77,7 @@ public class RecordStoreFile {
 		recordStream.write(buf, offset, numBytes);
 	}
 
+	@SuppressWarnings("UnusedReturnValue")
 	public int read(byte buf[]) throws IOException {
 		return read(buf, 0, buf.length);
 	}
@@ -93,7 +103,6 @@ public class RecordStoreFile {
 	}
 
 	private String getStoragePath(String name) {
-		return path + "/" + name;
+		return path + File.separator + name;
 	}
-
 }

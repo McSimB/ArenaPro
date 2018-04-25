@@ -3,5 +3,5 @@ package javax.microedition.rms;
 
 public interface RecordFilter {
 
-	public abstract boolean matches(byte abyte0[]);
+	boolean matches(byte byte0[]);
 }

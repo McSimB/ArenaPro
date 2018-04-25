@@ -38,7 +38,7 @@ public class RecordStore {
 	private static byte dbState[] = new byte[DB_INIT.length];
 	private static int accessCount = 0;
 	private static long lastTime = 0L;
-	Object rsLock;
+	final Object rsLock;
 	private String recordStoreName;
 	private String uniqueIdPath;
 	private int opencount;

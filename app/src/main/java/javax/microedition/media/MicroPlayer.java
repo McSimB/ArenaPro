@@ -37,7 +37,7 @@ public class MicroPlayer implements Player, MediaPlayer.OnPreparedListener,
         level = 100;
         pan = 0;
 
-        listeners = new ArrayList<>();
+        listeners = new ArrayList<PlayerListener>();
     }
 
     public void setDataSource(DataSource datasource) throws IOException {
