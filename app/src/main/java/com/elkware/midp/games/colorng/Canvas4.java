@@ -246,7 +246,7 @@ public abstract class Canvas4 extends Canvas3 {
 			} else if (var3.equals(this.sendCom.getLabel())) {
 				this.sub_359(6);
 			} else if (var3.equals(this.quitCom.getLabel())) {
-				super.arena3.destroyApp(true);
+				super.arena3.destroyApp();
 			} else {
 				this.sub_2fb();
 			}

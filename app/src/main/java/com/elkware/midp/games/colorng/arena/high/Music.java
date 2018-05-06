@@ -22,7 +22,9 @@ public class Music implements PlayerListener {
 
 	public Music(Arena3 var1) {
 		this.arena3 = var1;
-		int var2 = var1.getParameter(5034); // 15
+		//int var2 = var1.getParameter(5034); // 15
+		int var2 = 4;
+		//noinspection ConstantConditions
 		if (var2 < 0) {
 			try {
 				throw new IOException(
@@ -55,11 +57,11 @@ public class Music implements PlayerListener {
 	}
 
 	@Override
-	public void playerUpdate(Player var1, String var2, Object var3) {
+	public void playerUpdate(Player player, String var2, Object var3) {
 		if (var2.equals(END_OF_MEDIA)) {
 			int var4;
 			var4 = 0;
-			while (var4 < this.players.length && this.players[var4] != var1) {
+			while (var4 < this.players.length && this.players[var4] != player) {
 				++var4;
 			}
 
@@ -149,5 +151,4 @@ public class Music implements PlayerListener {
 			var3.printStackTrace();
 		}
 	}
-
 }

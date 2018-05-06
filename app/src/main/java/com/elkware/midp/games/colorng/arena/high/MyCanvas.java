@@ -37,7 +37,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
     public String playerName = "Player";
     private int var_30a = 0;
     private int var_33e = 0;
-    public boolean[] var_395 = new boolean[5];
+    public boolean[] settings = new boolean[5];
     private byte var_3e7 = 1;
     private byte var_3fd = 1;
     private byte var_40e = 0;
@@ -157,8 +157,8 @@ public class MyCanvas extends Canvas5 implements Runnable {
     private int[] var_25c8;
     private int[] var_25f2;
     private int[] var_2650;
-    public boolean var_26b0 = false;
-    public boolean var_270a = false;
+    public boolean var_26b0_soundPlay = false;
+    public boolean isMusicPlay = false;
     private boolean var_2717 = false;
     private Image[] photoImages;
     private int var_28fd;
@@ -185,7 +185,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
     private String loadingStr2;
     public boolean var_2de8 = false;
     private int var_2e22 = 0;
-    public Thread logoThread = null;
+    public Thread mThread = null;
     public Thread var_2eb2 = null;
     public Thread var_2f12 = null;
     private Thread var_2f3f = null;
@@ -259,7 +259,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
         this.var_3601 = false;
         this.var_844 = 1;
-        this.sub_630();
+        this.startMThread();
     }
 
     @Override
@@ -280,7 +280,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
         }
 
         this.var_844 = 2;
-        this.sub_630();
+        this.startMThread();
     }
 
     private void beginLoadGame() {
@@ -373,7 +373,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
                 var4.printStackTrace();
             }
 
-            this.sub_737(this.var_8f4);
+            this.gameLoading(this.var_8f4);
             this.var_29c3 = true;
         } else if (this.var_844 == 2) {
             if (this.optionBg2 == null) {
@@ -705,8 +705,8 @@ public class MyCanvas extends Canvas5 implements Runnable {
                         }
 
                         if ((!var17.var_bd6 || !var18.var_bd6)
-                                && this.var_395[2]) {
-                            this.sub_11d4(40);
+                                && this.settings[2]) {
+                            this.makeVibrate(40);
                         }
                     }
                 }
@@ -811,7 +811,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
             this.var_2a04[17] = System.currentTimeMillis() - var3;
             if (this.var_9b6 > -1L) {
                 this.var_a17 = var5 - this.var_9dd > this.var_9b6;
-                if (!this.var_a17 && !this.var_2717 && this.var_26b0
+                if (!this.var_a17 && !this.var_2717 && this.var_26b0_soundPlay
                         && var5 - this.var_9dd + 30000L > this.var_9b6) {
                     this.var_2717 = true;
                 }
@@ -845,7 +845,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
                 byte var3 = this.var_2a7b[3 + var2];
                 byte[] var4 = new byte[3];
                 System.arraycopy(this.var_2a7b, (var2 + 2) * 3, var4, 0, 3);
-                this.var_20f8[var2] = this.sub_1092(var4, 0);
+                this.var_20f8[var2] = this.sub_1092(var4);
                 String var5 = "";
 
                 for (int var6 = 0; var6 < var3; ++var6) {
@@ -876,7 +876,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
         try {
             var2 = this.var_2a7b != null ? this.getStr(32) + " "
-                    + this.sub_1092(this.var_2a7b, 0) : this.getStr(287); // No personal highscore
+                    + this.sub_1092(this.var_2a7b) : this.getStr(287); // No personal highscore
         } catch (Exception var8) {
             var2 = this.getStr(287);
         }
@@ -1203,7 +1203,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
         g.fillRect(5, 100, this.width - 10, 20);
         g.setColor(0, 250, 0);
         g.fillRect(5, 100, w, 20);
-        if (!Arena.var_24) {
+        if (!Arena.alwaysTrue) { //
             g.setColor(255, 0, 0);
             g.drawString(this.percent + "%", this.width / 2 - 15, 102, 0);
         }
@@ -1580,25 +1580,25 @@ public class MyCanvas extends Canvas5 implements Runnable {
         this.fonts[6] = Font.getFont(32, arena.getParameter(413) == 0 ? 0
                 : 1, this.sub_587(arena.getParameter(412)));
         System.gc();
-        //this.logoImage = this.openImage(2);
+        this.logoImage = this.openImage(2);
         this.var_844 = 5;
         this.loadingStr = arena.getStr(250);
         this.width = this.getWidth();
         this.height = this.getHeight();
-        this.sub_630();
+        this.startMThread();
     }
 
     public boolean sub_5f7(MySprite var1, MySprite var2) {
         return var1.sub_1cc(var2, false);
     }
 
-    private void sub_630() {
+    private void startMThread() {
         if (this.var_844 != 2) {
             this.optionBg2 = null;
             System.gc();
         }
-        this.logoThread = new Thread(this);
-        this.logoThread.start();
+        this.mThread = new Thread(this);
+        this.mThread.start();
     }
 
     public void sub_679(MyCanvas var1) {
@@ -1642,7 +1642,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
             this.var_2eb2 = null;
         } else {
             if (Thread.currentThread() == this.var_2f12) {
-                arena.sub_47a(this.sub_1092(this.var_2a7b, 0),
+                arena.sub_47a(this.sub_1092(this.var_2a7b),
                         this.playerName);
                 this.var_2f12 = null;
                 this.sub_1035();
@@ -1667,14 +1667,14 @@ public class MyCanvas extends Canvas5 implements Runnable {
             if (this.var_844 != 2 && this.var_844 != 4) {
                 long var1 = 0L;
                 long var3 = 0L;
-                if (Thread.currentThread() == this.logoThread) {
+                if (Thread.currentThread() == this.mThread) {
                     if (this.var_2ffa) {
                         return;
                     }
 
                     this.var_2ffa = true;
 
-                    while (Thread.currentThread() == this.logoThread) {
+                    while (Thread.currentThread() == this.mThread) {
                         try {
                             var1 = System.currentTimeMillis();
                             this.mainLoop(var3);
@@ -1717,16 +1717,27 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
     }
 
-    public void setPercent(int var1) {
+    public void setPercentLogoProgressBar(int var1) {
         this.var_3051 = true;
         this.percent = var1;
         this.repaint();
         this.serviceRepaints();
         this.var_3051 = var1 < 100;
         this._chall = false;
+
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void sub_737(int var1) {
+    private void gameLoading(int var1) {
+        if (isMusicPlay) {
+            music.stopPlayers(); //
+            music.beginPlay(0, 65, -1, true);
+        }
+
         this.threadToNull();
         this.var_a67 = false;
         this.var_3594 = true;
@@ -1740,7 +1751,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
         }
 
         this.var_2717 = this.var_2039 = false;
-        this.sub_b71(15);
+        this.setPercentGameProgressBar(15);
         this.var_1db7 = new Vector();
         this.var_2445 = new Class_24e[50];
         this.var_2455 = new Class_24e[50];
@@ -1765,21 +1776,21 @@ public class MyCanvas extends Canvas5 implements Runnable {
         this.var_11c8 = this.width - 1;
         Class_2b8.var_452 = 0;
         this.var_a89 = 0;
-        this.sub_b71(16);
+        this.setPercentGameProgressBar(16);
         if (this.tilesImage == null) {
             this.tilesImage = this.openImage(164);
         }
 
         System.gc();
         System.gc();
-        this.sub_b71(20);
+        this.setPercentGameProgressBar(20);
         if (this.bgImage == null) {
             this.bgImage = this.openImage(163);
         }
 
         this.sub_f23();
         System.gc();
-        this.sub_b71(23);
+        this.setPercentGameProgressBar(23);
         this.var_1efb = new Class_2b8[4];
 
         try {
@@ -1834,7 +1845,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
                 }
             }
 
-            this.sub_b71(30);
+            this.setPercentGameProgressBar(30);
             this.var_3103 = var4 > 0;
             this.var_1e04 = new Class_308[var4];
             this.var_10c6 = new int[var5];
@@ -1890,9 +1901,9 @@ public class MyCanvas extends Canvas5 implements Runnable {
                 }
             }
 
-            this.sub_b71(40);
+            this.setPercentGameProgressBar(40);
             this.var_2272 = var2.readByte();
-            this.sub_b71(45);
+            this.setPercentGameProgressBar(45);
             this.var_212d = new byte[this.var_2272][this.var_2272];
             this.var_210c = new int[this.var_2272];
 
@@ -1915,21 +1926,21 @@ public class MyCanvas extends Canvas5 implements Runnable {
                 }
             }
 
-            this.sub_b71(50);
+            this.setPercentGameProgressBar(50);
 
             int var14;
             try {
                 byte var25 = var2.readByte();
-                this.sub_b71(55);
+                this.setPercentGameProgressBar(55);
 
                 for (var14 = 0; var14 < var25; ++var14) {
                     this.var_1e04[var2.readByte()].sub_bb(var2.readByte(),
                             var2.readByte());
                 }
 
-                this.sub_b71(65);
+                this.setPercentGameProgressBar(65);
             } catch (Exception var19) {
-                ;
+                var19.printStackTrace();
             }
 
             var2.close();
@@ -1958,10 +1969,10 @@ public class MyCanvas extends Canvas5 implements Runnable {
                 this.var_217e[var13] = var15;
             }
 
-            this.sub_b71(70);
+            this.setPercentGameProgressBar(70);
             this.var_1c70 = new MyTiledLayer(this.var_1d1c, this.var_1d37,
                     this.tilesImage, 15, 15, this.var_1c98);
-            this.sub_b71(75);
+            this.setPercentGameProgressBar(75);
             this.var_146d = 10000;
             this.var_14a4 = 0;
             if (var_13c4 != null) {
@@ -1977,7 +1988,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
                 }
             }
 
-            this.sub_b71(80);
+            this.setPercentGameProgressBar(80);
             this.var_1efb[0] = new Class_2b8(new MySprite(
                     this.headsImage[this.var_234[0]], 18, 18), new MySprite(
                     this.var_f8e[this.var_234[1]], 18, 23), 50, 20,
@@ -1987,7 +1998,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
                             / 4, (this.var_234[5] / 3 + 1) * this.var_3e7
                     / this.var_3fd);
             this.var_1f25 = this.var_1efb[0];
-            this.sub_b71(83);
+            this.setPercentGameProgressBar(83);
 
             for (var13 = 1; var13 < 4; ++var13) {
                 if (this.var_b57[var13] == 4) {
@@ -2019,7 +2030,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
                                         * this.var_3e7 / this.var_3fd * var26
                                         / var27);
                     } catch (Exception var17) {
-                        ;
+                        var17.printStackTrace();
                     }
 
                     this.var_1efb[var13].sub_236(
@@ -2045,7 +2056,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
                                 this.var_1f6c[this.var_b57[var13] - 1][5]
                                         * this.var_3e7 / this.var_3fd);
                     } catch (Exception var18) {
-                        ;
+                        var18.printStackTrace();
                     }
 
                     this.var_1efb[var13].sub_236(
@@ -2061,13 +2072,13 @@ public class MyCanvas extends Canvas5 implements Runnable {
             this.var_11fa = this.var_1d37 * 15
                     / (this.bgImage.getHeight() - this.height);
         } catch (Exception var20) {
-            ;
+            var20.printStackTrace();
         }
 
-        this.sub_b71(90);
+        this.setPercentGameProgressBar(90);
         this.var_140d = this.var_1462 = -1;
         this.var_9b6 = -1L;
-        boolean var22 = this.var_395[3];
+        boolean var22 = this.settings[3]; // long battles
         if (this.var_891 == 1) {
             this.var_9b6 = 120000L * (long) (var22 ? 2 : 1);
         } else if (this.var_891 == 2) {
@@ -2084,8 +2095,8 @@ public class MyCanvas extends Canvas5 implements Runnable {
             this.var_1462 = 5;
         }
 
-        this.sub_b71(100);
-        this.stopPlayer();
+        this.setPercentGameProgressBar(100);
+        //this.stopPlayer();
         this.var_a67 = true;
         this.var_2a41 = 0L;
         this.var_3594 = false;
@@ -2094,7 +2105,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
     }
 
     public void playMusic(int var1, int var2, int var3, boolean var4) {
-        if (Arena.var_24) {
+        if (Arena.alwaysTrue) {
             super.arena3._forPlayMus = true;
             super.arena3._forPlayMus1 = true;
             this.music.beginPlay(var1, var2, var3, var4);
@@ -2102,14 +2113,13 @@ public class MyCanvas extends Canvas5 implements Runnable {
     }
 
     public void stopPlayers(int var1) {
-        if (Arena.var_24) {
+        if (Arena.alwaysTrue) {
             this.music.stopPlayers();
         }
-
     }
 
     public void stopPlayer() {
-        if (Arena.var_24) {
+        if (Arena.alwaysTrue) {
             this.music.stopPlayers();
         }
     }
@@ -2126,33 +2136,34 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
     @Override
     public void loadGame() {
-        if (!this.var_3124 && this.logoThread == Thread.currentThread()) {
+        if (!this.var_3124 && this.mThread == Thread.currentThread()) {
             this._setLight(true);
             this.sub_fea();
             this.var_eb = 20;
             this.var_3559 = false;
-            this.setPercent2(0);
+            this.setPercentLogo(0);
             this.sub_e9a();
             this.sub_f23();
 
             try {
                 this.music = new Music(super.arena3);
+                // TODO : music start
                 //this.music.start();
             } catch (Exception var23) {
                 var23.printStackTrace();
             }
 
             System.gc();
-            this.setPercent2(10);
+            this.setPercentLogo(10);
             System.gc();
             this.bgImage = this.openImage(163);
-            this.setPercent2(15);
+            this.setPercentLogo(15);
             System.gc();
-            this.setPercent2(20);
-            this.setPercent2(30);
+            this.setPercentLogo(20);
+            this.setPercentLogo(30);
             this.sub_8c4();
             System.gc();
-            this.setPercent2(35);
+            this.setPercentLogo(35);
             this.var_458 = (byte) arena.getParameter(417);
             this.var_40e = (byte) arena.getParameter(470);
             this.arrowParam = (byte) arena.getParameter(471);
@@ -2161,11 +2172,11 @@ public class MyCanvas extends Canvas5 implements Runnable {
             this.var_fb7 = this.sub_160();
             this.var_1011 = this.sub_160();
             this.var_1074 = this.sub_160();
-            this.setPercent2(55);
+            this.setPercentLogo(55);
             System.gc();
             this.battleImage = this.openImage(166);
             this.overImage = this.openImage(169);
-            this.setPercent2(60);
+            this.setPercentLogo(60);
             String[] var29 = null;
             int[][] var2 = null;
             RecordStore var3 = null;
@@ -2265,7 +2276,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
                 var26.printStackTrace();
             }
 
-            this.setPercent2(70);
+            this.setPercentLogo(70);
             this.var_f8e = new Image[4];
             System.gc();
 
@@ -2273,7 +2284,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
                 this.var_f8e[var31] = this.openImage(16 + var31);
             }
 
-            this.setPercent2(80);
+            this.setPercentLogo(80);
             dataInputStream = arena.getDIStream(this.recStorages[0]);
             if (dataInputStream == null) {
                 this.sub_a84(true);
@@ -2291,7 +2302,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
                 }
             }
 
-            this.setPercent2(90);
+            this.setPercentLogo(90);
             var32 = 0;
 
             int var34;
@@ -2323,7 +2334,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
                 }
             }
 
-            this.setPercent2(95);
+            this.setPercentLogo(95);
             this.var_b2f = new String[this.var_eb + 1 + this.var_733];
             this.var_b2f[0] = this.playerName;
 
@@ -2339,7 +2350,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
         this.var_eb += this.var_733;
         this.optionBg = this.openImage(168);
-        this.setPercent2(100);
+        this.setPercentLogo(100);
         this.sub_107d();
         this.var_3124 = true;
         this.sub_8ab();
@@ -2357,7 +2368,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
     }
 
     public void sub_8ab() {
-        if (this.var_270a) {
+        if (this.isMusicPlay) {
             this.playMusic(0, 64, 1, true);
         }
 
@@ -2369,7 +2380,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
         arena.var_af2 = true;
         this.sub_8c4();
         this.var_3463 = false;
-        this.logoThread = null;
+        this.mThread = null;
         System.gc();
         this.var_35b0 = false;
         this.var_37be = false;
@@ -2707,7 +2718,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
                     g.drawString(this.getStr(295) + " " + var4, 20, 32, 0);
                     this.sub_c2e();
                     if (this.var_2a7b != null) {
-                        var5 = this.sub_1092(this.var_2a7b, 0);
+                        var5 = this.sub_1092(this.var_2a7b);
                     } else {
                         var5 = 0;
                     }
@@ -2807,9 +2818,10 @@ public class MyCanvas extends Canvas5 implements Runnable {
                 var2.printStackTrace();
             }
 
-            this.logoThread = null;
+            this.mThread = null;
             this.var_2a41 = 0L;
-            if (this.var_270a) {
+            if (this.isMusicPlay) {
+                this.music.stopPlayers(); //
                 this.playMusic(0, 67, 10, true);
             }
         }
@@ -2831,7 +2843,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
         }
     }
 
-    public void sub_9e4() {
+    public void resumeGame() {
         this.var_2de8 = false;
         System.gc();
         this.var_9dd += System.currentTimeMillis() - this.var_3486;
@@ -2844,10 +2856,9 @@ public class MyCanvas extends Canvas5 implements Runnable {
         System.gc();
         arena.commandManage(13);
         this.stopPlayer();
-        if (!this.var_26b0 && this.var_270a) {
-            ;
+        if (!this.var_26b0_soundPlay && this.isMusicPlay) {
+            music.beginPlay(0, 65, -1, true); //
         }
-
     }
 
     public void sub_a24(int var1, int var2, int var3) {
@@ -2961,19 +2972,31 @@ public class MyCanvas extends Canvas5 implements Runnable {
         }
     }
 
-    private void setPercent2(int var1) {
+    private void setPercentLogo(int var1) {
         this.var_3559 = true;
         this.percent = var1;
         this.repaint();
         this.serviceRepaints();
+
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void sub_b71(int var1) {
+    private void setPercentGameProgressBar(int var1) {
         this.threadToNull();
         this.var_38d3 = true;
         this.percent = var1;
         this.repaint();
         this.serviceRepaints();
+
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void sub_bd4() {
@@ -2981,49 +3004,49 @@ public class MyCanvas extends Canvas5 implements Runnable {
         if (this.var_3601) {
             this.var_3601 = false;
         } else {
-            this.setPercent(10);
+            this.setPercentLogoProgressBar(10);
             this.var_37be = false;
             if (this.var_35e9) {
-                this.setPercent(20);
+                this.setPercentLogoProgressBar(20);
                 this.var_3612 = 1;
                 this.var_3706 = this.var_891;
                 this.var_3657 = new int[this.var_eb + 1];
                 this.var_3670 = new int[this.var_eb + 1];
                 this.var_36a6 = new String[this.var_b2f.length];
-                this.setPercent(50);
+                this.setPercentLogoProgressBar(50);
 
                 for (int var1 = 0; var1 < this.var_3657.length; ++var1) {
                     this.var_3657[var1] = var1;
                     this.var_36a6[var1] = this.var_b2f[var1];
                 }
 
-                this.setPercent(80);
+                this.setPercentLogoProgressBar(80);
                 this.sub_d6b();
             } else {
-                this.setPercent(20);
+                this.setPercentLogoProgressBar(20);
                 this.sub_d9b();
-                this.setPercent(70);
+                this.setPercentLogoProgressBar(70);
             }
 
-            this.setPercent(100);
+            this.setPercentLogoProgressBar(100);
             this.sub_1035();
             this.var_35b0 = true;
         }
     }
 
     private void sub_c11() {
-        this.logoThread = null;
+        this.mThread = null;
         System.gc();
-        this.setPercent(20);
+        this.setPercentLogoProgressBar(20);
         this._chall = true;
         this.warriorImage = this.openImage(210);
-        this.setPercent(50);
+        this.setPercentLogoProgressBar(50);
         if (this.var_3601) {
             this.var_3601 = false;
         } else {
             this.sub_c2e();
-            this.setPercent(80);
-            this.setPercent(100);
+            this.setPercentLogoProgressBar(80);
+            this.setPercentLogoProgressBar(100);
             this.sub_1035();
             this.var_35b0 = true;
         }
@@ -3104,7 +3127,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
     private final void sub_c93() {
         if (!this.var_2039) {
-            if (Thread.currentThread() == this.logoThread) {
+            if (Thread.currentThread() == this.mThread) {
                 this.var_2039 = true;
                 this.var_692 = 0;
                 this.var_373b = new int[4];
@@ -3336,18 +3359,18 @@ public class MyCanvas extends Canvas5 implements Runnable {
     }
 
     private void sub_e41() {
-        this.var_395 = new boolean[5];
+        this.settings = new boolean[5];
 
         for (int var1 = 0; var1 < 3; ++var1) {
-            this.var_395[var1] = true;
+            this.settings[var1] = true;
         }
 
-        this.sub_ec7();
+        this.sub_ec7_saveSettings();
     }
 
     public void sub_e9a() {
         try {
-            String var1 = arena.sub_13f(this.recStorages[2]);
+            String var1 = arena.getFromTable(this.recStorages[2]);
             if (var1 == null) {
                 this.sub_e41();
             } else {
@@ -3358,29 +3381,30 @@ public class MyCanvas extends Canvas5 implements Runnable {
                         break;
                     }
 
-                    this.var_395[var2] = var3 == 49;
+                    this.settings[var2] = var3 == 49;
                 }
             }
         } catch (Exception var4) {
             ;
         }
 
-        this._setLight(this.var_395[1]);
+        this._setLight(this.settings[1]);
     }
 
-    public void sub_ec7() {
+    @Override
+    public void sub_ec7_saveSettings() {
         try {
             StringBuilder var1 = new StringBuilder();
 
             for (int var2 = 0; var2 < 5; ++var2) {
-                if (this.var_395[var2]) {
+                if (this.settings[var2]) {
                     var1.append('1');
                 } else {
                     var1.append('0');
                 }
             }
 
-            arena.sub_f0(this.recStorages[2], var1.toString(), true);
+            arena.prepareToSaveAD(this.recStorages[2], var1.toString(), true);
         } catch (Exception var3) {
             var3.printStackTrace();
         }
@@ -3389,8 +3413,8 @@ public class MyCanvas extends Canvas5 implements Runnable {
     }
 
     private void sub_f23() {
-        this.var_26b0 = !this.var_395[4] && this.var_395[0];
-        this.var_270a = this.var_395[4] || this.var_395[0];
+        this.var_26b0_soundPlay = !this.settings[4] && this.settings[0];
+        this.isMusicPlay = this.settings[4] || this.settings[0];
     }
 
     public void addHeadImage(Image image) {
@@ -3486,7 +3510,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
         byte var15 = var1[var4++];
         byte var7 = var15;
-        this.setPercent(15);
+        this.setPercentLogoProgressBar(15);
 
         try {
             int var9;
@@ -3515,18 +3539,18 @@ public class MyCanvas extends Canvas5 implements Runnable {
                     }
                 }
 
-                this.setPercent(25);
+                this.setPercentLogoProgressBar(25);
                 System.gc();
                 Image image = Image.createRGBImage(var8, arena.photoSize,
                         arena.photoSize, true);
-                this.setPercent(30);
+                this.setPercentLogoProgressBar(30);
                 this.addHeadImage(image);
-                this.setPercent(40);
+                this.setPercentLogoProgressBar(40);
                 Image var18 = Image.createImage(20, 20);
-                this.setPercent(50);
+                this.setPercentLogoProgressBar(50);
                 var18.getGraphics().drawImage(image, 4, 4, 0);
                 this.addPhotoToStore(var18);
-                this.setPercent(70);
+                this.setPercentLogoProgressBar(70);
                 var7 = (byte) this.headsImage.length;
             }
 
@@ -3537,7 +3561,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
             }
 
             ++var16[1 + var2.length() + 1];
-            this.setPercent(80);
+            this.setPercentLogoProgressBar(80);
             var16[1 + var2.length()] = var7;
             var16[7 + var2.length()] = (byte) (60 + Class_2b8.sub_62(80));
             var16[8 + var2.length()] = (byte) Class_2b8.sub_62(2);
@@ -3550,10 +3574,10 @@ public class MyCanvas extends Canvas5 implements Runnable {
                 var19.addRecord(var16, 0, var16.length);
             }
 
-            this.setPercent(85);
+            this.setPercentLogoProgressBar(85);
             this.var_733 = var19.getNumRecords();
             var19.closeRecordStore();
-            this.setPercent(90);
+            this.setPercentLogoProgressBar(90);
             String[] var20 = new String[this.var_b2f.length + 1];
 
             for (int var21 = 0; var21 < this.var_b2f.length; ++var21) {
@@ -3563,7 +3587,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
             var20[this.var_b2f.length] = var2;
             this.var_b2f = var20;
             ++this.var_eb;
-            this.setPercent(95);
+            this.setPercentLogoProgressBar(95);
             byte[][] var22 = new byte[this.var_1f6c.length + 1][9];
 
             for (var12 = 0; var12 < this.var_1f6c.length; ++var12) {
@@ -3670,7 +3694,6 @@ public class MyCanvas extends Canvas5 implements Runnable {
             this.var_2f3f = new Thread(this);
             this.var_2f3f.start();
         }
-
     }
 
     private void paintString(Graphics g, String str, int x, int y, int var5) {
@@ -3694,24 +3717,24 @@ public class MyCanvas extends Canvas5 implements Runnable {
     }
 
     private void sub_107d() {
-        this.setPercent(0);
+        this.setPercentLogoProgressBar(0);
         if (this.arrowImage == null) {
             this.arrowImage = this.openImage(209);
         }
 
-        this.setPercent(5);
+        this.setPercentLogoProgressBar(5);
         if (this.tilesImage == null) {
             this.tilesImage = this.openImage(164);
         }
 
-        this.setPercent(25);
+        this.setPercentLogoProgressBar(25);
         this.cardioImage = this.openImage(205);
         this.greenHPImage = this.openImage(203);
         this.whiteHPImage = this.openImage(204);
-        this.setPercent(35);
+        this.setPercentLogoProgressBar(35);
         if (this.var_1c8d == null) {
             Image var1 = this.openImage(211);
-            this.setPercent(45);
+            this.setPercentLogoProgressBar(45);
 
             try {
                 byte[] var2 = new byte[16];
@@ -3725,11 +3748,11 @@ public class MyCanvas extends Canvas5 implements Runnable {
                 var1 = null;
                 System.gc();
             } catch (Exception var6) {
-                ;
+                var6.printStackTrace();
             }
         }
 
-        this.setPercent(50);
+        this.setPercentLogoProgressBar(50);
         this.var_22ea = new MySprite[5];
         System.gc();
 
@@ -3749,8 +3772,8 @@ public class MyCanvas extends Canvas5 implements Runnable {
         this.var_23fa[2] = this.var_23fa[1] = this.var_22ea[2].getWidth() / 2;
         this.var_2415[3] = this.var_22ea[3].getHeight();
         this.var_23fa[3] = this.var_22ea[3].getWidth() / 2;
-        this.setPercent(55);
-        this.setPercent(60);
+        this.setPercentLogoProgressBar(55);
+        this.setPercentLogoProgressBar(60);
         this.var_1dec = new MySprite[3];
         System.gc();
 
@@ -3759,7 +3782,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
                     17);
         }
 
-        this.setPercent(70);
+        this.setPercentLogoProgressBar(70);
 
         try {
             this.var_1ff8 = new Image[Class_24e.var_19.length];
@@ -3773,10 +3796,10 @@ public class MyCanvas extends Canvas5 implements Runnable {
                 this.var_ef3[var7] = this.var_1ff8[var7].getHeight() / 2;
             }
         } catch (Exception var5) {
-            ;
+            var5.printStackTrace();
         }
 
-        this.setPercent(80);
+        this.setPercentLogoProgressBar(80);
         this.var_254a = new MySprite[Class_24e.var_19.length];
 
         for (var7 = 0; var7 < this.var_254a.length; ++var7) {
@@ -3790,26 +3813,25 @@ public class MyCanvas extends Canvas5 implements Runnable {
             }
         }
 
-        this.setPercent(85);
+        this.setPercentLogoProgressBar(85);
         this.resultImage = this.openImage(167);
-        this.setPercent(95);
+        this.setPercentLogoProgressBar(95);
         System.gc();
         if (this.panelImage == null) {
             this.panelImage = this.openImage(165);
         }
 
-        this.setPercent(100);
+        this.setPercentLogoProgressBar(100);
     }
 
-    private int sub_1092(byte[] var1, int var2) {
-        return 255 & var1[0 + var2] | (255 & var1[1 + var2]) << 8
-                | (255 & var1[2 + var2]) << 16;
+    private int sub_1092(byte[] var1) {
+        return 255 & var1[0] | (255 & var1[1]) << 8
+                | (255 & var1[2]) << 16;
     }
 
     private byte[] sub_10eb(int var1) {
-        byte[] var2 = new byte[]{(byte) (var1 & 255),
+        return new byte[]{(byte) (var1 & 255),
                 (byte) (var1 >> 8 & 255), (byte) (var1 >> 16 & 255)};
-        return var2;
     }
 
     @Override
@@ -3834,8 +3856,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
         }
     }
 
-    public void sub_11d4(int var1) {
+    public void makeVibrate(int var1) {
         super.vibrate((long) var1);
     }
-
 }

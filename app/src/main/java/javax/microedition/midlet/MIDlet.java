@@ -1,6 +1,7 @@
 package javax.microedition.midlet;
 
 import android.app.Application;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -42,19 +43,20 @@ public abstract class MIDlet extends Application {
         return properties.get(key);
     }
 
-    public abstract void pauseApp();
-
-    public abstract void destroyApp(boolean b);
-
-    public void notifyPaused() {
-    }
-
-    public void notifyDestroyed() {
-        ContextHolder.getContext().finish();
-    }
-
     public abstract void initApp();
 
     public abstract void startApp();
 
+    public abstract void pauseApp();
+
+    public abstract void destroyApp();
+
+    public void notifyPaused() {
+        Toast.makeText(ContextHolder.getContext(), "MIDlet paused", Toast.LENGTH_SHORT).show();
+    }
+
+    public void notifyDestroyed() {
+        Toast.makeText(ContextHolder.getContext(), "MIDlet destroyed", Toast.LENGTH_SHORT).show();
+        //ContextHolder.getContext().finish();
+    }
 }

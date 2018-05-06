@@ -13,7 +13,7 @@ public class Class_24e {
 	int var_1bf;
 	int var_1ee;
 	int var_21d;
-	MyCanvas var_258;
+	MyCanvas myCanvas;
 	int var_2ab = 0;
 	int var_2e6;
 	int var_31c;
@@ -40,7 +40,7 @@ public class Class_24e {
 		this.var_1bf = var3;
 		this.var_1ee = var4;
 		this.var_21d = var5;
-		this.var_258 = var7;
+		this.myCanvas = var7;
 		this.var_3ab = var6;
 		if (var_7b[var1] == 0) {
 			this.var_389 = new MySprite(var7.var_254a[var1]);
@@ -57,7 +57,7 @@ public class Class_24e {
 			this.var_389.setFrame(this.var_37c = var4 < 0 ? 0
 					: var_19[var1] * 2 - 1);
 		} catch (Exception var15) {
-			;
+			var15.printStackTrace();
 		}
 
 		var7.var_2445[var7.var_24b6++] = this;
@@ -100,7 +100,7 @@ public class Class_24e {
 				var12 += var4 > 0 ? 1 : -1;
 			}
 		} catch (Exception var16) {
-			;
+			var16.printStackTrace();
 		}
 
 		if (Math.abs(var4) > Math.abs(var5)) {
@@ -151,12 +151,11 @@ public class Class_24e {
 				var1.var_957 = 5;
 			}
 
-			if (this.var_258.var_26b0 && var1.var_bd6
-					&& this.var_3ab == this.var_258.var_1f25) {
-				;
+			if (this.myCanvas.var_26b0_soundPlay && var1.var_bd6
+					&& this.var_3ab == this.myCanvas.var_1f25) {
+				// TODO : sound
+				//play(Class_2b8.sub_62(2) > 0 ? 72 : 73;)
 			}
 		}
-
 	}
-
 }

@@ -21,7 +21,6 @@ class ExitTimer extends Thread {
 			}
 		}
 
-		this.arena.destroyApp(true);
+		this.arena.destroyApp();
 	}
-
 }

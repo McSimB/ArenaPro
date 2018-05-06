@@ -99,7 +99,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 		}
 
 		Display.getDisplay();
-		this.var_120 = var1.sub_499(5);
+		this.var_120 = Arena3.sub_499(5);
 		if (this.var_120 == null) {
 			try {
 				throw new IOException("Sine table (ID 5) is missing!");
@@ -135,7 +135,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 		}
 	}
 
-	int sub_15() {
+	void sub_15() {
 		if ((this.var_831 = super.arena3.getParameter(5030)) == -1) {
 			this.var_831 = 15;
 		}
@@ -163,7 +163,6 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 		}
 
 		this.var_8b4 = new boolean[var1];
-		return var1;
 	}
 
 	public boolean[] sub_6e() {
@@ -171,7 +170,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 	}
 
 	public void sub_e9a() {
-		String var1 = super.arena3.sub_13f("cfg");
+		String var1 = super.arena3.getFromTable("cfg");
 		if (var1 == null) {
 			var1 = "1111";
 		}
@@ -183,14 +182,14 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 		this.sub_af(this.var_8b4);
 	}
 
-	public void sub_ec7() {
-		String var1 = "";
+	public void sub_ec7_saveSettings() {
+		StringBuilder var1 = new StringBuilder();
 
 		for (boolean aVar_8b4 : this.var_8b4) {
-			var1 = var1 + (aVar_8b4 ? '1' : '0');
+			var1.append(aVar_8b4 ? '1' : '0');
 		}
 
-		super.arena3.sub_f0("cfg", var1, true);
+		super.arena3.prepareToSaveAD("cfg", var1.toString(), true);
 	}
 
 	public void sub_af(boolean[] var1) {
@@ -245,23 +244,23 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 
 	public abstract void stopPlayers(int var1);
 
-	/*public Image openImage22(int var1) throws IOException {
+	public Image openImage(int var1) throws IOException {
 		try {
 			if (var1 == 2) {
-				byte[] var3 = arena.sub_499(var1);
+				byte[] var3 = Arena2.sub_499(var1);
 				if (var3 != null) {
 					return Image.createImage(var3, 0, var3.length);
 				}
 			} else {
-				return Image.createImage("_" + Integer.toHexString(var1).toUpperCase() + ".png", arena);
+				return Image.createImage("/_" + Integer.toHexString(var1).toUpperCase() + ".png");
 			}
 		} catch (Exception var4) {
 			System.out.print("Image 0x" + Integer.toHexString(var1) + " not found!");
 		}
 		throw new IOException();
-	}*/
+	}
 
-	public Image openImage(int var1) throws IOException {
+	/*public Image openImage(int var1) throws IOException {
 		try {
 			return Image.createImage("/_" + Integer.toHexString(var1).toUpperCase() + ".png");
 		} catch (Exception var4) {
@@ -272,7 +271,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 				throw new IOException("Image 0x" + Integer.toHexString(var1) + " not found!");
 			}
 		}
-	}
+	}*/
 
 	public int sub_160() {
 		this.var_8c8.addElement(new Vector());

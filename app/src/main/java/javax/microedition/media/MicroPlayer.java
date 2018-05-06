@@ -6,8 +6,11 @@ import android.media.MediaPlayer;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.microedition.util.ContextHolder;
+import javax.microedition.util.LifeCycleListener;
+
 public class MicroPlayer implements Player, MediaPlayer.OnPreparedListener,
-        MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
+        MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, LifeCycleListener {
 
     protected DataSource source;
     protected MediaPlayer player;
@@ -29,6 +32,8 @@ public class MicroPlayer implements Player, MediaPlayer.OnPreparedListener,
         player.setOnPreparedListener(this);
         player.setOnCompletionListener(this);
         player.setOnErrorListener(this);
+
+        ContextHolder.getContext().setListener(this);
 
         source = datasource;
         state = UNREALIZED;
@@ -56,11 +61,6 @@ public class MicroPlayer implements Player, MediaPlayer.OnPreparedListener,
         }
     }
 
-    @Override
-    public void removePlayerListener(PlayerListener playerListener) {
-        listeners.remove(playerListener);
-    }
-
     public void postEvent(String event) {
         for (PlayerListener listener : listeners) {
             listener.playerUpdate(this, event, source.getURL());
@@ -72,12 +72,11 @@ public class MicroPlayer implements Player, MediaPlayer.OnPreparedListener,
     }
 
     public synchronized void onCompletion(MediaPlayer mp) {
-        postEvent(PlayerListener.END_OF_MEDIA);
-
         //player.seekTo(0);
 
         if (loopCount == 1) {
             state = PREFETCHED;
+            postEvent(PlayerListener.END_OF_MEDIA);
         } else if (loopCount > 1) {
             loopCount--;
         }
@@ -195,23 +194,6 @@ public class MicroPlayer implements Player, MediaPlayer.OnPreparedListener,
         }
     }
 
-    public long setMediaTime(long now) throws MediaException {
-        checkRealized();
-
-        player.seekTo((int) (now / 1000L));
-        return getMediaTime();
-    }
-
-    public long getMediaTime() {
-        checkRealized();
-        return player.getCurrentPosition() * 1000;
-    }
-
-    public long getDuration() {
-        checkRealized();
-        return player.getDuration() * 1000;
-    }
-
     public void setLoopCount(int count) {
         checkRealized();
 
@@ -220,9 +202,23 @@ public class MicroPlayer implements Player, MediaPlayer.OnPreparedListener,
         }
 
         loopCount = count;
+
+        if (count < 0) {
+            loopCount = Integer.MAX_VALUE;
+        }
     }
 
-    public int getState() {
-        return state;
+    @Override
+    public void paused() {
+        player.pause();
+    }
+
+    @Override
+    public void resumed() {
+        try {
+            player.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
     }
 }

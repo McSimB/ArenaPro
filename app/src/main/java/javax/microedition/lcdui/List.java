@@ -77,7 +77,7 @@ public class List extends Displayable {
     }
 
     public boolean isSelected(int elementNum) {
-        return elementNum == selectedIndex;
+        return selectedArray[elementNum];
     }
 
     public int getSelectedIndex() {
@@ -135,7 +135,7 @@ public class List extends Displayable {
                 selectedArray[2] = isChecked;
             }
         });
-        selectedArray = new boolean[3];
+        //selectedArray = new boolean[3];
 
         getEditText().setVisibility(View.INVISIBLE);
         getTitleView().setText(title);

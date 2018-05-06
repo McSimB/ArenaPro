@@ -24,7 +24,7 @@ import javax.wireless.messaging.MultipartMessage;
 
 public class Arena extends Arena3 implements CommandListener {
 
-    public static boolean var_24 = true;
+    public static boolean alwaysTrue = true;
     private List mainMenuList;
     private List warriorSettingsList;
     private List pauseList;
@@ -108,10 +108,10 @@ public class Arena extends Arena3 implements CommandListener {
             super.startApp();
             this.myCanvas.initLogo();
 
-            this.gameModeBack = new Command(this.getStr(215), 2, 0);
-            this.commandAccept = new Command(this.getStr(220), 1, 0);
+            this.gameModeBack = new Command(this.getStr(215), 2, 0); //Cancel
+            this.commandAccept = new Command(this.getStr(220), 1, 0); //Accept
             this.warriorNameScreenCommand = new Command(this.getStr(220), 1, 0);
-            this.settingsBack = new Command(this.getStr(222), 2, 0);
+            this.settingsBack = new Command(this.getStr(222), 2, 0); //Back
             this.tournamentNextMatchBack = new Command("", 2, 0);
             Command commandBack = new Command("", 2, 0);
             this.mainMenuBack = new Command("", 2, 0);
@@ -133,9 +133,9 @@ public class Arena extends Arena3 implements CommandListener {
             this.gameModeList.setCommandListener(this);
 
             this.settingsList = new List(this.getStr(206), 2);
-            this.settingsList.append(this.getStr(231), null);
-            this.settingsList.append(this.getStr(233), null);
-            this.settingsList.append(this.getStr(230), null);
+            this.settingsList.append(this.getStr(231), null); //Illumination
+            this.settingsList.append(this.getStr(233), null); //Long battles
+            this.settingsList.append(this.getStr(230), null); //Sound
             this.settingsList.addCommand(this.settingsBack);
             this.settingsList.setCommandListener(this);
 
@@ -250,7 +250,7 @@ public class Arena extends Arena3 implements CommandListener {
             super.display.setCurrent(var3);
             this.var_ab2.start();
         } else {
-            this.destroyApp(true);
+            this.destroyApp();
         }
     }
 
@@ -258,7 +258,7 @@ public class Arena extends Arena3 implements CommandListener {
         this.myCanvas.sub_8ab();
         this.myCanvas.championsBg = null;
         System.gc();
-        if (this.myCanvas.var_270a) {
+        if (this.myCanvas.isMusicPlay) {
             this.myCanvas.playMusic(0, 64, -1, true);
         }
 
@@ -307,7 +307,7 @@ public class Arena extends Arena3 implements CommandListener {
                     case 1:
                         this.myCanvas.var_91b = true;
                         this.myCanvas.var_92a = false;
-                        if (this.myCanvas.var_270a) {
+                        if (this.myCanvas.isMusicPlay) {
                             this.myCanvas.stopPlayer();
                             this.myCanvas.playMusic(0, 67, 1, true);
                         }
@@ -322,14 +322,14 @@ public class Arena extends Arena3 implements CommandListener {
                         this.myCanvas.sub_1035();
                         break;
                     case 2:
-                        this.myCanvas.setPercent(0);
+                        this.myCanvas.setPercentLogoProgressBar(0);
                         this.setCurrentDisp(this.myCanvas);
                         this.myCanvas._chall = true;
                         this.myCanvas.oneTimeLoop();
                         this.myCanvas.var_92a = true;
                         this.myCanvas.var_91b = false;
                         this.myCanvas.var_a17 = true;
-                        this.myCanvas.setPercent(10);
+                        this.myCanvas.setPercentLogoProgressBar(10);
                         this.commandManage(29);
                         break;
                     case 3:
@@ -407,16 +407,16 @@ public class Arena extends Arena3 implements CommandListener {
                 }
             } else if (displayable == this.pauseList) {
                 if (command.getCommandType() == 2) {
-                    this.myCanvas.sub_9e4();
+                    this.myCanvas.resumeGame();
                 } else {
                     i = this.pauseList.getSelectedIndex();
                     switch (i) {
                         case 0:
-                            this.myCanvas.sub_9e4();
+                            this.myCanvas.resumeGame();
                             break;
                         case 1:
                             this.myCanvas.var_2de8 = false;
-                            this.myCanvas.setPercent(0);
+                            this.myCanvas.setPercentLogoProgressBar(0);
                             this.myCanvas.stopPlayer();
                             this.myCanvas.sub_8ab();
                             break;
@@ -481,7 +481,7 @@ public class Arena extends Arena3 implements CommandListener {
                     if (this.myCanvas.var_35e9) {
                         this.commandManage(11);
                     } else {
-                        this.myCanvas.setPercent(0);
+                        this.myCanvas.setPercentLogoProgressBar(0);
                         this.commandManage(13);
                     }
 
@@ -525,18 +525,18 @@ public class Arena extends Arena3 implements CommandListener {
                 }
 
                 if (command.getCommandType() == 2 && this.var_845 == 15) {
-                    this.myCanvas.var_395[0] = this.settingsList.isSelected(2);
-                    this.myCanvas.var_395[1] = this.settingsList.isSelected(0);
-                    this.myCanvas.var_395[2] = false;
-                    this.myCanvas.var_395[3] = this.settingsList.isSelected(1);
-                    this.myCanvas.var_395[4] = false;
-                    this.myCanvas.sub_ec7();
+                    this.myCanvas.settings[0] = this.settingsList.isSelected(2); // sound
+                    this.myCanvas.settings[1] = this.settingsList.isSelected(0); // light
+                    this.myCanvas.settings[2] = false; // _silent alert_
+                    this.myCanvas.settings[3] = this.settingsList.isSelected(1); // long battles
+                    this.myCanvas.settings[4] = false; // _music only_
+                    this.myCanvas.sub_ec7_saveSettings();
                     this.myCanvas.stopPlayer();
-                    if (this.myCanvas.var_270a) {
+                    if (this.myCanvas.isMusicPlay) {
                         this.myCanvas.playMusic(0, 64, 10, true); // intro
                     }
 
-                    this.myCanvas._setLight(this.myCanvas.var_395[1]);
+                    this.myCanvas._setLight(this.myCanvas.settings[1]);
                     this.commandManage(10);
                 } else {
                     if (command == this.helpScreenCommand) {
@@ -555,7 +555,7 @@ public class Arena extends Arena3 implements CommandListener {
                         this.commandManage(10);
                     } else if (command == this.incommingWarriorOk) {
                         this.setCurrentDisp(this.myCanvas);
-                        this.myCanvas.setPercent(0);
+                        this.myCanvas.setPercentLogoProgressBar(0);
                         this.myCanvas.sub_679(this.myCanvas);
                     } else if (command != this.gameModeBack && command != this.settingsBack
                             && command != this.aboutBack) {
@@ -563,9 +563,9 @@ public class Arena extends Arena3 implements CommandListener {
                             this.myCanvas.var_891 = this.gameModeList
                                     .getSelectedIndex();
                             if (this.myCanvas.var_91b) {
-                                this.myCanvas.setPercent(0);
+                                this.myCanvas.setPercentLogoProgressBar(0);
                                 this.setCurrentDisp(this.myCanvas);
-                                this.myCanvas.setPercent(0);
+                                this.myCanvas.setPercentLogoProgressBar(0);
                                 this.commandManage(13);
                             } else {
                                 this.commandManage(12);
@@ -611,15 +611,15 @@ public class Arena extends Arena3 implements CommandListener {
                             }
                         }
                     } else {
-                        this.myCanvas.setPercent(0);
+                        this.myCanvas.setPercentLogoProgressBar(0);
                         if (this.myCanvas.var_92a) {
                             this.myCanvas.sub_8ab();
                             this.myCanvas.var_92a = false;
                             this.myCanvas.warriorImage = null;
                         }
 
-                        this.myCanvas.setPercent(25);
-                        this.myCanvas.setPercent(50);
+                        this.myCanvas.setPercentLogoProgressBar(25);
+                        this.myCanvas.setPercentLogoProgressBar(50);
                         if (this.myCanvas.var_91b && this.myCanvas.var_37be) {
                             this.myCanvas.var_35b0 = false;
                             this.myCanvas.sub_8ab();
@@ -627,8 +627,8 @@ public class Arena extends Arena3 implements CommandListener {
                             System.gc();
                         }
 
-                        this.myCanvas.setPercent(75);
-                        this.myCanvas.setPercent(100);
+                        this.myCanvas.setPercentLogoProgressBar(75);
+                        this.myCanvas.setPercentLogoProgressBar(100);
                         this.myCanvas.sub_54();
                         this.myCanvas.repaint();
                         this.myCanvas.serviceRepaints();
@@ -643,7 +643,7 @@ public class Arena extends Arena3 implements CommandListener {
     }
 
     public void sub_1fb() {
-        this.myCanvas.setPercent(0);
+        this.myCanvas.setPercentLogoProgressBar(0);
         boolean var1 = false;
         byte var2 = -1;
         String var3 = this.phoneNumberTextBox.getString();
@@ -654,7 +654,7 @@ public class Arena extends Arena3 implements CommandListener {
         try {
             byte[] var7 = this.sub_5a0();
             int var8 = 0;
-            this.myCanvas.setPercent(90);
+            this.myCanvas.setPercentLogoProgressBar(90);
             var6 = (MessageConnection) Connector.open(var5);
 
             for (int var13 = 0; var13 < 3; ++var13) {
@@ -680,14 +680,14 @@ public class Arena extends Arena3 implements CommandListener {
                     if (var6 != null) {
                         var6.send(var10);
                     }
-                    this.myCanvas.setPercent(90 + (var13 + 1) * 2);
+                    this.myCanvas.setPercentLogoProgressBar(90 + (var13 + 1) * 2);
                 }
             }
 
             if (var6 != null) {
                 var6.close();
             }
-            this.myCanvas.setPercent(100);
+            this.myCanvas.setPercentLogoProgressBar(100);
         } catch (Exception var12) {
             var1 = true;
             if (var6 != null) {
@@ -698,7 +698,7 @@ public class Arena extends Arena3 implements CommandListener {
                 }
             }
 
-            this.myCanvas.setPercent(100);
+            this.myCanvas.setPercentLogoProgressBar(100);
             this.sub_24e("sendSMS: " + var12 + ", sms #" + var2);
         }
 
@@ -811,8 +811,8 @@ public class Arena extends Arena3 implements CommandListener {
                     break;
                 case 15:
                     this.settingsList.setSelectedFlags(new boolean[]{
-                            this.myCanvas.var_395[1], this.myCanvas.var_395[3],
-                            this.myCanvas.var_395[0]});
+                            this.myCanvas.settings[1], this.myCanvas.settings[3],
+                            this.myCanvas.settings[0]});
                     this.setCurrentDisp(this.settingsList);
                     break;
                 case 16:
@@ -950,10 +950,10 @@ public class Arena extends Arena3 implements CommandListener {
         try {
             FileConnection connection =
                     (FileConnection) Connector.open("file:///0:/Pictures", Connector.READ_WRITE);
-            this.myCanvas.setPercent(35);
+            this.myCanvas.setPercentLogoProgressBar(35);
             Enumeration enumeration = connection.list("*.jpg", false);
             System.gc();
-            this.myCanvas.setPercent(40);
+            this.myCanvas.setPercentLogoProgressBar(40);
 
             while (enumeration.hasMoreElements()) {
                 String var3 = (String) enumeration.nextElement();
@@ -967,13 +967,13 @@ public class Arena extends Arena3 implements CommandListener {
             }
 
             connection.close();
-            this.myCanvas.setPercent(80);
+            this.myCanvas.setPercentLogoProgressBar(80);
         } catch (Exception var4) {
             this.noExcept = false;
             this.sub_24e(var4.toString());
         }
 
-        this.myCanvas.setPercent(100);
+        this.myCanvas.setPercentLogoProgressBar(100);
         this.selectPhotoList.addCommand(this.textBoxBack);
         this.selectPhotoList.setCommandListener(this);
         return this.selectPhotoList.size() > 0;
@@ -1043,32 +1043,32 @@ public class Arena extends Arena3 implements CommandListener {
 
     private boolean computeImage(String str) {
         try {
-            this.myCanvas.setPercent(10);
+            this.myCanvas.setPercentLogoProgressBar(10);
             this.image = null;
             this.myCanvas.bgImage = null;
             System.gc();
-            this.myCanvas.setPercent(20);
+            this.myCanvas.setPercentLogoProgressBar(20);
             if (this.photoSize == 18) {
                 this.image = com.siemens.mp.lcdui.Image.createImageFromFile(
                         "headTmp.png", this.photoSize, this.photoSize);
                 this.colorImage(this.image, 7799014);
             } else {
                 this.image = com.siemens.mp.lcdui.Image.createImageFromFile("/" + str, 64, 48);
-                this.myCanvas.setPercent(30);
+                this.myCanvas.setPercentLogoProgressBar(30);
                 Image image = Image.createImage(this.photoSize, this.photoSize);
-                this.myCanvas.setPercent(40);
+                this.myCanvas.setPercentLogoProgressBar(40);
                 image.getGraphics().drawImage(this.image, -9, -2, 0);
-                this.myCanvas.setPercent(50);
+                this.myCanvas.setPercentLogoProgressBar(50);
                 this.colorImage(image, -1);
-                this.myCanvas.setPercent(60);
+                this.myCanvas.setPercentLogoProgressBar(60);
                 com.siemens.mp.lcdui.Image.writePngToFile(image, "headTmp.png");
-                this.myCanvas.setPercent(70);
+                this.myCanvas.setPercentLogoProgressBar(70);
                 this.image = image;
-                this.myCanvas.setPercent(80);
+                this.myCanvas.setPercentLogoProgressBar(80);
             }
 
             System.gc();
-            this.myCanvas.setPercent(90);
+            this.myCanvas.setPercentLogoProgressBar(90);
             return true;
         } catch (Exception var3) {
             this.makeAlert("computeImage: " + var3);
@@ -1090,7 +1090,7 @@ public class Arena extends Arena3 implements CommandListener {
         var4[0] = var3;
         int var_ebf = 6;
         byte[] var5 = new byte[7 + var2.length + var4.length + var_ebf];
-        this.myCanvas.setPercent(20);
+        this.myCanvas.setPercentLogoProgressBar(20);
         if (var4.length > 1) {
             Image image = null;
 
@@ -1122,7 +1122,7 @@ public class Arena extends Arena3 implements CommandListener {
                             | var7[1] << 2 | var7[0]);
                 }
 
-                this.myCanvas.setPercent(20 + var10 * 3);
+                this.myCanvas.setPercentLogoProgressBar(20 + var10 * 3);
             }
         }
 
@@ -1135,7 +1135,7 @@ public class Arena extends Arena3 implements CommandListener {
             var5[var15++] = var2[var16];
         }
 
-        this.myCanvas.setPercent(80);
+        this.myCanvas.setPercentLogoProgressBar(80);
 
         for (var16 = 0; var16 < 6; ++var16) {
             var5[var15++] = (byte) this.myCanvas.var_234[var16];
@@ -1145,16 +1145,16 @@ public class Arena extends Arena3 implements CommandListener {
             var5[var15++] = var4[var16];
         }
 
-        this.myCanvas.setPercent(85);
+        this.myCanvas.setPercentLogoProgressBar(85);
         return var5;
     }
 
     public void sub_5c4() {
-        this.myCanvas.setPercent(0);
+        this.myCanvas.setPercentLogoProgressBar(0);
         this.myCanvas.sub_f85(this.var_c76, this.var_d05, this.var_b9f);
         this.var_c76 = null;
         this.var_af2 = true;
-        this.myCanvas.setPercent(100);
+        this.myCanvas.setPercentLogoProgressBar(100);
         this.commandManage(10);
     }
 
@@ -1226,7 +1226,7 @@ public class Arena extends Arena3 implements CommandListener {
     }
 
     @Override
-    public void destroyApp(boolean var1) {
+    public void destroyApp() {
         this.myCanvas.sub_267();
         this.notifyDestroyed();
     }

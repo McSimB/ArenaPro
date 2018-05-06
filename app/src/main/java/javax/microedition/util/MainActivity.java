@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.elkware.midp.games.colorng.Arena3;
 import com.elkware.midp.games.colorng.arena.high.R;
 
 import javax.microedition.lcdui.Canvas;
@@ -21,7 +20,8 @@ public class MainActivity extends Activity {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
-    private MIDlet midlet;
+    private MIDlet mMIDlet;
+    private LifeCycleListener mListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,19 +51,34 @@ public class MainActivity extends Activity {
             }
         });
 
-        midlet = (MIDlet) getApplication();
-        midlet.startApp();
+        mMIDlet = (MIDlet) getApplication();
+        mMIDlet.startApp();
     }
 
     @Override
     protected void onPause() {
-        midlet.pauseApp();
+        mMIDlet.pauseApp();
+        if (mListener != null) {
+            mListener.paused();
+        }
         super.onPause();
     }
 
     @Override
+    protected void onResume() {
+        if (mListener != null) {
+            mListener.resumed();
+        }
+        super.onResume();
+    }
+
+    @Override
     protected void onDestroy() {
-        //midlet.destroyApp(true);
+        mMIDlet.destroyApp();
         super.onDestroy();
+    }
+
+    public void setListener(LifeCycleListener listener) {
+        mListener = listener;
     }
 }

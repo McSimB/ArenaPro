@@ -24,7 +24,7 @@ class PhotoThread extends Thread {
 		case 1:
 			Arena.getMyCanvas(this.arena).threadToNull();
 			Arena.setCurDispStatic(this.arena, Arena.getMyCanvas(this.arena));
-			Arena.getMyCanvas(this.arena).setPercent(0);
+			Arena.getMyCanvas(this.arena).setPercentLogoProgressBar(0);
 			if (Arena.hasPhotoStatic(this.arena)) {
 				Arena.setCurDispStatic(this.arena, Arena.getSelectPhotoList(this.arena));
 			} else if (Arena.isNoExcept(this.arena)) {
@@ -33,7 +33,7 @@ class PhotoThread extends Thread {
 				selectFotoForm.append(this.arena.getStr(403)); // There are no images in the camera's directory.
 				selectFotoForm.setCommandListener(this.listener);
 				selectFotoForm.addCommand(Arena.getCommandBack(this.arena));
-				Arena.getMyCanvas(this.arena).setPercent(100);
+				Arena.getMyCanvas(this.arena).setPercentLogoProgressBar(100);
 				Arena.setCurDispStatic(this.arena, selectFotoForm);
 			} else {
 				this.arena.commandManage(14);
@@ -45,9 +45,9 @@ class PhotoThread extends Thread {
 				Arena.getMyCanvas(this.arena).threadToNull();
 				this.arena.boolPhoto = true;
 				Arena.getMyCanvas(this.arena).var_535 = true;
-				Arena.getMyCanvas(this.arena).setPercent(0);
+				Arena.getMyCanvas(this.arena).setPercentLogoProgressBar(0);
 				Arena.setCurDispStatic(this.arena, Arena.getMyCanvas(this.arena));
-				Arena.getMyCanvas(this.arena).setPercent(10);
+				Arena.getMyCanvas(this.arena).setPercentLogoProgressBar(10);
 				Arena.setPhotoString(
 						this.arena,
 						Arena.getSelectPhotoList(this.arena).getString(
@@ -58,14 +58,14 @@ class PhotoThread extends Thread {
 				var2.printStackTrace();
 			}
 
-			Arena.getMyCanvas(this.arena).setPercent(100);
+			Arena.getMyCanvas(this.arena).setPercentLogoProgressBar(100);
 			this.arena.boolPhoto = false;
 			Arena.getMyCanvas(this.arena).var_3246 = true;
 			Arena.getMyCanvas(this.arena).oneTimeLoop();
 			return;
 		case 3:
 			Arena.setCurDispStatic(this.arena, Arena.getMyCanvas(this.arena));
-			Arena.getMyCanvas(this.arena).setPercent(0);
+			Arena.getMyCanvas(this.arena).setPercentLogoProgressBar(0);
 			Arena.getMyCanvas(this.arena).addPhotoToStore(this.arena.image);
 			this.arena.image = null;
 			System.gc();
@@ -74,10 +74,10 @@ class PhotoThread extends Thread {
 			Arena.computeImageStatic(this.arena, Arena.getPhotoString(this.arena));
 			this.arena.boolPhoto = false;
 			Arena.getMyCanvas(this.arena).var_535 = false;
-			Arena.getMyCanvas(this.arena).setPercent(95);
+			Arena.getMyCanvas(this.arena).setPercentLogoProgressBar(95);
 			Arena.getMyCanvas(this.arena).addHeadImage(this.arena.image);
 			this.arena.commandManage(25);
-			Arena.getMyCanvas(this.arena).setPercent(100);
+			Arena.getMyCanvas(this.arena).setPercentLogoProgressBar(100);
 			return;
 		default:
 		}

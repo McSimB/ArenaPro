@@ -80,5 +80,4 @@ public abstract class Canvas3 extends Canvas2 implements PlayerListener {
 			var3.printStackTrace();
 		}
 	}
-
 }

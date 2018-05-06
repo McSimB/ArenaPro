@@ -51,8 +51,8 @@ public abstract class Arena3 extends Arena2 implements CommandListener {
 
     private void sub_60() {
         if ((this.int_c5 & 3) > 0 && (super._forPlayMus || super._forPlayMus1)) {
-            this.list = new List(this.getStr(3) + " " + this.getStr(4) + "?", 3,
-                    new String[]{this.getStr(7), this.getStr(8)}, null);
+            this.list = new List(this.getStr(3) + " " + this.getStr(4) + "?", 3,  //Sound OFF Sound ON?
+                    new String[]{this.getStr(7), this.getStr(8)}, null);  //Backlight OFF, Backlight ON
             this.list.setCommandListener(this);
             this.bool_148 = false;
             super.display.setCurrent(this.list);
@@ -86,6 +86,7 @@ public abstract class Arena3 extends Arena2 implements CommandListener {
         }
     }
 
+    @Override
     public void pauseApp() {
         if(this.canvas3 != null) {
             this.canvas3.hideNotify();
@@ -94,9 +95,9 @@ public abstract class Arena3 extends Arena2 implements CommandListener {
     }
 
     @Override
-    public void destroyApp(boolean var1) {
+    public void destroyApp() {
         this.canvas3.sub_267();
-        this.canvas3.sub_ec7();
+        this.canvas3.sub_ec7_saveSettings();
         this.notifyDestroyed();
     }
 }

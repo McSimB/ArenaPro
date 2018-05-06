@@ -52,7 +52,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 	public Command saveCom;
 	public Command cancelCom;
 	boolean var_188 = false;
-	Hashtable var_247 = new Hashtable();
+	Hashtable hashtable = new Hashtable();
 	Alert alert;
 	byte[] var_310;
 	byte[] var_33f;
@@ -95,8 +95,6 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 							var_541.getRecord(var_4e6[var2 + 2] & 255)));
 				}
 
-				//var1 = new DataInputStream(var_359.getClass()
-				//		.getResourceAsStream(var_391));
 				var1 = new DataInputStream(ContextHolder.getResourceAsStream(var_391));
 				var1.skip(4L);
 			}
@@ -195,7 +193,6 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 	}
 
 	public void readStringResources(String fileName, String var2) throws IOException {
-		//DataInputStream stream = new DataInputStream(getAssets().open(fileName));
 		DataInputStream stream = new DataInputStream(ContextHolder.getResourceAsStream(fileName));
 		int _int = stream.readInt();
 		int i = 0;
@@ -288,28 +285,27 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 
 		this.checkLocale();
 		if (this.var_64d == null) {
-			this.sub_1ea();
+			this.loadAdditionalData();
 		}
 
 		sub_38f(this, "res.raw");
 		this.sub_a3(255);
 	}
 
-	public void sub_f0(String var1, String var2, boolean var3) {
+	public void prepareToSaveAD(String var1, String var2, boolean var3) {
 		if (var2 == null) {
-			this.var_247.remove(var1);
+			this.hashtable.remove(var1);
 		} else {
-			this.var_247.put(var1, var2);
+			this.hashtable.put(var1, var2);
 		}
 
 		if (var3) {
-			this.sub_249();
+			this.saveAdditionalData();
 		}
-
 	}
 
-	public String sub_13f(String var1) {
-		return (String) this.var_247.get(var1);
+	public String getFromTable(String var1) {
+		return (String) this.hashtable.get(var1);
 	}
 
 	public byte[] loadRecStore(String storeName) {
@@ -339,24 +335,22 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 		return bytes != null ? new DataInputStream(new ByteArrayInputStream(bytes)) : null;
 	}
 
-	public void sub_1ea() {
+	public void loadAdditionalData() {
 		this.sub_4b4();
 		this.loadHighscore();
 
 		try {
-			DataInputStream var1 = this.getDIStream(this.getStr(201)
-					+ this.recStores[2]);
+			DataInputStream var1 = this.getDIStream(this.getStr(201) + this.recStores[2]);
 			if (var1 != null) {
 				int var2 = var1.readInt();
 
 				for (int var3 = 0; var3 < var2; ++var3) {
-					this.var_247.put(var1.readUTF(), var1.readUTF());
+					this.hashtable.put(var1.readUTF(), var1.readUTF());
 				}
 			}
 		} catch (Exception var4) {
 			System.out.println("Error loading additional data " + var4);
 		}
-
 	}
 
 	public void saveRecordStore(String name, byte[] bytes) {
@@ -446,14 +440,14 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 
 	}
 
-	public void sub_249() {
+	public void saveAdditionalData() {
 		try {
 			ByteArrayOutputStream var1 = new ByteArrayOutputStream();
 			DataOutputStream var2 = new DataOutputStream(var1);
-			var2.writeInt(this.var_247.size());
-			if (!this.var_247.isEmpty()) {
-				Enumeration var3 = this.var_247.keys();
-				Enumeration var4 = this.var_247.elements();
+			var2.writeInt(this.hashtable.size());
+			if (!this.hashtable.isEmpty()) {
+				Enumeration var3 = this.hashtable.keys();
+				Enumeration var4 = this.hashtable.elements();
 
 				while (var3.hasMoreElements()) {
 					var2.writeUTF((String) var3.nextElement());
@@ -465,7 +459,6 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 		} catch (Exception var5) {
 			System.out.println("saveFeatureData failed " + var5);
 		}
-
 	}
 
 	private void sub_255(byte[] bytes) {
@@ -560,7 +553,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 
 	public byte[] sub_370(String var1) {
 		try {
-			DataInputStream var2 = new DataInputStream(getAssets().open(var1));
+			DataInputStream var2 = new DataInputStream(ContextHolder.getResourceAsStream(var1));
 			int var3 = var2.readInt();
 			System.gc();
 			byte[] var4 = new byte[var3];
@@ -681,7 +674,7 @@ public abstract class Arena2 extends Arena1 implements CommandListener {
 				this.var_859 = 3;
 			} else if (var1 == this.quitStr) {
 				try {
-					this.destroyApp(true);
+					this.destroyApp();
 					this.notifyDestroyed();
 				} catch (Exception var4) {
 					var4.printStackTrace();
