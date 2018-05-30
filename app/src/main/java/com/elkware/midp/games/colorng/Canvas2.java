@@ -18,47 +18,47 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 			128, 256, 512, 1024, 2048, 4096, 8192, 16384, '\u8000', 65536,
 			131072, 262144, 524288, 1048576, 2097152, 4194304, 8388608,
 			16777216};
-	public Thread var_35;
-	private int var_6b = 0;
 	public static boolean var_d3;
-	private boolean var_e9;
+	public Thread var_35;
 	public byte[] var_120;
 	public boolean var_1df;
-	Thread var_207;
 	public Image var_260 = null;
 	public Image var_28e;
 	public Image var_2ca;
 	public int var_305 = 0;
-	boolean var_34f;
-	int var_368 = 7;
-	int var_3ef = 7;
-	boolean var_401;
-	boolean var_454 = true;
 	public int var_4a2 = 16777215;
 	public int var_4d3 = this.getWidth() / 3;
 	public int var_50d = this.getHeight() - 20;
 	public int var_543 = this.getWidth() / 3;
 	public int var_556 = 6;
 	public int var_56f = 0;
-	int var_5a0 = this.getWidth() - 10;
-	int var_5d6 = this.getHeight() - 7;
-	boolean var_635;
-	private int[] var_66e = new int[]{48, 49, 50, 51, 52, 53, 54, 55, 56, 57,
-			42, 35, 0, 0, 0, 0, -3, -4, -1, -2, -5, -5, 42, 48, 35};
-	private int[] var_67b = new int[]{8388608, 327680, 262144, 393216, 65536,
-			1048576, 131072, 589824, 524288, 655360, 4194304, 16777216};
-	Command menuCom;
 	public boolean var_6d4;
 	public int var_6fb = -1;
 	public int var_75e = -1;
 	public int var_7c0 = -1;
 	public int var_813 = -1;
 	public int var_831;
-	String[] var_87b;
-	boolean[] var_8b4;
-	private Vector var_8c8 = new Vector();
 	protected long var_8e2;
 	protected long var_933;
+	Thread var_207;
+	boolean var_34f;
+	int var_368 = 7;
+	int var_3ef = 7;
+	boolean var_401;
+	boolean var_454 = true;
+	int var_5a0 = this.getWidth() - 10;
+	int var_5d6 = this.getHeight() - 7;
+	boolean var_635;
+	Command menuCom;
+	String[] var_87b;
+	boolean[] var_8b4;
+	private int var_6b = 0;
+	private boolean var_e9;
+	private int[] var_66e = new int[]{48, 49, 50, 51, 52, 53, 54, 55, 56, 57,
+			42, 35, 0, 0, 0, 0, -3, -4, -1, -2, -5, -5, 42, 48, 35};
+	private int[] var_67b = new int[]{8388608, 327680, 262144, 393216, 65536,
+			1048576, 131072, 589824, 524288, 655360, 4194304, 16777216};
+	private Vector var_8c8 = new Vector();
 	private boolean var_970;
 
 	public Canvas2(Arena3 var1) {
@@ -460,7 +460,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 			case 2:
 				if (!this.var_401) {
 					if (!this.sub_36b()) {
-						this.sub_39a();
+						//this.sub_39a();
 					} else {
 						this.sub_3d2();
 					}
@@ -496,11 +496,13 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 
 	public abstract void mainLoop(long var1);
 
-	public abstract boolean sub_36b();
-
-	public abstract void sub_39a();
+	//public abstract void sub_39a();
 
 	public void sub_3d2() {
+	}
+
+	public boolean sub_36b() {
+		return false;
 	}
 
 	public void sub_93a(long var1) {

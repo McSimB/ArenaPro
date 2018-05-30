@@ -10,19 +10,19 @@ import javax.microedition.lcdui.List;
 
 public abstract class Arena3 extends Arena2 implements CommandListener {
 
-    Canvas3 canvas3;
+    Canvas2 canvas2;
     boolean bool_81;
     int int_c5;
     private List list;
     private boolean bool_148 = true;
 
-    public abstract Canvas3 createCanvas();
+    public abstract Canvas2 createCanvas();
 
     @Override
     public void startApp() {
-        if (this.canvas3 != null) {
-            Display.getDisplay().setCurrent(this.canvas3);
-            this.canvas3.showNotify();
+        if (this.canvas2 != null) {
+            Display.getDisplay().setCurrent(this.canvas2);
+            this.canvas2.showNotify();
         } else {
             super.startApp();
             if ((this.int_c5 = this.getParameter(5030)) == -1) {
@@ -32,18 +32,18 @@ public abstract class Arena3 extends Arena2 implements CommandListener {
             this.bool_81 = this.getParameter(5035) != 0;
 
             try {
-                this.canvas3 = this.createCanvas();
+                this.canvas2 = this.createCanvas();
             } catch (Exception var2) {
                 this.makeAlert("getGameCanvas: " + var2);
                 return;
             }
 
             if (this.sub_2e6()) {
-                this.canvas3.sub_e9a();
+                this.canvas2.sub_e9a();
                 if (this.bool_81) {
                     this.sub_60();
                 } else {
-                    this.canvas3.sub_248();
+                    this.canvas2.sub_248();
                 }
             }
         }
@@ -57,7 +57,7 @@ public abstract class Arena3 extends Arena2 implements CommandListener {
             this.bool_148 = false;
             super.display.setCurrent(this.list);
         } else {
-            this.canvas3.sub_248();
+            this.canvas2.sub_248();
         }
     }
 
@@ -69,7 +69,7 @@ public abstract class Arena3 extends Arena2 implements CommandListener {
             boolean var3 = this.list.isSelected(0);
             this.list = null;
             if (!var3) {
-                boolean[] var4 = this.canvas3.sub_6e();
+                boolean[] var4 = this.canvas2.sub_6e();
                 int var5 = 0;
                 if ((this.int_c5 & 1) > 0) {
                     var4[var5++] = false;
@@ -79,25 +79,25 @@ public abstract class Arena3 extends Arena2 implements CommandListener {
                     var4[var5] = false;
                 }
 
-                this.canvas3.sub_af(var4);
+                this.canvas2.sub_af(var4);
             }
 
-            this.canvas3.sub_248();
+            this.canvas2.sub_248();
         }
     }
 
     @Override
     public void pauseApp() {
-        if(this.canvas3 != null) {
-            this.canvas3.hideNotify();
+        if(this.canvas2 != null) {
+            this.canvas2.hideNotify();
         }
         this.notifyPaused();
     }
 
     @Override
     public void destroyApp() {
-        this.canvas3.sub_267();
-        this.canvas3.sub_ec7_saveSettings();
+        this.canvas2.sub_267();
+        this.canvas2.sub_ec7_saveSettings();
         this.notifyDestroyed();
     }
 }

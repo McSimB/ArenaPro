@@ -5,4 +5,6 @@ public interface LifeCycleListener {
     void paused();
 
     void resumed();
+
+    void closed();
 }

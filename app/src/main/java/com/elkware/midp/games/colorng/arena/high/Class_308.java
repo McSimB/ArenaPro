@@ -2,6 +2,8 @@ package com.elkware.midp.games.colorng.arena.high;
 
 import com.elkware.midp.games.colorng.MyTiledLayer;
 
+import static com.elkware.midp.games.colorng.arena.high.Music.sound46;
+
 public class Class_308 {
 
 	int var_e;
@@ -92,14 +94,18 @@ public class Class_308 {
 
 				this.sub_11b(var1);
 			} else {
-				this.myCanvas.var_1db7.addElement(new Class_27a(this.var_38,
+				this.myCanvas.var_1db7.addElement(new Fallings(this.var_38,
 						this.var_72, this.var_97, this.myCanvas, var1));
 			}
 
 			this.var_15e = true;
 			this.var_1cd = this.var_f7;
-		}
 
+			// TODO : play sound
+			if (myCanvas.var_26b0_soundPlay && var1 == 0) {
+				myCanvas.playSound(sound46);
+			}
+		}
 	}
 
 	public void sub_bb(byte var1, byte var2) {
@@ -136,5 +142,4 @@ public class Class_308 {
 			}
 		}
 	}
-
 }

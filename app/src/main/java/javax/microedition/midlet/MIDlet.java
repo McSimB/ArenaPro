@@ -52,11 +52,9 @@ public abstract class MIDlet extends Application {
     public abstract void destroyApp();
 
     public void notifyPaused() {
-        Toast.makeText(ContextHolder.getContext(), "MIDlet paused", Toast.LENGTH_SHORT).show();
     }
 
     public void notifyDestroyed() {
-        Toast.makeText(ContextHolder.getContext(), "MIDlet destroyed", Toast.LENGTH_SHORT).show();
-        //ContextHolder.getContext().finish();
+        ContextHolder.getContext().finish();
     }
 }

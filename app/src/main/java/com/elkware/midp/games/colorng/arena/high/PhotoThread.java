@@ -9,11 +9,7 @@ class PhotoThread extends Thread {
 	private int anInt;
 	private final Arena arena;
 
-	PhotoThread(Arena var1, CommandListener var2, int var3, MoreCanvas var4) {
-		this(var1, var2, var3);
-	}
-
-	private PhotoThread(Arena var1, CommandListener var2, int var3) {
+	PhotoThread(Arena var1, CommandListener var2, int var3) {
 		this.arena = var1;
 		this.listener = var2;
 		this.anInt = var3;
@@ -82,5 +78,4 @@ class PhotoThread extends Thread {
 		default:
 		}
 	}
-
 }

@@ -2,7 +2,10 @@ package com.elkware.midp.games.colorng.arena.high;
 
 import com.elkware.midp.games.colorng.MySprite;
 
-public class Class_24e {
+import static com.elkware.midp.games.colorng.arena.high.Music.sound48;
+import static com.elkware.midp.games.colorng.arena.high.Music.sound49;
+
+public class Bullets {
 
 	static final int[] var_19 = new int[] { 7, 7, 1, 7, 7, 4 };
 	static MySprite[][] var_23 = new MySprite[var_19.length][50];
@@ -18,11 +21,11 @@ public class Class_24e {
 	int var_2e6;
 	int var_31c;
 	int var_37c;
-	MySprite var_389;
+	MySprite sprite;
 	Class_2b8 var_3ab;
 
-	public Class_24e(int var1, int var2, int var3, int var4, int var5,
-			Class_2b8 var6, MyCanvas var7) {
+	public Bullets(int var1, int var2, int var3, int var4, int var5,
+				   Class_2b8 var6, MyCanvas var7) {
 		this.sub_33(var1, var2, var3, var4, var5, var6, var7);
 	}
 
@@ -43,27 +46,27 @@ public class Class_24e {
 		this.myCanvas = var7;
 		this.var_3ab = var6;
 		if (var_7b[var1] == 0) {
-			this.var_389 = new MySprite(var7.var_254a[var1]);
+			this.sprite = new MySprite(var7.bulletsAnims[var1]);
 		} else {
-			this.var_389 = var_23[var1][var_7b[var1] - 1];
+			this.sprite = var_23[var1][var_7b[var1] - 1];
 			var_23[var1][--var_7b[var1]] = null;
 		}
 
-		this.var_389.setPosition(var2, var3);
-		this.var_389.defineCollisionRectangle(-4, -3,
-				this.var_389.sub_6a() + 8, this.var_389.sub_96() + 6);
+		this.sprite.setPosition(var2, var3);
+		this.sprite.defineCollisionRectangle(-4, -3,
+				this.sprite.sub_6a() + 8, this.sprite.sub_96() + 6);
 
 		try {
-			this.var_389.setFrame(this.var_37c = var4 < 0 ? 0
+			this.sprite.setFrame(this.var_37c = var4 < 0 ? 0
 					: var_19[var1] * 2 - 1);
 		} catch (Exception var15) {
 			var15.printStackTrace();
 		}
 
 		var7.var_2445[var7.var_24b6++] = this;
-		var7.sub_16c(var7.var_1074, this.var_389);
-		this.var_2e6 = this.var_389.sub_6a() / 2;
-		this.var_31c = this.var_389.sub_96() / 2;
+		var7.sub_16c(var7.var_1074, this.sprite);
+		this.var_2e6 = this.sprite.sub_6a() / 2;
+		this.var_31c = this.sprite.sub_96() / 2;
 		int var8 = var4 * 100;
 		int var9 = var5 * 100;
 		var7.getClass();
@@ -116,7 +119,7 @@ public class Class_24e {
 		this.var_2ab = Math.min(this.var_2ab, Class_2b8.var_294[var1]);
 	}
 
-	public boolean sub_7a() {
+	public boolean sub_7a_update_bullets() {
 		this.var_21d += Class_2b8.var_b0[this.var_112];
 		this.var_172 += this.var_1ee;
 		this.var_1bf += this.var_21d;
@@ -124,15 +127,15 @@ public class Class_24e {
 			this.var_1bf += Class_2b8.sub_62(5) - 2;
 		}
 
-		this.var_389.setPosition(this.var_172, this.var_1bf);
-		this.var_389
+		this.sprite.setPosition(this.var_172, this.var_1bf);
+		this.sprite
 				.setFrame(this.var_37c = this.var_1ee > 0 ? (this.var_37c - 1 <= var_19[this.var_112] ? var_19[this.var_112] * 2 - 1
 						: this.var_37c - 1)
 						: (this.var_37c + 1 >= var_19[this.var_112] ? 0
 								: this.var_37c + 1));
 		boolean var1 = --this.var_2ab < 1;
 		if (var1) {
-			var_23[this.var_112][var_7b[this.var_112]++] = this.var_389;
+			var_23[this.var_112][var_7b[this.var_112]++] = this.sprite;
 		}
 
 		return var1;
@@ -154,7 +157,7 @@ public class Class_24e {
 			if (this.myCanvas.var_26b0_soundPlay && var1.var_bd6
 					&& this.var_3ab == this.myCanvas.var_1f25) {
 				// TODO : sound
-				//play(Class_2b8.sub_62(2) > 0 ? 72 : 73;)
+				myCanvas.playSound(Class_2b8.sub_62(2) > 0 ? sound48 : sound49);
 			}
 		}
 	}

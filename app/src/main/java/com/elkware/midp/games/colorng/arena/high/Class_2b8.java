@@ -2,6 +2,10 @@ package com.elkware.midp.games.colorng.arena.high;
 
 import com.elkware.midp.games.colorng.MySprite;
 
+import static com.elkware.midp.games.colorng.arena.high.Music.sound47;
+import static com.elkware.midp.games.colorng.arena.high.Music.sound4A;
+import static com.elkware.midp.games.colorng.arena.high.Music.sound4B;
+
 public class Class_2b8 {
 
 	static int[] var_13 = new int[] { 7, 6, 10, 8, 4, 4 };
@@ -306,6 +310,7 @@ public class Class_2b8 {
 			mCanvas.getClass();
 			this.var_579 = Math.min(var10001, 15);
 			if (this.var_1060) {
+				//noinspection ConstantConditions
 				this.var_1060 = this.var_1060 && !this.var_6b1;
 				if (!this.var_1060) {
 					this.var_14a7 = 50;
@@ -378,7 +383,7 @@ public class Class_2b8 {
 				mCanvas.sub_a24(2, this.var_48e - 2, this.var_4dc
 						+ this.var_ff9 - mCanvas.var_2415[2]);
 			} catch (Exception var3) {
-				;
+				var3.printStackTrace();
 			}
 		}
 
@@ -410,7 +415,6 @@ public class Class_2b8 {
 			this.var_579 = -this.var_b5f;
 			this.var_792 = true;
 		}
-
 	}
 
 	public void sub_1a1() {
@@ -435,7 +439,7 @@ public class Class_2b8 {
 
 				if (mCanvas.var_26b0_soundPlay) {
 					// TODO : sound
-					// play(71)
+					mCanvas.playSound(sound47);
 				}
 
 				mCanvas.sub_a24(1, this.var_48e - 2, this.var_4dc
@@ -610,7 +614,7 @@ public class Class_2b8 {
 					mCanvas.getClass();
 					if (var10000 == 71
 							&& this.sub_384((Class_308) mCanvas.var_1e1d
-									.get(new Integer(this.var_6f5)))) {
+									.get(this.var_6f5))) {
 						var16 = 90 + 90 * this.var_10b4;
 						if (var16 > var3) {
 							var15 = var_1291;
@@ -641,7 +645,7 @@ public class Class_2b8 {
 					}
 				}
 			} catch (Exception var13) {
-				;
+				var13.printStackTrace();
 			}
 
 			this.var_17fe = false;
@@ -805,16 +809,16 @@ public class Class_2b8 {
 							if (var19[var8] == 1) {
 								byte[] var9 = mCanvas.var_217e[var8];
 
-								for (int var10 = 0; var10 < var9.length; ++var10) {
+								for (byte aVar9 : var9) {
 									var19[var8] = 2;
-									if (var9[var10] == this.var_13ef) {
+									if (aVar9 == this.var_13ef) {
 										var6 = var8;
 										var8 = mCanvas.var_2272;
 										break;
 									}
 
-									if (var19[var9[var10]] == 0) {
-										var19[var9[var10]] = 1;
+									if (var19[aVar9] == 0) {
+										var19[aVar9] = 1;
 									}
 								}
 							}
@@ -826,7 +830,7 @@ public class Class_2b8 {
 						var6 = this.var_13ef;
 					}
 				} catch (Exception var12) {
-					;
+					var12.printStackTrace();
 				}
 
 				this.var_171e = this.var_13ef;
@@ -1019,12 +1023,13 @@ public class Class_2b8 {
 				if (mCanvas.var_26b0_soundPlay && this != mCanvas.var_1f25 && this.var_dc6 == 0) {
 					// TODO : sound
 					//play(this.var_f3a != 0 && this.var_f2a != 2? 75 : 74)
+					mCanvas.playSound(this.var_f3a != 0 && this.var_f3a != 2? sound4B : sound4A);
 				}
 
 				if (mCanvas.var_2510 == 0) {
-					new Class_24e(this.var_f3a,
+					new Bullets(this.var_f3a,
 							this.var_596 == 0 ? this.var_48e
-									- mCanvas.var_254a[this.var_f3a].sub_6a()
+									- mCanvas.bulletsAnims[this.var_f3a].sub_6a()
 									: this.var_48e + this.var_feb,
 							this.var_4dc + this.var_ff9 / 2
 									+ (this.var_7c1 ? 7 : 4),
@@ -1036,7 +1041,7 @@ public class Class_2b8 {
 					mCanvas.var_2455[mCanvas.var_2510] = null;
 					mCanvas.var_2445[mCanvas.var_24b6].sub_33(this.var_f3a,
 							this.var_596 == 0 ? this.var_48e
-									- mCanvas.var_254a[this.var_f3a].sub_6a()
+									- mCanvas.bulletsAnims[this.var_f3a].sub_6a()
 									: this.var_48e + this.var_feb,
 							this.var_4dc + this.var_ff9 / 2
 									+ (this.var_7c1 ? 7 : 4),
@@ -1155,5 +1160,4 @@ public class Class_2b8 {
 		}
 
 	}
-
 }

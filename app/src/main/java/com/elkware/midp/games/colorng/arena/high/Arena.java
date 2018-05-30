@@ -1,7 +1,7 @@
 package com.elkware.midp.games.colorng.arena.high;
 
 import com.elkware.midp.games.colorng.Arena3;
-import com.elkware.midp.games.colorng.Canvas3;
+import com.elkware.midp.games.colorng.Canvas2;
 
 import java.io.DataInputStream;
 import java.util.Enumeration;
@@ -65,7 +65,6 @@ public class Arena extends Arena3 implements CommandListener {
     private boolean var_a44 = false;
     private boolean var_a8d;
     private boolean var_aa0 = false;
-    private Thread var_ab2 = new ExitTimer(this);
     public boolean var_af2 = false;
     private boolean var_b9f = false;
     public int var_bd9 = -1;
@@ -244,14 +243,14 @@ public class Arena extends Arena3 implements CommandListener {
     }
 
     private void exit(boolean var1) {
-        if (var1 && this.var_a8d) {
+        /*if (var1 && this.var_a8d) {
             Image downloadMoreImage = this.myCanvas.openImage(230);
             MoreCanvas var3 = new MoreCanvas(this, downloadMoreImage);
             super.display.setCurrent(var3);
             this.var_ab2.start();
-        } else {
-            this.destroyApp();
-        }
+        } else {*/
+        this.destroyApp();
+        //}
     }
 
     public void sub_14a() {
@@ -398,7 +397,7 @@ public class Arena extends Arena3 implements CommandListener {
                     i = this.saveMenuList2.getSelectedIndex();
                     switch (i) {
                         case 0:
-                            (new PhotoThread(this, this, 3, null)).start();
+                            (new PhotoThread(this, this, 3)).start();
                             break;
                         case 1:
                             this.sub_1b1();
@@ -607,7 +606,7 @@ public class Arena extends Arena3 implements CommandListener {
                                 sendForm.addCommand(this.settingsBack);
                                 sendForm.setCommandListener(this);
                                 this.setCurrentDisp(sendForm);
-                                (new aThread(this, var3, null)).start();
+                                //(new aThread(this, var3, null)).start();
                             }
                         }
                     } else {
@@ -862,10 +861,10 @@ public class Arena extends Arena3 implements CommandListener {
                     this.setCurrentDisp(this.tournamentList);
                     break;
                 case 23:
-                    (new PhotoThread(this, this, 1, null)).start();
+                    (new PhotoThread(this, this, 1)).start();
                     break;
                 case 24:
-                    (new PhotoThread(this, this, 2, null)).start();
+                    (new PhotoThread(this, this, 2)).start();
                     break;
                 case 25:
                     Form processCompleteForm = new Form(this.getStr(404));
@@ -1159,7 +1158,7 @@ public class Arena extends Arena3 implements CommandListener {
     }
 
     @Override
-    public Canvas3 createCanvas() {
+    public Canvas2 createCanvas() {
         try {
             myCanvas = new MyCanvas(this);
             return myCanvas;

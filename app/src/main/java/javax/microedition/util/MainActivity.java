@@ -9,6 +9,8 @@ import android.widget.Button;
 
 import com.elkware.midp.games.colorng.arena.high.R;
 
+import java.util.ArrayList;
+
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Display;
 import javax.microedition.midlet.MIDlet;
@@ -21,19 +23,21 @@ public class MainActivity extends Activity {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     private MIDlet mMIDlet;
-    private LifeCycleListener mListener;
+    private ArrayList<LifeCycleListener> mListeners;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         ContextHolder.setContext(this);
-
         setContentView(R.layout.main);
+        mListeners = new ArrayList<LifeCycleListener>();
 
-        int permission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
+        int permission;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            permission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (permission != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
+            }
         }
 
         Button button1 = findViewById(R.id.button1);
@@ -58,27 +62,40 @@ public class MainActivity extends Activity {
     @Override
     protected void onPause() {
         mMIDlet.pauseApp();
-        if (mListener != null) {
-            mListener.paused();
+        for (LifeCycleListener listener : mListeners) {
+            listener.paused();
         }
         super.onPause();
     }
 
     @Override
     protected void onResume() {
-        if (mListener != null) {
-            mListener.resumed();
+        for (LifeCycleListener listener : mListeners) {
+            listener.resumed();
         }
         super.onResume();
     }
 
     @Override
     protected void onDestroy() {
-        mMIDlet.destroyApp();
+        if (mListeners != null) {
+            for (LifeCycleListener listener : mListeners) {
+                listener.closed();
+            }
+            mListeners = null;
+        }
+        if (mMIDlet != null) {
+            mMIDlet.destroyApp();
+            mMIDlet = null;
+        }
         super.onDestroy();
     }
 
-    public void setListener(LifeCycleListener listener) {
-        mListener = listener;
+    @Override
+    public void onBackPressed() {
+    }
+
+    public void addListener(LifeCycleListener listener) {
+        mListeners.add(listener);
     }
 }

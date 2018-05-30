@@ -33,7 +33,7 @@ public class MicroPlayer implements Player, MediaPlayer.OnPreparedListener,
         player.setOnCompletionListener(this);
         player.setOnErrorListener(this);
 
-        ContextHolder.getContext().setListener(this);
+        ContextHolder.getContext().addListener(this);
 
         source = datasource;
         state = UNREALIZED;
@@ -210,7 +210,11 @@ public class MicroPlayer implements Player, MediaPlayer.OnPreparedListener,
 
     @Override
     public void paused() {
-        player.pause();
+        try {
+            player.pause();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -218,6 +222,16 @@ public class MicroPlayer implements Player, MediaPlayer.OnPreparedListener,
         try {
             player.start();
         } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void closed() {
+        try {
+            stop();
+            close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

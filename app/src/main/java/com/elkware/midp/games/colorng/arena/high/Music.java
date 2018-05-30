@@ -1,5 +1,9 @@
 package com.elkware.midp.games.colorng.arena.high;
 
+import android.media.AudioManager;
+import android.media.SoundPool;
+import android.util.Log;
+
 import com.elkware.midp.games.Arena2;
 import com.elkware.midp.games.colorng.Arena3;
 
@@ -11,8 +15,9 @@ import javax.microedition.media.MediaException;
 import javax.microedition.media.Player;
 import javax.microedition.media.PlayerListener;
 import javax.microedition.util.ContextHolder;
+import javax.microedition.util.LifeCycleListener;
 
-public class Music implements PlayerListener {
+public class Music implements PlayerListener, LifeCycleListener {
 
 	Arena3 arena3;
 	Player[] players;
@@ -20,8 +25,30 @@ public class Music implements PlayerListener {
 	boolean[] _startedPlayers;
 	short aShort;
 
+	SoundPool soundPool;
+	static int sound46;  // рычаг
+	static int sound47;
+	static int sound48;
+	static int sound49;
+	static int sound4A;
+	static int sound4B;
+
 	public Music(Arena3 var1) {
 		this.arena3 = var1;
+
+		ContextHolder.getContext().addListener(this);
+		soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+		try {
+			sound46 = soundPool.load(ContextHolder.getContext().getAssets().openFd("_46.mp3"), 1);
+			sound47 = soundPool.load(ContextHolder.getContext().getAssets().openFd("_47.mp3"), 1);
+			sound48 = soundPool.load(ContextHolder.getContext().getAssets().openFd("_48.mp3"), 1);
+			sound49 = soundPool.load(ContextHolder.getContext().getAssets().openFd("_49.mp3"), 1);
+			sound4A = soundPool.load(ContextHolder.getContext().getAssets().openFd("_4A.mp3"), 1);
+			sound4B = soundPool.load(ContextHolder.getContext().getAssets().openFd("_4B.mp3"), 1);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		//int var2 = var1.getParameter(5034); // 15
 		int var2 = 4;
 		//noinspection ConstantConditions
@@ -150,5 +177,27 @@ public class Music implements PlayerListener {
 		} catch (Exception var3) {
 			var3.printStackTrace();
 		}
+	}
+
+	public void playSound(int id) {
+		soundPool.play(id, 1, 1, 0, 0, 1);
+		Log.d("Play sound", "id: " +  id);
+	}
+
+	@Override
+	public void paused() {
+		soundPool.autoPause();
+	}
+
+	@Override
+	public void resumed() {
+		soundPool.autoResume();
+	}
+
+	@Override
+	public void closed() {
+		soundPool.release();
+		soundPool = null;
+		Log.d("SoundPool", "release");
 	}
 }

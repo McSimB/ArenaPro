@@ -2,9 +2,9 @@ package com.elkware.midp.games.colorng.arena.high;
 
 import com.elkware.midp.games.Arena2;
 import com.elkware.midp.games.colorng.Arena3;
+import com.elkware.midp.games.colorng.Canvas3;
 import com.elkware.midp.games.colorng.MySprite;
 import com.elkware.midp.games.colorng.MyTiledLayer;
-import com.elkware.midp.games.colorng.arena.Canvas5;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -22,7 +22,7 @@ import javax.microedition.rms.RecordFilter;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
 
-public class MyCanvas extends Canvas5 implements Runnable {
+public class MyCanvas extends Canvas3 implements Runnable {
 
     private int var_eb;
     private final String[] recStorages = new String[]{"RSPL", "RSTU", "RSOPT",
@@ -120,7 +120,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
     public int width;
     private int height;
     public Vector var_1db7;
-    public MySprite[] var_1dec;
+    public MySprite[] fallingsAnims;
     public Class_308[] var_1e04;
     public Hashtable var_1e1d = new Hashtable();
     public Class_2b8[] var_1efb;
@@ -141,18 +141,18 @@ public class MyCanvas extends Canvas5 implements Runnable {
     public int[] var_2230;
     public int var_2272 = 0;
     public boolean[][] var_22a0;
-    public MySprite[] var_22ea;
-    private Class_202[] var_2329;
-    private Class_202[] var_238b;
+    public MySprite[] effectsAnims;
+    private Effects[] var_2329;
+    private Effects[] var_238b;
     private int var_23a7 = 0;
     private int var_23cd = 0;
     public int[] var_23fa;
     public int[] var_2415;
-    public Class_24e[] var_2445;
-    public Class_24e[] var_2455;
+    public Bullets[] var_2445;
+    public Bullets[] var_2455;
     public int var_24b6 = 0;
     public int var_2510 = 0;
-    public MySprite[] var_254a;
+    public MySprite[] bulletsAnims;
     private int var_257a = 0;
     private int[] var_25c8;
     private int[] var_25f2;
@@ -442,18 +442,18 @@ public class MyCanvas extends Canvas5 implements Runnable {
         }
 
         for (var3 = 0; var3 < this.var_1db7.size(); ++var3) {
-            Class_27a var4 = (Class_27a) this.var_1db7.elementAt(var3);
-            if (var4.sub_20()) {
+            Fallings var4 = (Fallings) this.var_1db7.elementAt(var3);
+            if (var4.sub_20_update_fallings()) {
                 this.var_1db7.removeElementAt(var3);
-                this.sub_1b1(this.var_fb7, var4.var_314);
+                this.sub_1b1(this.var_fb7, var4.sprite);
             }
         }
 
         try {
             for (int var15 = 0; var15 < this.var_23a7; ++var15) {
-                Class_202 var16 = this.var_2329[var15];
+                Effects var16 = this.var_2329[var15];
                 if (var16.sub_c5()) {
-                    this.sub_1b1(this.var_1011, var16.var_18c);
+                    this.sub_1b1(this.var_1011, var16.sprite);
                     this.var_238b[this.var_23cd++] = var16;
                     this.var_2329[var15] = this.var_2329[this.var_23a7 - 1];
                     this.var_2329[this.var_23a7 - 1] = null;
@@ -641,9 +641,9 @@ public class MyCanvas extends Canvas5 implements Runnable {
                 if (var17.var_aaf) {
                     try {
                         for (var5 = 0; var5 < this.var_1db7.size(); ++var5) {
-                            Class_27a var6 = (Class_27a) this.var_1db7
+                            Fallings var6 = (Fallings) this.var_1db7
                                     .elementAt(var5);
-                            if (var6.var_314.sub_1cc(var17.var_e6d, true)) {
+                            if (var6.sprite.sub_1cc(var17.var_e6d, true)) {
                                 var6.sub_36(var17);
                             }
                         }
@@ -653,7 +653,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
                     for (var5 = 0; var5 < this.var_24b6; ++var5) {
                         if (this.var_2445[var5].var_3ab != var17
-                                && this.sub_5f7(this.var_2445[var5].var_389,
+                                && this.sub_5f7(this.var_2445[var5].sprite,
                                 var17.var_e6d)) {
                             this.var_2445[var5].sub_bb(var17);
                         }
@@ -745,12 +745,12 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
         try {
             for (int var9 = 0; var9 < this.var_24b6; ++var9) {
-                Class_24e var23 = this.var_2445[var9];
-                if (var23.sub_7a()) {
+                Bullets var23 = this.var_2445[var9];
+                if (var23.sub_7a_update_bullets()) {
                     this.sub_a24(
-                            Class_202.var_9d[(int) (System.currentTimeMillis() % 2L)],
+                            Effects.var_9d[(int) (System.currentTimeMillis() % 2L)],
                             var23.var_172 - 10, var23.var_1bf - 10);
-                    this.sub_1b1(this.var_1074, var23.var_389);
+                    this.sub_1b1(this.var_1074, var23.sprite);
                     this.var_2455[this.var_2510++] = var23;
                     this.var_2445[var9] = this.var_2445[this.var_24b6 - 1];
                     this.var_2445[this.var_24b6 - 1] = null;
@@ -1563,7 +1563,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
     }
 
     public void initLogo() {
-        Class_202.sub_2c(this);
+        Effects.sub_2c(this);
         Class_2b8.sub_3eb(arena);
         this.fonts[0] = Font.getFont(32, arena.getParameter(401) == 0 ? 0
                 : 1, this.sub_587(arena.getParameter(400)));
@@ -1753,10 +1753,10 @@ public class MyCanvas extends Canvas5 implements Runnable {
         this.var_2717 = this.var_2039 = false;
         this.setPercentGameProgressBar(15);
         this.var_1db7 = new Vector();
-        this.var_2445 = new Class_24e[50];
-        this.var_2455 = new Class_24e[50];
-        this.var_2329 = new Class_202[50];
-        this.var_238b = new Class_202[50];
+        this.var_2445 = new Bullets[50];
+        this.var_2455 = new Bullets[50];
+        this.var_2329 = new Effects[50];
+        this.var_238b = new Effects[50];
         this.var_24b6 = this.var_2510 = this.var_23a7 = this.var_23cd = 0;
         this.var_1c98 = null;
         this.var_1cdd = null;
@@ -2110,6 +2110,10 @@ public class MyCanvas extends Canvas5 implements Runnable {
             super.arena3._forPlayMus1 = true;
             this.music.beginPlay(var1, var2, var3, var4);
         }
+    }
+
+    public void playSound(int id) {
+        music.playSound(id);
     }
 
     public void stopPlayers(int var1) {
@@ -2863,11 +2867,11 @@ public class MyCanvas extends Canvas5 implements Runnable {
 
     public void sub_a24(int var1, int var2, int var3) {
         if (this.var_23cd == 0) {
-            this.var_2329[this.var_23a7] = new Class_202(var1, var2, var3, this);
+            this.var_2329[this.var_23a7] = new Effects(var1, var2, var3, this);
         } else {
             this.var_2329[this.var_23a7] = this.var_238b[--this.var_23cd];
             this.var_238b[this.var_23cd] = null;
-            this.var_2329[this.var_23a7].sub_6f(var1, var2, var3, this);
+            this.var_2329[this.var_23a7].sub_6f_update_effects(var1, var2, var3, this);
         }
 
         ++this.var_23a7;
@@ -3385,7 +3389,7 @@ public class MyCanvas extends Canvas5 implements Runnable {
                 }
             }
         } catch (Exception var4) {
-            ;
+            var4.printStackTrace();
         }
 
         this._setLight(this.settings[1]);
@@ -3753,44 +3757,44 @@ public class MyCanvas extends Canvas5 implements Runnable {
         }
 
         this.setPercentLogoProgressBar(50);
-        this.var_22ea = new MySprite[5];
+        this.effectsAnims = new MySprite[5];
         System.gc();
 
         int var7;
-        for (var7 = 0; var7 < this.var_22ea.length; ++var7) {
-            this.var_22ea[var7] = new MySprite(this.openImage(198 + var7),
+        for (var7 = 0; var7 < this.effectsAnims.length; ++var7) {
+            this.effectsAnims[var7] = new MySprite(this.openImage(198 + var7),
                     arena.getParameter(223 + var7 * 2),
                     arena.getParameter(224 + var7 * 2));
         }
 
         this.var_23fa = new int[5];
         this.var_2415 = new int[5];
-        this.var_2415[0] = this.var_2415[4] = -this.var_22ea[0].getHeight() / 2;
-        this.var_23fa[0] = this.var_23fa[4] = -this.var_22ea[0].getWidth() / 2;
-        this.var_2415[2] = this.var_2415[1] = this.var_22ea[2].getHeight();
+        this.var_2415[0] = this.var_2415[4] = -this.effectsAnims[0].getHeight() / 2;
+        this.var_23fa[0] = this.var_23fa[4] = -this.effectsAnims[0].getWidth() / 2;
+        this.var_2415[2] = this.var_2415[1] = this.effectsAnims[2].getHeight();
         this.var_2415[2] -= 7;
-        this.var_23fa[2] = this.var_23fa[1] = this.var_22ea[2].getWidth() / 2;
-        this.var_2415[3] = this.var_22ea[3].getHeight();
-        this.var_23fa[3] = this.var_22ea[3].getWidth() / 2;
+        this.var_23fa[2] = this.var_23fa[1] = this.effectsAnims[2].getWidth() / 2;
+        this.var_2415[3] = this.effectsAnims[3].getHeight();
+        this.var_23fa[3] = this.effectsAnims[3].getWidth() / 2;
         this.setPercentLogoProgressBar(55);
         this.setPercentLogoProgressBar(60);
-        this.var_1dec = new MySprite[3];
+        this.fallingsAnims = new MySprite[3];
         System.gc();
 
-        for (var7 = 0; var7 < this.var_1dec.length; ++var7) {
-            this.var_1dec[var7] = new MySprite(this.openImage(192 + var7), 17,
+        for (var7 = 0; var7 < this.fallingsAnims.length; ++var7) {
+            this.fallingsAnims[var7] = new MySprite(this.openImage(192 + var7), 17,
                     17);
         }
 
         this.setPercentLogoProgressBar(70);
 
         try {
-            this.var_1ff8 = new Image[Class_24e.var_19.length];
-            this.var_ec4 = new int[Class_24e.var_19.length];
-            this.var_ef3 = new int[Class_24e.var_19.length];
+            this.var_1ff8 = new Image[Bullets.var_19.length];
+            this.var_ec4 = new int[Bullets.var_19.length];
+            this.var_ef3 = new int[Bullets.var_19.length];
             System.gc();
 
-            for (var7 = 0; var7 < Class_24e.var_19.length; ++var7) {
+            for (var7 = 0; var7 < Bullets.var_19.length; ++var7) {
                 this.var_1ff8[var7] = this.openImage(48 + var7);
                 this.var_ec4[var7] = this.var_1ff8[var7].getWidth();
                 this.var_ef3[var7] = this.var_1ff8[var7].getHeight() / 2;
@@ -3800,12 +3804,12 @@ public class MyCanvas extends Canvas5 implements Runnable {
         }
 
         this.setPercentLogoProgressBar(80);
-        this.var_254a = new MySprite[Class_24e.var_19.length];
+        this.bulletsAnims = new MySprite[Bullets.var_19.length];
 
-        for (var7 = 0; var7 < this.var_254a.length; ++var7) {
+        for (var7 = 0; var7 < this.bulletsAnims.length; ++var7) {
             try {
                 System.gc();
-                this.var_254a[var7] = new MySprite(this.openImage(224 + var7),
+                this.bulletsAnims[var7] = new MySprite(this.openImage(224 + var7),
                         arena.getParameter(250 + var7 * 2),
                         arena.getParameter(251 + var7 * 2));
             } catch (Exception var4) {
