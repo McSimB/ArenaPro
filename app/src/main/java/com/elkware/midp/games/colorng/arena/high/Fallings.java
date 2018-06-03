@@ -8,47 +8,47 @@ public class Fallings {
 	//public final int var_c0 = 2;
 	//public final int var_106 = 3;
 	//public final int var_176 = 40;
-	public final int[] var_1c4 = new int[] { 50, 120, 70 };
-	int var_219;
-	int var_29d;
-	int var_2e9;
+	public final int[] var_1c4_damage = new int[] { 50, 120, 70 };
+	int type;
+	int x;
+	int y;
 	MySprite sprite;
 	MyCanvas myCanvas;
-	int var_3bc = 0;
-	int var_407 = 0;
+	int var_3bc;
+	int var_407;
 	public boolean var_41b = false;
 	int var_429 = 0;
 	int var_43a;
 
-	public Fallings(int var1, int var2, int var3, MyCanvas var4, int var5) {
-		this.var_219 = var1;
-		var4.getClass();
-		this.var_29d = var2 * 15;
-		var4.getClass();
-		this.var_2e9 = var3 * 15;
-		this.myCanvas = var4;
+	public Fallings(int type, int x, int y, MyCanvas myCanvas, int var5) {
+		this.type = type;
+		myCanvas.getClass();
+		this.x = x * 15;
+		myCanvas.getClass();
+		this.y = y * 15;
+		this.myCanvas = myCanvas;
 		this.var_43a = var5;
 
 		while (true) {
-			byte var10000 = var4.var_1c98[var2 + var3 * var4.var_1d1c];
-			var4.getClass();
+			byte var10000 = myCanvas.var_1c98[x + y * myCanvas.var_1d1c];
+			myCanvas.getClass();
 			if (var10000 <= 32) {
-				var10000 = var4.var_1c98[var2 + var3 * var4.var_1d1c];
-				var4.getClass();
+				var10000 = myCanvas.var_1c98[x + y * myCanvas.var_1d1c];
+				myCanvas.getClass();
 				if (var10000 >= 1) {
 					int var10001 = this.var_3bc;
-					var4.getClass();
+					myCanvas.getClass();
 					this.var_3bc = var10001 * 15;
 					this.var_407 = 9;
-					this.sprite = new MySprite(var4.fallingsAnims[var1 - 1]);
-					var4.sub_16c(var4.var_fb7, this.sprite);
-					this.sprite.setPosition(var2, var3);
+					this.sprite = new MySprite(myCanvas.fallingsAnims[type - 1]);
+					myCanvas.sub_16c(myCanvas.var_fb7, this.sprite);
+					this.sprite.setPosition(x, y);
 					return;
 				}
 			}
 
 			++this.var_3bc;
-			++var3;
+			++y;
 		}
 	}
 
@@ -56,7 +56,7 @@ public class Fallings {
 		try {
 			this.var_41b = this.var_3bc <= this.var_407 >> 2;
 			if (!this.var_41b) {
-				switch (this.var_219) {
+				switch (this.type) {
 				case 1:
 					this.var_407 += Math.min(3, 40 - this.var_407);
 					break;
@@ -68,10 +68,10 @@ public class Fallings {
 				}
 
 				this.var_3bc -= this.var_407 >> 2;
-				this.var_2e9 += this.var_407 >> 2;
+				this.y += this.var_407 >> 2;
 				this.var_429 = (this.var_429 + 1) % 4;
 				this.sprite.setFrame(this.var_429);
-				this.sprite.setPosition(this.var_29d, this.var_2e9);
+				this.sprite.setPosition(this.x, this.y);
 			}
 
 			return this.var_41b;
@@ -80,11 +80,11 @@ public class Fallings {
 		}
 	}
 
-	public void sub_36(Class_2b8 var1) {
-		var1.var_a35 = this.var_43a;
-		var1.var_a79 = this.var_43a;
-		var1.sub_1da(this.var_1c4[this.var_219 - 1]);
+	public void sub_36(Warrior warrior) {
+		warrior.var_a35 = this.var_43a;
+		warrior.var_a79 = this.var_43a;
+		warrior.sub_1da_hit(this.var_1c4_damage[this.type - 1]);
 		this.var_3bc = -1;
-		this.myCanvas.sub_a24(0, this.var_29d, this.var_2e9);
+		this.myCanvas.sub_a24(0, this.x, this.y);
 	}
 }

@@ -169,7 +169,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 		return this.var_8b4;
 	}
 
-	public void sub_e9a() {
+	public void loadSettings() {
 		String var1 = super.arena3.getFromTable("cfg");
 		if (var1 == null) {
 			var1 = "1111";
@@ -182,7 +182,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 		this.sub_af(this.var_8b4);
 	}
 
-	public void sub_ec7_saveSettings() {
+	public void saveSettings() {
 		StringBuilder var1 = new StringBuilder();
 
 		for (boolean aVar_8b4 : this.var_8b4) {
@@ -505,7 +505,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 		return false;
 	}
 
-	public void sub_93a(long var1) {
+	public void control(long var1) {
 	}
 
 	public void sub_84f(long var1) {
@@ -546,7 +546,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 		this.var_933 |= (long) var2;
 		this.var_8e2 |= (long) var2;
 		if (var2 != 0) {
-			this.sub_93a((long) var2);
+			this.control((long) var2);
 		}
 	}
 
@@ -585,7 +585,7 @@ public abstract class Canvas2 extends Canvas1 implements Runnable, CommandListen
 
 	public void commandAction(Command var1, Displayable var2) {
 		if (var1 == this.menuCom) {
-			this.sub_93a(16384L);
+			this.control(16384L);
 		}
 	}
 

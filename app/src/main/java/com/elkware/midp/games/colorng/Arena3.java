@@ -39,7 +39,7 @@ public abstract class Arena3 extends Arena2 implements CommandListener {
             }
 
             if (this.sub_2e6()) {
-                this.canvas2.sub_e9a();
+                this.canvas2.loadSettings();
                 if (this.bool_81) {
                     this.sub_60();
                 } else {
@@ -97,7 +97,7 @@ public abstract class Arena3 extends Arena2 implements CommandListener {
     @Override
     public void destroyApp() {
         this.canvas2.sub_267();
-        this.canvas2.sub_ec7_saveSettings();
+        this.canvas2.saveSettings();
         this.notifyDestroyed();
     }
 }

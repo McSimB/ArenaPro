@@ -22,15 +22,15 @@ public class Bullets {
 	int var_31c;
 	int var_37c;
 	MySprite sprite;
-	Class_2b8 var_3ab;
+	Warrior warrior;
 
 	public Bullets(int var1, int var2, int var3, int var4, int var5,
-				   Class_2b8 var6, MyCanvas var7) {
-		this.sub_33(var1, var2, var3, var4, var5, var6, var7);
+				   Warrior var6, MyCanvas var7) {
+		this.sub_33_init(var1, var2, var3, var4, var5, var6, var7);
 	}
 
-	public void sub_33(int var1, int var2, int var3, int var4, int var5,
-			Class_2b8 var6, MyCanvas var7) {
+	public void sub_33_init(int var1, int var2, int var3, int var4, int var5,
+							Warrior var6, MyCanvas var7) {
 		int var10001;
 		if (this.var_95 == 0) {
 			var10001 = var7.width;
@@ -44,7 +44,7 @@ public class Bullets {
 		this.var_1ee = var4;
 		this.var_21d = var5;
 		this.myCanvas = var7;
-		this.var_3ab = var6;
+		this.warrior = var6;
 		if (var_7b[var1] == 0) {
 			this.sprite = new MySprite(var7.bulletsAnims[var1]);
 		} else {
@@ -97,7 +97,7 @@ public class Bullets {
 					break;
 				}
 
-				var10 += Class_2b8.var_b0[var1];
+				var10 += Warrior.var_b0[var1];
 				var11 += Math.min(10, var10);
 				++this.var_2ab;
 				var12 += var4 > 0 ? 1 : -1;
@@ -116,15 +116,15 @@ public class Bullets {
 			this.var_2ab = var10001 * Math.abs(15 / var5);
 		}
 
-		this.var_2ab = Math.min(this.var_2ab, Class_2b8.var_294[var1]);
+		this.var_2ab = Math.min(this.var_2ab, Warrior.var_294[var1]);
 	}
 
 	public boolean sub_7a_update_bullets() {
-		this.var_21d += Class_2b8.var_b0[this.var_112];
+		this.var_21d += Warrior.var_b0[this.var_112];
 		this.var_172 += this.var_1ee;
 		this.var_1bf += this.var_21d;
 		if (this.var_112 == 3) {
-			this.var_1bf += Class_2b8.sub_62(5) - 2;
+			this.var_1bf += Warrior.random(5) - 2;
 		}
 
 		this.sprite.setPosition(this.var_172, this.var_1bf);
@@ -141,24 +141,24 @@ public class Bullets {
 		return var1;
 	}
 
-	public void sub_bb(Class_2b8 var1) {
-		if (var1 != this.var_3ab) {
-			var1.var_d8b = this.var_3ab.var_b9b;
-			var1.var_a35 = this.var_3ab.var_b9b;
-			var1.var_a79 = 10;
-			var1.sub_2e4(Class_2b8.var_1e4[this.var_112],
-					this.var_1ee > 0 ? Class_2b8.var_142[this.var_112]
-							: -Class_2b8.var_142[this.var_112]);
+	public void sub_bb_hit(Warrior warrio) {
+		if (warrio != this.warrior) {
+			warrio.var_d8b = this.warrior.var_b9b;
+			warrio.var_a35 = this.warrior.var_b9b;
+			warrio.var_a79 = 10;
+			warrio.sub_2e4(Warrior.var_1e4_damage[this.var_112],
+					this.var_1ee > 0 ? Warrior.var_142[this.var_112]
+							: -Warrior.var_142[this.var_112]);
 			this.var_2ab = -1;
-			if (var1.var_957 == 0) {
-				var1.var_957 = 5;
+			if (warrio.var_957 == 0) {
+				warrio.var_957 = 5;
 			}
 
-			if (this.myCanvas.var_26b0_soundPlay && var1.var_bd6
-					&& this.var_3ab == this.myCanvas.var_1f25) {
-				// TODO : sound
-				myCanvas.playSound(Class_2b8.sub_62(2) > 0 ? sound48 : sound49);
-			}
+			// TODO : sound
+			/*if (this.myCanvas.isSoundPlay && warrio.var_bd6_is_enemy
+					&& this.warrior == this.myCanvas.var_1f25_player) {
+				myCanvas.playSound(Warrior.random(2) > 0 ? sound48 : sound49);
+			}*/
 		}
 	}
 }

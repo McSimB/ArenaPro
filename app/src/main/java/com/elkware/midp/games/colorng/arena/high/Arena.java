@@ -132,9 +132,11 @@ public class Arena extends Arena3 implements CommandListener {
             this.gameModeList.setCommandListener(this);
 
             this.settingsList = new List(this.getStr(206), 2);
-            this.settingsList.append(this.getStr(231), null); //Illumination
+            //this.settingsList.append(this.getStr(231), null); //Illumination
             this.settingsList.append(this.getStr(233), null); //Long battles
             this.settingsList.append(this.getStr(230), null); //Sound
+            this.settingsList.append(this.getStr(234), null); //Music
+            //this.settingsList.append(this.getStr(232), null); //Silent alert
             this.settingsList.addCommand(this.settingsBack);
             this.settingsList.setCommandListener(this);
 
@@ -307,7 +309,7 @@ public class Arena extends Arena3 implements CommandListener {
                         this.myCanvas.var_91b = true;
                         this.myCanvas.var_92a = false;
                         if (this.myCanvas.isMusicPlay) {
-                            this.myCanvas.stopPlayer();
+                            this.myCanvas.stopPlayers();
                             this.myCanvas.playMusic(0, 67, 1, true);
                         }
 
@@ -416,7 +418,7 @@ public class Arena extends Arena3 implements CommandListener {
                         case 1:
                             this.myCanvas.var_2de8 = false;
                             this.myCanvas.setPercentLogoProgressBar(0);
-                            this.myCanvas.stopPlayer();
+                            this.myCanvas.stopPlayers();
                             this.myCanvas.sub_8ab();
                             break;
                         case 2:
@@ -455,11 +457,11 @@ public class Arena extends Arena3 implements CommandListener {
                             this.myCanvas.sub_8ab();
                         } else {
                             if (this.myCanvas.var_3706 == 0) {
-                                this.myCanvas.var_891 = Class_2b8.sub_62(4) + 1;
+                                this.myCanvas.var_891 = Warrior.random(4) + 1;
                             }
 
-                            this.myCanvas.var_8f4 = Class_2b8
-                                    .sub_62(MyCanvas.var_154[this.myCanvas.var_891]) + 1;
+                            this.myCanvas.var_8f4 = Warrior
+                                    .random(MyCanvas.var_154[this.myCanvas.var_891]) + 1;
                         }
 
                         this.myCanvas.sub_171(0);
@@ -524,13 +526,13 @@ public class Arena extends Arena3 implements CommandListener {
                 }
 
                 if (command.getCommandType() == 2 && this.var_845 == 15) {
-                    this.myCanvas.settings[0] = this.settingsList.isSelected(2); // sound
-                    this.myCanvas.settings[1] = this.settingsList.isSelected(0); // light
-                    this.myCanvas.settings[2] = false; // _silent alert_
-                    this.myCanvas.settings[3] = this.settingsList.isSelected(1); // long battles
-                    this.myCanvas.settings[4] = false; // _music only_
-                    this.myCanvas.sub_ec7_saveSettings();
-                    this.myCanvas.stopPlayer();
+                    this.myCanvas.settings[0] = this.settingsList.isSelected(1); // sound
+                    this.myCanvas.settings[1] = true; // light
+                    this.myCanvas.settings[2] = true; // _silent alert_
+                    this.myCanvas.settings[3] = this.settingsList.isSelected(0); // long battles
+                    this.myCanvas.settings[4] = this.settingsList.isSelected(2); // music
+                    this.myCanvas.saveSettings();
+                    this.myCanvas.stopPlayers();
                     if (this.myCanvas.isMusicPlay) {
                         this.myCanvas.playMusic(0, 64, 10, true); // intro
                     }
@@ -810,8 +812,10 @@ public class Arena extends Arena3 implements CommandListener {
                     break;
                 case 15:
                     this.settingsList.setSelectedFlags(new boolean[]{
-                            this.myCanvas.settings[1], this.myCanvas.settings[3],
-                            this.myCanvas.settings[0]});
+                            this.myCanvas.settings[3], // long battles
+                            this.myCanvas.settings[0], // sound
+                            this.myCanvas.settings[4] // music
+                    });
                     this.setCurrentDisp(this.settingsList);
                     break;
                 case 16:

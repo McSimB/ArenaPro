@@ -3,9 +3,7 @@ package javax.microedition.lcdui;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
-
-import com.elkware.midp.games.colorng.arena.high.R;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,8 +32,12 @@ public class List extends Displayable {
             throw new IllegalArgumentException();
         if (listType == 2) {
             selectedArray = new boolean[items.length];
+            adapter = new ArrayAdapter<String>(ContextHolder.getContext(),
+                    android.R.layout.simple_list_item_multiple_choice);
+        } else {
+            adapter = new ArrayAdapter<String>(ContextHolder.getContext(),
+                    android.R.layout.simple_list_item_1);
         }
-        adapter = new ArrayAdapter<String>(ContextHolder.getContext(), R.layout.list_item);
         getListView().setAdapter(adapter);
     }
 
@@ -110,57 +112,34 @@ public class List extends Displayable {
 
     @Override
     public View getView() {
-        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        getEditText().setVisibility(View.INVISIBLE);
+        getTitleView().setText(title);
+
+        final ListView listView = getListView();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 setSelectedIndex(position);
                 callKeyPressed(Canvas.FIRE);
+                if (listType == 2) {
+                    selectedArray[position] = listView.isItemChecked(position);
+                }
             }
         });
-        getCheckBox1().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                selectedArray[0] = isChecked;
-            }
-        });
-        getCheckBox2().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                selectedArray[1] = isChecked;
-            }
-        });
-        getCheckBox3().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                selectedArray[2] = isChecked;
-            }
-        });
-        //selectedArray = new boolean[3];
 
-        getEditText().setVisibility(View.INVISIBLE);
-        getTitleView().setText(title);
-        if (listType == 2) {
-            getListView().setVisibility(View.INVISIBLE);
-            getCheckBox1().setVisibility(View.VISIBLE);
-            getCheckBox2().setVisibility(View.VISIBLE);
-            getCheckBox3().setVisibility(View.VISIBLE);
-            getCheckBox1().setText(items.get(0));
-            getCheckBox2().setText(items.get(1));
-            getCheckBox3().setText(items.get(2));
-            getCheckBox1().setChecked(selectedArray[0]);
-            getCheckBox2().setChecked(selectedArray[1]);
-            getCheckBox3().setChecked(selectedArray[2]);
-        } else {
-            getCheckBox1().setVisibility(View.GONE);
-            getCheckBox2().setVisibility(View.GONE);
-            getCheckBox3().setVisibility(View.GONE);
-            getListView().setVisibility(View.VISIBLE);
-            adapter.clear();
-            for (String s : items) {
-                adapter.add(s);
-            }
-            removeScrollView();
+        adapter.clear();
+        for (String s : items) {
+            adapter.add(s);
         }
+        if (listType == 2) {
+            listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+            for (int i = 0; i < selectedArray.length; i++) {
+                listView.setItemChecked(i, selectedArray[i]);
+            }
+        }
+
+        removeScrollView();
+
         return getLayout();
     }
 }

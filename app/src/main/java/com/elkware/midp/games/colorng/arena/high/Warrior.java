@@ -2,11 +2,7 @@ package com.elkware.midp.games.colorng.arena.high;
 
 import com.elkware.midp.games.colorng.MySprite;
 
-import static com.elkware.midp.games.colorng.arena.high.Music.sound47;
-import static com.elkware.midp.games.colorng.arena.high.Music.sound4A;
-import static com.elkware.midp.games.colorng.arena.high.Music.sound4B;
-
-public class Class_2b8 {
+public class Warrior {
 
 	static int[] var_13 = new int[] { 7, 6, 10, 8, 4, 4 };
 	static int[] var_61 = new int[] { 0, 0, 0, 0, 0, 0 };
@@ -14,7 +10,7 @@ public class Class_2b8 {
 	static int[] var_111 = new int[] { -1, 0, 3, 0, 0, -2 };
 	static int[] var_142 = new int[] { 4, 10, 3, 7, 3, 6 };
 	static final int[] var_18b = new int[] { 4, 11, 2, 5, 4, 3 };
-	static final int[] var_1e4 = new int[] { 5, 30, 10, 20, 20, 15 };
+	static final int[] var_1e4_damage = new int[] { 5, 30, 10, 20, 20, 15 };
 	static final int[] var_248 = new int[] { 5000, 5, 25, 10, 7, 15 };
 	static final int[] var_294 = new int[] { 1000, 1000, 1000, 1000, 7, 20 };
 	static final int[] var_2ad = new int[] { 1, 9, 0, 8, 5, 13, 6, 14, 7, 15 };
@@ -50,7 +46,7 @@ public class Class_2b8 {
 	int var_98b = 0;
 	int var_9de;
 	int var_a0d;
-	int var_a1b = 0;
+	int var_a1b;
 	int var_a35 = -1;
 	int var_a79 = 0;
 	public boolean var_aaf = true;
@@ -58,10 +54,10 @@ public class Class_2b8 {
 	int var_b25;
 	int var_b5f;
 	int var_b74;
-	int var_b81;
+	int var_b81_hp;
 	public int var_b9b;
-	boolean var_bd6 = false;
-	boolean var_c05 = false;
+	boolean var_bd6_is_enemy = false;
+	boolean var_c05_use = false;
 	boolean var_c39 = false;
 	boolean var_c7b = false;
 	int var_cd8;
@@ -120,8 +116,8 @@ public class Class_2b8 {
 	private int var_1887;
 	public int var_18c8;
 
-	public Class_2b8(MySprite var1, MySprite var2, int var3, int var4,
-					 int var5, int var6, int var7, int var8) {
+	public Warrior(MySprite var1, MySprite var2, int var3, int var4,
+				   int var5, int var6, int var7, int var8) {
 		this.var_13e5 = var_112f;
 		this.var_1495 = 0;
 		this.var_14a7 = 0;
@@ -144,7 +140,7 @@ public class Class_2b8 {
 		this.var_ea2 = new MySprite(var2);
 		this.var_48e = var3;
 		this.var_4dc = var4;
-		this.var_af7 = this.var_b81 = var5;
+		this.var_af7 = this.var_b81_hp = var5;
 		this.var_b25 = var6;
 		this.var_b5f = var7;
 		this.var_b74 = var8;
@@ -164,7 +160,7 @@ public class Class_2b8 {
 		var_3f5 = var1;
 	}
 
-	static int sub_62(int var0) {
+	static int random(int var0) {
 		var_1043 = (int) ((long) var_1043 + System.currentTimeMillis());
 		return Math.abs(var_1043 % var0);
 	}
@@ -177,7 +173,7 @@ public class Class_2b8 {
 			this.var_957 = Math.max(this.var_957 - 1, 1);
 		}
 
-		this.var_aaf = this.var_b81 > 0;
+		this.var_aaf = this.var_b81_hp > 0;
 		int var10001;
 		int var10002;
 		if (this.var_aaf && this.var_82c) {
@@ -346,7 +342,7 @@ public class Class_2b8 {
 			this.var_ea2.setFrame(var_2ad[this.var_36c] + this.var_30b);
 			this.var_e6d.setFrame(this.var_596);
 		} else if (this.var_e4b-- < 1) {
-			if (this == mCanvas.var_1f25) {
+			if (this == mCanvas.var_1f25_player) {
 				mCanvas.var_3386 = mCanvas.var_a72 = true;
 			}
 
@@ -355,8 +351,8 @@ public class Class_2b8 {
 			this.var_5ef = 0;
 
 			try {
-				int var4 = sub_62(mCanvas.var_1f77.length);
-				this.var_b81 = this.var_af7;
+				int var4 = random(mCanvas.var_1f77.length);
+				this.var_b81_hp = this.var_af7;
 				this.var_53c = this.var_579 = this.var_f3a = this.var_e4b = 0;
 				this.var_a35 = -1;
 				this.var_a79 = 0;
@@ -388,29 +384,29 @@ public class Class_2b8 {
 		}
 
 		this.var_822 = this.var_7c1;
-		this.var_c39 = this.var_c05;
+		this.var_c39 = this.var_c05_use;
 		this.var_c7b = this.var_181a;
-		this.var_716 = this.var_74b = this.var_792 = this.var_7c1 = this.var_c05 = this.var_181a = false;
-		this.var_e6d.setVisible(this.var_b81 > 0);
-		this.var_ea2.setVisible(this.var_b81 > 0);
+		this.var_716 = this.var_74b = this.var_792 = this.var_7c1 = this.var_c05_use = this.var_181a = false;
+		this.var_e6d.setVisible(this.var_b81_hp > 0);
+		this.var_ea2.setVisible(this.var_b81_hp > 0);
 		this.var_94c = (this.var_e6d.sub_96() + this.var_ea2.sub_96()) / 2;
 		this.var_8af = this.var_6b1;
-		this.var_ec1 = this.var_b81 * 12 / this.var_af7;
+		this.var_ec1 = this.var_b81_hp * 12 / this.var_af7;
 	}
 
-	public void sub_d8() {
+	public void sub_d8_left() {
 		this.var_53c = Math.max(this.var_53c - this.var_b74, -this.var_b25);
 		this.var_716 = true;
 		this.var_596 = 0;
 	}
 
-	public void sub_11d() {
+	public void sub_11d_right() {
 		this.var_53c = Math.min(this.var_53c + this.var_b74, this.var_b25);
 		this.var_74b = true;
 		this.var_596 = 1;
 	}
 
-	public void sub_143() {
+	public void sub_143_up() {
 		if (this.var_6b1 || this.var_86a) {
 			this.var_579 = -this.var_b5f;
 			this.var_792 = true;
@@ -427,19 +423,29 @@ public class Class_2b8 {
 		this.var_7c1 = true;
 	}
 
-	public void sub_1da(int var1) {
-		if (this.var_b81 > 0) {
+	public void sub_1da_hit(int var1) {
+		if (this.var_b81_hp > 0) {
 			mCanvas.makeVibrate(40);
-			this.var_b81 -= var1;
-			if (this.var_b81 <= 0) {
+			this.var_b81_hp -= var1;
+			if (this.var_b81_hp <= 0) {
 				this.var_e4b = 20;
-				if (!this.var_bd6 && mCanvas.settings[2]) {
+				if (!this.var_bd6_is_enemy && mCanvas.settings[2]) {
 					mCanvas.makeVibrate(100);
 				}
 
-				if (mCanvas.var_26b0_soundPlay) {
-					// TODO : sound
-					mCanvas.playSound(sound47);
+				// TODO : play sound
+				if (mCanvas.isSoundPlay) {
+					switch (random(3)) {
+						case 0:
+							mCanvas.playSound(Music.sound47_0);
+							break;
+						case 1:
+							mCanvas.playSound(Music.sound47_1);
+							break;
+						case 2:
+							mCanvas.playSound(Music.sound47_2);
+							break;
+					}
 				}
 
 				mCanvas.sub_a24(1, this.var_48e - 2, this.var_4dc
@@ -447,7 +453,7 @@ public class Class_2b8 {
 				if (mCanvas.var_891 < 3) {
 					if (this.var_a35 > -1) {
 						++mCanvas.var_1efb[this.var_a35].var_a1b;
-					} else if (!this.var_bd6) {
+					} else if (!this.var_bd6_is_enemy) {
 						this.var_a1b = Math.max(0, this.var_a1b - 1);
 					}
 				} else if (mCanvas.var_891 == 4) {
@@ -472,60 +478,59 @@ public class Class_2b8 {
 							++var3;
 						}
 					}
-				} else if (mCanvas.var_891 == 5 && this == mCanvas.var_1f25) {
+				} else if (mCanvas.var_891 == 5 && this == mCanvas.var_1f25_player) {
 					--mCanvas.var_1462;
 				} else if (mCanvas.var_891 == 5
-						&& this.var_a35 == mCanvas.var_1f25.var_b9b) {
-					++mCanvas.var_1f25.var_a1b;
+						&& this.var_a35 == mCanvas.var_1f25_player.var_b9b) {
+					++mCanvas.var_1f25_player.var_a1b;
 				}
 			}
 		}
 
-		if (this == mCanvas.var_1f25) {
+		if (this == mCanvas.var_1f25_player) {
 			mCanvas.var_3386 = true;
 		}
-
 	}
 
 	public void sub_236(int var1, int var2, int var3) {
-		this.var_bd6 = true;
+		this.var_bd6_is_enemy = true;
 		this.var_cd8 = var1;
 		this.var_10b4 = var2;
 		this.var_d12 = var3;
 	}
 
-	public void sub_272() {
-		int var2;
-		int var22;
+	public void sub_272_update() {
+		int i;
+		int i1;
 		if (this.var_aaf && this.var_b9b == mCanvas.var_1fa2) {
 			boolean var1 = false;
 			this.var_94c = this.var_4dc + this.var_ff9 / 2;
 
-			for (var2 = 0; var2 < mCanvas.var_1efb.length; ++var2) {
-				if (var2 != this.var_b9b) {
-					this.var_e26[var2] = Math
-							.abs(mCanvas.var_1efb[var2].var_48e - this.var_48e) < 81
-							&& Math.abs(mCanvas.var_1efb[var2].var_4dc
+			for (i = 0; i < mCanvas.var_1efb.length; ++i) {
+				if (i != this.var_b9b) {
+					this.var_e26[i] = Math
+							.abs(mCanvas.var_1efb[i].var_48e - this.var_48e) < 81
+							&& Math.abs(mCanvas.var_1efb[i].var_4dc
 									- this.var_4dc) < 31
-							&& mCanvas.var_1efb[var2].var_aaf && !this.var_1060;
-					var1 = var1 || this.var_e26[var2];
+							&& mCanvas.var_1efb[i].var_aaf && !this.var_1060;
+					var1 = var1 || this.var_e26[i];
 				}
 			}
 
 			this.var_13ef = mCanvas.var_1cdd[this.var_6f5 - mCanvas.var_1d1c];
 			this.var_17c0 = false;
 
-			for (var2 = 0; var2 < this.var_e26.length; ++var2) {
-				if (var2 != this.var_b9b
-						&& this.var_e26[var2]
-						&& Math.min(this.var_8ee, this.var_1326) < mCanvas.var_1efb[var2].var_8ee
-						&& Math.max(this.var_8ee, this.var_1326) > mCanvas.var_1efb[var2].var_8ee) {
-					if (mCanvas.var_891 >= 3 && var2 != mCanvas.var_157f) {
+			for (i = 0; i < this.var_e26.length; ++i) {
+				if (i != this.var_b9b
+						&& this.var_e26[i]
+						&& Math.min(this.var_8ee, this.var_1326) < mCanvas.var_1efb[i].var_8ee
+						&& Math.max(this.var_8ee, this.var_1326) > mCanvas.var_1efb[i].var_8ee) {
+					if (mCanvas.var_891 >= 3 && i != mCanvas.var_157f) {
 						if (mCanvas.var_1efb[this.var_dc6].var_6b1) {
-							this.sub_143();
+							this.sub_143_up();
 						}
 					} else {
-						this.var_dc6 = var2;
+						this.var_dc6 = i;
 						this.var_17c0 = true;
 					}
 				}
@@ -537,7 +542,7 @@ public class Class_2b8 {
 
 			byte var15 = var_121d;
 			int var3 = 0;
-			int var16 = mCanvas.var_21de.length > 0 ? 100 - this.var_b81
+			int var16 = mCanvas.var_21de.length > 0 ? 100 - this.var_b81_hp
 					- this.var_cd8 / 3 : 0;
 			if (var3 > var16) {
 				var15 = var_11d5;
@@ -547,9 +552,9 @@ public class Class_2b8 {
 			if (mCanvas.var_891 == 4 && mCanvas.var_157f > -1 && !this.var_17c0) {
 				if (mCanvas.var_157f == this.var_b9b) {
 					this.var_dc6 = -1;
-					if (var1 && this.var_b81 > this.var_af7 / 2) {
+					if (var1 && this.var_b81_hp > this.var_af7 / 2) {
 						var15 = var_121d;
-					} else if (this.var_b81 < this.var_af7 / 2
+					} else if (this.var_b81_hp < this.var_af7 / 2
 							&& mCanvas.var_21de.length > 0) {
 						var15 = var_11d5;
 					} else {
@@ -559,7 +564,7 @@ public class Class_2b8 {
 					var3 = 1000;
 				} else {
 					var3 = 1000;
-					if (this.var_b81 < this.var_af7 - this.var_cd8 / 4
+					if (this.var_b81_hp < this.var_af7 - this.var_cd8 / 4
 							&& !this.var_16a0 && mCanvas.var_21de.length > 0) {
 						var15 = var_11d5;
 					} else {
@@ -581,7 +586,7 @@ public class Class_2b8 {
 
 				for (var6 = 0; var6 < mCanvas.var_1efb.length; ++var6) {
 					if (var6 != this.var_b9b) {
-						var5 = Math.min(var5, mCanvas.var_1efb[var6].var_b81);
+						var5 = Math.min(var5, mCanvas.var_1efb[var6].var_b81_hp);
 					}
 				}
 
@@ -613,7 +618,7 @@ public class Class_2b8 {
 					byte var10000 = mCanvas.var_1c98[this.var_6f5];
 					mCanvas.getClass();
 					if (var10000 == 71
-							&& this.sub_384((Class_308) mCanvas.var_1e1d
+							&& this.sub_384((Tiled) mCanvas.var_1e1d
 									.get(this.var_6f5))) {
 						var16 = 90 + 90 * this.var_10b4;
 						if (var16 > var3) {
@@ -676,7 +681,7 @@ public class Class_2b8 {
 				this.var_1447 = this.sub_365();
 				this.var_13e5 = var_112f;
 			} else if (var15 == var_1291 && !this.var_17c0) {
-				this.var_c05 = true;
+				this.var_c05_use = true;
 			} else if (var15 == var_1315 && !this.var_17c0) {
 				boolean var23;
 				label603: {
@@ -691,10 +696,10 @@ public class Class_2b8 {
 					this.var_13e5 = var_112f;
 					if (this.var_579 == 0
 							&& this.var_4dc + this.var_ff9 <= mCanvas.var_1504 + 10) {
-						var22 = this.var_4dc + this.var_ff9;
+						i1 = this.var_4dc + this.var_ff9;
 						var10002 = mCanvas.var_1504;
 						mCanvas.getClass();
-						if (var22 >= var10002 - 15) {
+						if (i1 >= var10002 - 15) {
 							var23 = true;
 							break label603;
 						}
@@ -717,15 +722,15 @@ public class Class_2b8 {
 
 					for (var7 = 0; var7 < mCanvas.var_1efb.length; ++var7) {
 						if (var7 != this.var_b9b
-								&& mCanvas.var_1efb[var7].var_b81 < var6) {
+								&& mCanvas.var_1efb[var7].var_b81_hp < var6) {
 							var5 = var7;
-							var6 = mCanvas.var_1efb[var7].var_b81;
+							var6 = mCanvas.var_1efb[var7].var_b81_hp;
 						}
 					}
 
 					this.var_dc6 = var5;
 				} else {
-					this.var_dc6 = mCanvas.var_1f25.var_b9b;
+					this.var_dc6 = mCanvas.var_1f25_player.var_b9b;
 				}
 
 				if (this.var_dc6 == -1
@@ -840,22 +845,22 @@ public class Class_2b8 {
 				if (var7 > -1
 						&& (this.var_6f5 != mCanvas.var_1cdd[this.var_6f5] || this
 								.sub_3ab())) {
-					var22 = mCanvas.var_210c[var7] % mCanvas.var_1d1c;
+					i1 = mCanvas.var_210c[var7] % mCanvas.var_1d1c;
 					mCanvas.getClass();
-					var22 *= 15;
+					i1 *= 15;
 					mCanvas.getClass();
-					this.var_1326 = var22 + 15 / 2;
-					var22 = mCanvas.var_210c[var7] / mCanvas.var_1d1c - 1;
+					this.var_1326 = i1 + 15 / 2;
+					i1 = mCanvas.var_210c[var7] / mCanvas.var_1d1c - 1;
 					mCanvas.getClass();
-					var22 *= 15;
+					i1 *= 15;
 					mCanvas.getClass();
-					this.var_1385 = var22 + 15 / 2;
+					this.var_1385 = i1 + 15 / 2;
 				}
 
 				if (mCanvas.var_212d[this.var_13ef][this.var_1447] % 2 == 0
 						&& this.var_6b1) {
 					this.var_d5c = this.var_1326 < this.var_48e ? 1 : 2;
-					this.sub_143();
+					this.sub_143_up();
 					this.var_104d = true;
 				} else {
 					this.var_104d = false;
@@ -870,17 +875,17 @@ public class Class_2b8 {
 					&& this.var_13e5 == var_112f) {
 				if (this.var_1060 && this.var_16a0) {
 					this.var_16a0 = false;
-					var22 = mCanvas.var_210c[this.var_14e5] % mCanvas.var_1d1c;
+					i1 = mCanvas.var_210c[this.var_14e5] % mCanvas.var_1d1c;
 					mCanvas.getClass();
-					var22 *= 15;
+					i1 *= 15;
 					mCanvas.getClass();
-					this.var_1326 = var22 + 15 / 2;
-					var22 = mCanvas.var_210c[this.var_14e5] / mCanvas.var_1d1c
+					this.var_1326 = i1 + 15 / 2;
+					i1 = mCanvas.var_210c[this.var_14e5] / mCanvas.var_1d1c
 							- 1;
 					mCanvas.getClass();
-					var22 *= 15;
+					i1 *= 15;
 					mCanvas.getClass();
-					this.var_1385 = var22 + 15 / 2;
+					this.var_1385 = i1 + 15 / 2;
 					this.var_1326 += this.var_48e < this.var_1326 ? 7 : -7;
 				}
 
@@ -889,17 +894,17 @@ public class Class_2b8 {
 						&& this.var_6f5 != mCanvas.var_210c[this.var_13ef]) {
 					this.var_14e5 = this.var_1447;
 					this.var_1447 = this.var_13ef;
-					var22 = mCanvas.var_210c[this.var_13ef] % mCanvas.var_1d1c;
+					i1 = mCanvas.var_210c[this.var_13ef] % mCanvas.var_1d1c;
 					mCanvas.getClass();
-					var22 *= 15;
+					i1 *= 15;
 					mCanvas.getClass();
-					this.var_1326 = var22 + 15 / 2;
-					var22 = mCanvas.var_210c[this.var_13ef] / mCanvas.var_1d1c
+					this.var_1326 = i1 + 15 / 2;
+					i1 = mCanvas.var_210c[this.var_13ef] / mCanvas.var_1d1c
 							- 1;
 					mCanvas.getClass();
-					var22 *= 15;
+					i1 *= 15;
 					mCanvas.getClass();
-					this.var_1385 = var22 + 15 / 2;
+					this.var_1385 = i1 + 15 / 2;
 					this.var_16a0 = true;
 				}
 			}
@@ -907,37 +912,37 @@ public class Class_2b8 {
 			if (Math.abs(this.var_5ef) > 1 && this.var_957 < this.var_d12
 					&& this.var_10b4 > 0) {
 				if (this.var_5ef < 0) {
-					this.sub_11d();
+					this.sub_11d_right();
 				} else {
-					this.sub_d8();
+					this.sub_d8_left();
 				}
 			}
 
 			if (this.var_13e5 == var_1178 && this.var_dc6 > -1) {
-				Class_2b8 var14 = mCanvas.var_1efb[this.var_dc6];
+				Warrior var14 = mCanvas.var_1efb[this.var_dc6];
 				if (this.var_1326 == this.var_8ee) {
 					this.var_596 = var14.var_48e < this.var_48e ? 0 : 1;
 				}
 
-				var2 = sub_62(100);
+				i = random(100);
 				if (this.var_10b4 == 2 && var14.var_579 < 0) {
-					this.var_e08 = var2 % 10;
+					this.var_e08 = i % 10;
 				}
 
 				if ((var14.var_c7b || var14.var_181a)
-						&& var2 % this.var_d12 != 0) {
-					this.sub_2cf();
+						&& i % this.var_d12 != 0) {
+					this.sub_2cf_fire();
 					if (this.var_d12 == 3 && !var14.var_6b1) {
 						this.sub_1c8();
 					} else {
-						this.sub_143();
+						this.sub_143_up();
 					}
 				}
 
-				if (this.var_6b1 && var2 % 8 == 0) {
-					this.var_e08 = var2 % 7;
-				} else if (var2 % 14 == 0 && var_18b[this.var_f3a] > 5) {
-					this.sub_143();
+				if (this.var_6b1 && i % 8 == 0) {
+					this.var_e08 = i % 7;
+				} else if (i % 14 == 0 && var_18b[this.var_f3a] > 5) {
+					this.sub_143_up();
 				} else if (!var14.var_6b1 && !var14.var_86a) {
 					if (var14.var_6b1 && var14.var_4dc > this.var_4dc) {
 						this.var_1326 = (this.var_48e + var14.var_48e) / 2;
@@ -945,7 +950,7 @@ public class Class_2b8 {
 						this.var_1326 = (this.var_8ee + var14.var_8ee) / 2;
 					}
 				} else if (var14.var_4dc < this.var_4dc) {
-					this.sub_143();
+					this.sub_143_up();
 					this.var_1326 = (this.var_48e + var14.var_48e) / 2;
 				} else {
 					this.var_1326 = (this.var_48e + var14.var_48e) / 2;
@@ -961,10 +966,10 @@ public class Class_2b8 {
 					if (this.var_4dc + this.var_94c + 5 > var14.var_4dc
 							&& this.var_4dc + this.var_94c - 5 < var14.var_4dc
 									+ var14.var_ff9) {
-						this.sub_2cf();
+						this.sub_2cf_fire();
 					}
 				} else {
-					this.sub_2cf();
+					this.sub_2cf_fire();
 				}
 
 				this.var_1326 = this.var_8ee;
@@ -975,20 +980,20 @@ public class Class_2b8 {
 				if (!this.var_6b1 && !this.var_86a) {
 					if (this.var_8ee - var_110a > this.var_1326
 							&& this.var_d5c == 1) {
-						this.sub_d8();
+						this.sub_d8_left();
 					} else if (this.var_8ee + var_110a < this.var_1326
 							&& this.var_d5c == 2) {
-						this.sub_11d();
+						this.sub_11d_right();
 					}
 				} else if (this.var_8ee - var_110a > this.var_1326) {
-					this.sub_d8();
+					this.sub_d8_left();
 				} else if (this.var_8ee + var_110a < this.var_1326) {
-					this.sub_11d();
+					this.sub_11d_right();
 				}
 			} else if (this.var_8ee > this.var_1326 - var_110a) {
-				this.sub_d8();
+				this.sub_d8_left();
 			} else if (this.var_8ee < this.var_1326 + var_110a) {
-				this.sub_11d();
+				this.sub_11d_right();
 			}
 
 			if (mCanvas.var_891 == 3
@@ -1006,9 +1011,9 @@ public class Class_2b8 {
 			if (this.var_104d) {
 				this.var_792 = true;
 				if (this.var_d5c == 1) {
-					this.sub_d8();
+					this.sub_d8_left();
 				} else if (this.var_d5c == 2) {
-					this.sub_11d();
+					this.sub_11d_right();
 				}
 			}
 
@@ -1016,14 +1021,14 @@ public class Class_2b8 {
 		}
 	}
 
-	public void sub_2cf() {
+	public void sub_2cf_fire() {
 		try {
 			if (this.var_d40 == 0) {
 				this.var_ee8 = 4;
-				if (mCanvas.var_26b0_soundPlay && this != mCanvas.var_1f25 && this.var_dc6 == 0) {
+				if (mCanvas.isSoundPlay/* && this != mCanvas.var_1f25_player && this.var_dc6 == 0*/) {
 					// TODO : sound
-					//play(this.var_f3a != 0 && this.var_f2a != 2? 75 : 74)
-					mCanvas.playSound(this.var_f3a != 0 && this.var_f3a != 2? sound4B : sound4A);
+					mCanvas.playSound(this.var_f3a != 0 && this.var_f3a != 2 ?
+							Music.sound4B : Music.sound4A);
 				}
 
 				if (mCanvas.var_2510 == 0) {
@@ -1039,7 +1044,7 @@ public class Class_2b8 {
 				} else {
 					mCanvas.var_2445[mCanvas.var_24b6] = mCanvas.var_2455[--mCanvas.var_2510];
 					mCanvas.var_2455[mCanvas.var_2510] = null;
-					mCanvas.var_2445[mCanvas.var_24b6].sub_33(this.var_f3a,
+					mCanvas.var_2445[mCanvas.var_24b6].sub_33_init(this.var_f3a,
 							this.var_596 == 0 ? this.var_48e
 									- mCanvas.bulletsAnims[this.var_f3a].sub_6a()
 									: this.var_48e + this.var_feb,
@@ -1060,16 +1065,14 @@ public class Class_2b8 {
 		} catch (Exception var2) {
 			var2.printStackTrace();
 		}
-
 	}
 
 	public void sub_2e4(int var1, int var2) {
 		this.var_5ef = var2;
-		if (!this.var_bd6 && mCanvas.settings[2] && this.var_b81 > var1) {
+		if (!this.var_bd6_is_enemy && mCanvas.settings[2] && this.var_b81_hp > var1) {
 			mCanvas.makeVibrate(20);
 		}
-
-		this.sub_1da(var1);
+		this.sub_1da_hit(var1);
 	}
 
 	public int sub_329() {
@@ -1109,7 +1112,7 @@ public class Class_2b8 {
 		return this.var_1887;
 	}
 
-	public boolean sub_384(Class_308 var1) {
+	public boolean sub_384(Tiled var1) {
 		int var2;
 		if (var1.var_1c1) {
 			for (var2 = 0; var2 < mCanvas.var_1efb.length; ++var2) {
@@ -1158,6 +1161,5 @@ public class Class_2b8 {
 			var_111[var1] = var0.getParameter(423 + var1 * 5);
 			var_142[var1] = var0.getParameter(424 + var1 * 5);
 		}
-
 	}
 }

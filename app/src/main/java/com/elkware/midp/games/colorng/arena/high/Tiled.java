@@ -4,7 +4,7 @@ import com.elkware.midp.games.colorng.MyTiledLayer;
 
 import static com.elkware.midp.games.colorng.arena.high.Music.sound46;
 
-public class Class_308 {
+public class Tiled {
 
 	int var_e;
 	int var_38;
@@ -14,7 +14,7 @@ public class Class_308 {
 	int var_f7;
 	int var_12b;
 	boolean var_15e = false;
-	boolean var_1c1 = false;
+	boolean var_1c1;
 	int var_1cd = 0;
 	int var_1f0;
 	int var_242 = 0;
@@ -22,8 +22,8 @@ public class Class_308 {
 	byte[] var_298;
 	byte[] var_2ed;
 
-	public Class_308(int var1, int var2, int var3, int var4, int var5,
-					 int var6, int var7, MyCanvas var8, int var9) {
+	public Tiled(int var1, int var2, int var3, int var4, int var5,
+				 int var6, int var7, MyCanvas var8, int var9) {
 		this.var_e = var1;
 		this.var_38 = var2;
 		this.var_72 = var3;
@@ -94,6 +94,7 @@ public class Class_308 {
 
 				this.sub_11b(var1);
 			} else {
+				//noinspection unchecked
 				this.myCanvas.var_1db7.addElement(new Fallings(this.var_38,
 						this.var_72, this.var_97, this.myCanvas, var1));
 			}
@@ -102,7 +103,7 @@ public class Class_308 {
 			this.var_1cd = this.var_f7;
 
 			// TODO : play sound
-			if (myCanvas.var_26b0_soundPlay && var1 == 0) {
+			if (myCanvas.isSoundPlay && var1 == 0) {
 				myCanvas.playSound(sound46);
 			}
 		}
@@ -116,7 +117,7 @@ public class Class_308 {
 	public void sub_11b(int var1) {
 		for (int var3 = 0; var3 < this.myCanvas.var_1efb.length; ++var3) {
 			if (var3 != var1) {
-				Class_2b8 var2 = this.myCanvas.var_1efb[var3];
+				Warrior var2 = this.myCanvas.var_1efb[var3];
 				int var10000 = var2.var_48e + var2.var_feb;
 				int var10001 = this.var_e;
 				this.myCanvas.getClass();

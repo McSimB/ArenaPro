@@ -121,10 +121,10 @@ public class MyCanvas extends Canvas3 implements Runnable {
     private int height;
     public Vector var_1db7;
     public MySprite[] fallingsAnims;
-    public Class_308[] var_1e04;
+    public Tiled[] var_1e04;
     public Hashtable var_1e1d = new Hashtable();
-    public Class_2b8[] var_1efb;
-    public Class_2b8 var_1f25;
+    public Warrior[] var_1efb;
+    public Warrior var_1f25_player;
     private byte[][] var_1f6c;
     public int[] var_1f77;
     public int var_1fa2 = 0;
@@ -157,7 +157,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
     private int[] var_25c8;
     private int[] var_25f2;
     private int[] var_2650;
-    public boolean var_26b0_soundPlay = false;
+    public boolean isSoundPlay = false;
     public boolean isMusicPlay = false;
     private boolean var_2717 = false;
     private Image[] photoImages;
@@ -235,7 +235,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
         super(var1);
         arena = (Arena) var1;
         this.var_fa2 = this.sub_160();
-        Class_2b8.sub_1d(this, this.var_fa2);
+        Warrior.sub_1d(this, this.var_fa2);
         this.var_eb = 20;
     }
 
@@ -253,8 +253,8 @@ public class MyCanvas extends Canvas3 implements Runnable {
         } else if (this.var_92a && this.var_844 == 0) {
             this.sub_c11();
         } else if (this.var_891 == 0) {
-            this.var_891 = Class_2b8.sub_62(3) + 1;
-            this.var_8f4 = Class_2b8.sub_62(var_154[this.var_891]) + 1;
+            this.var_891 = Warrior.random(3) + 1;
+            this.var_8f4 = Warrior.random(var_154[this.var_891]) + 1;
         }
 
         this.var_3601 = false;
@@ -346,7 +346,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
                 for (int var2 = 1; var2 < 4; ++var2) {
                     int var8;
                     do {
-                        var8 = Class_2b8.sub_62(this.var_eb) + 1;
+                        var8 = Warrior.random(this.var_eb) + 1;
                     } while (var1[var8]);
 
                     var1[var8] = true;
@@ -431,7 +431,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
 
     }
 
-    private void sub_1ef(long var1) {
+    private void update(long var1) {
         this.var_ba9 = (this.var_ba9 + 1) % 100;
 
         int var3;
@@ -466,95 +466,95 @@ public class MyCanvas extends Canvas3 implements Runnable {
 
         this.var_1fa2 = this.var_1fa2 % (this.var_1efb.length - 1) + 1;
 
-        int var5;
-        Class_2b8 var17;
+        int i;
+        Warrior warrior;
         for (var3 = 0; var3 < this.var_1efb.length; ++var3) {
             try {
-                var17 = this.var_1efb[var3];
-                if (var17.var_bd6) {
-                    var17.sub_272();
+                warrior = this.var_1efb[var3];
+                if (warrior.var_bd6_is_enemy) {
+                    warrior.sub_272_update();
                 } else {
                     if (this.leftRight == 1) {
-                        var17.sub_d8();
+                        warrior.sub_d8_left();
                     }
 
                     if (this.leftRight == 2) {
-                        var17.sub_11d();
+                        warrior.sub_11d_right();
                     }
 
                     if (this.upDown == 3) {
-                        var17.sub_143();
+                        warrior.sub_143_up();
                     }
 
-                    var17.var_7c1 = this.upDown == 4;
+                    warrior.var_7c1 = this.upDown == 4;
                     if (this._fireUse == 6) {
-                        var17.var_c05 = true;
-                    } else if (this._fireUse == 5 && var17.var_aaf) {
-                        this.var_1f25.sub_2cf();
+                        warrior.var_c05_use = true;
+                    } else if (this._fireUse == 5 && warrior.var_aaf) {
+                        this.var_1f25_player.sub_2cf_fire();
                     }
                 }
 
-                var17.sub_8f();
+                warrior.sub_8f();
                 this.var_2a04[6 + var3 * 3] = System.currentTimeMillis() - var1;
-                if (!(var17.var_716 | var17.var_74b)) {
-                    var17.var_4dc = var17.var_60f;
+                if (!(warrior.var_716 | warrior.var_74b)) {
+                    warrior.var_4dc = warrior.var_60f;
                 }
 
-                if (var17.var_579 >= 0) {
+                if (warrior.var_579 >= 0) {
                     try {
-                        this.var_2923 = Math.min(var17.var_4dc + var17.var_ff9
+                        this.var_2923 = Math.min(warrior.var_4dc + warrior.var_ff9
                                 + 1, this.var_1d37 * 15 - 5);
-                        this.var_28fd = var17.var_8ee / 15 + this.var_2923 / 15
+                        this.var_28fd = warrior.var_8ee / 15 + this.var_2923 / 15
                                 * this.var_1d1c;
-                        var17.var_6b1 = this.var_1c98[this.var_28fd] >= 1
+                        warrior.var_6b1 = this.var_1c98[this.var_28fd] >= 1
                                 && this.var_1c98[this.var_28fd] <= 32
                                 && this.var_1c98[this.var_28fd] != 8
                                 && this.var_1c98[this.var_28fd] != 7;
                     } catch (Exception var12) {
                         this.var_2923 -= 15;
-                        var17.var_4dc -= 15;
-                        this.var_28fd = var17.var_8ee / 15 + this.var_2923 / 15
+                        warrior.var_4dc -= 15;
+                        this.var_28fd = warrior.var_8ee / 15 + this.var_2923 / 15
                                 * this.var_1d1c;
-                        if (var17.var_aaf) {
-                            var17.sub_1da(200);
+                        if (warrior.var_aaf) {
+                            warrior.sub_1da_hit(200);
                         }
                     }
 
-                    if (var17.var_6b1) {
-                        var17.var_4dc -= this.var_2923 % 15 - 1;
-                        var17.var_579 = 0;
+                    if (warrior.var_6b1) {
+                        warrior.var_4dc -= this.var_2923 % 15 - 1;
+                        warrior.var_579 = 0;
                     }
-                } else if (var17.var_579 < 0) {
-                    this.var_2923 = var17.var_4dc - 1;
-                    this.var_28fd = var17.var_8ee / 15 + this.var_2923 / 15
+                } else if (warrior.var_579 < 0) {
+                    this.var_2923 = warrior.var_4dc - 1;
+                    this.var_28fd = warrior.var_8ee / 15 + this.var_2923 / 15
                             * this.var_1d1c;
                     if (this.var_1c98[this.var_28fd] >= 4
                             && this.var_1c98[this.var_28fd] <= 32
                             && this.var_1c98[this.var_28fd] != 8
                             && this.var_1c98[this.var_28fd] != 7) {
-                        var17.var_579 = 0;
-                        var17.var_4dc += 15 - var17.var_4dc % 15;
+                        warrior.var_579 = 0;
+                        warrior.var_4dc += 15 - warrior.var_4dc % 15;
                     }
                 }
 
-                if (var17.var_53c + var17.var_5ef != 0) {
-                    this.var_28fd = (var17.var_53c + var17.var_5ef < 0 ? var17.var_48e
-                            : var17.var_48e + var17.var_feb)
+                if (warrior.var_53c + warrior.var_5ef != 0) {
+                    this.var_28fd = (warrior.var_53c + warrior.var_5ef < 0 ? warrior.var_48e
+                            : warrior.var_48e + warrior.var_feb)
                             / 15
-                            + (var17.var_4dc + var17.var_ff9 - 1)
+                            + (warrior.var_4dc + warrior.var_ff9 - 1)
                             / 15
                             * this.var_1d1c;
-                    this.var_296c = var17.var_ff9 / 15 + 1;
+                    this.var_296c = warrior.var_ff9 / 15 + 1;
 
-                    for (var5 = 0; var5 < this.var_296c; ++var5) {
+                    for (i = 0; i < this.var_296c; ++i) {
                         if (this.var_1c98[this.var_28fd] >= 4
                                 && this.var_1c98[this.var_28fd] <= 32
                                 && this.var_1c98[this.var_28fd] != 8
                                 && this.var_1c98[this.var_28fd] != 7) {
-                            var17.var_48e += var17.var_53c + var17.var_5ef < 0 ? 15 - var17.var_48e % 15
-                                    : -(15 - var17.var_48e % 15);
-                            var17.var_53c /= -2;
-                            var17.var_5ef /= -2;
+                            warrior.var_48e += warrior.var_53c + warrior.var_5ef < 0 ? 15 - warrior.var_48e % 15
+                                    : -(15 - warrior.var_48e % 15);
+                            warrior.var_53c /= -2;
+                            warrior.var_5ef /= -2;
                             break;
                         }
 
@@ -563,29 +563,28 @@ public class MyCanvas extends Canvas3 implements Runnable {
 
                     this.var_2a04[7 + var3 * 3] = System.currentTimeMillis()
                             - var1;
-                    this.var_28fd = (var17.var_53c + var17.var_5ef < 0 ? var17.var_48e
-                            : var17.var_48e + var17.var_feb)
+                    this.var_28fd = (warrior.var_53c + warrior.var_5ef < 0 ? warrior.var_48e
+                            : warrior.var_48e + warrior.var_feb)
                             / 15
-                            + (var17.var_4dc + var17.var_ff9 - 1)
+                            + (warrior.var_4dc + warrior.var_ff9 - 1)
                             / 15
                             * this.var_1d1c;
                     if (this.var_1c98[this.var_28fd] >= 4
                             && this.var_1c98[this.var_28fd] <= 32
                             && this.var_1c98[this.var_28fd] != 8
                             && this.var_1c98[this.var_28fd] != 7) {
-                        var17.var_48e = var17.var_9de;
+                        warrior.var_48e = warrior.var_9de;
                     }
 
-                    var17.var_9de = var17.var_48e;
-                    var17.var_a0d = var17.var_4dc;
+                    warrior.var_9de = warrior.var_48e;
+                    warrior.var_a0d = warrior.var_4dc;
                 }
 
-                this.var_28fd = var17.var_6f5;
+                this.var_28fd = warrior.var_6f5;
                 if (this.var_1c98[this.var_28fd] > 0) {
                     if (this.var_1c98[this.var_28fd] == 71) {
-                        if (var17.var_c39) {
-                            Class_308 var19 = (Class_308) this.var_1e1d
-                                    .get(new Integer(this.var_28fd));
+                        if (warrior.var_c39) {
+                            Tiled var19 = (Tiled) this.var_1e1d.get(this.var_28fd);
                             var19.sub_6c(var3);
                             this.var_1c98[this.var_28fd] = 72;
                             this.var_1c70.setCell(
@@ -594,8 +593,8 @@ public class MyCanvas extends Canvas3 implements Runnable {
                         }
                     } else if (this.var_1c98[this.var_28fd] >= 57
                             && this.var_1c98[this.var_28fd] <= 64
-                            && !var17.var_899) {
-                        var17.sub_1da(500);
+                            && !warrior.var_899) {
+                        warrior.sub_1da_hit(500);
                     } else if (this.var_1c98[this.var_28fd] >= 65
                             && this.var_1c98[this.var_28fd] <= 79
                             && this.var_1c98[this.var_28fd] != 72
@@ -603,17 +602,17 @@ public class MyCanvas extends Canvas3 implements Runnable {
                             && (this.var_1c98[this.var_28fd] < 75 || this.var_1c98[this.var_28fd] > 78)) {
                         switch (this.var_1c98[this.var_28fd]) {
                             case 65:
-                                var17.var_b81 = Math.min(var17.var_b81 + 40,
-                                        var17.var_af7);
+                                warrior.var_b81_hp = Math.min(warrior.var_b81_hp + 40,
+                                        warrior.var_af7);
                                 this.var_3386 = true;
                                 break;
                             case 66:
-                                var17.sub_1a1();
-                                this.sub_a24(3, var17.var_48e - 2, var17.var_4dc
-                                        + var17.var_ff9 - this.var_2415[3]);
+                                warrior.sub_1a1();
+                                this.sub_a24(3, warrior.var_48e - 2, warrior.var_4dc
+                                        + warrior.var_ff9 - this.var_2415[3]);
                                 break;
                             case 73:
-                                var17.sub_1da(500);
+                                warrior.sub_1da_hit(500);
                                 break;
                             case 79:
                                 this.var_157f = var3;
@@ -623,9 +622,9 @@ public class MyCanvas extends Canvas3 implements Runnable {
                         if (this.var_1c98[this.var_28fd] >= 67
                                 && this.var_1c98[this.var_28fd] <= 70
                                 || this.var_1c98[this.var_28fd] == 74) {
-                            var17.var_f3a = this.var_1c98[this.var_28fd] == 74 ? 5
+                            warrior.var_f3a = this.var_1c98[this.var_28fd] == 74 ? 5
                                     : this.var_1c98[this.var_28fd] - 67 + 1;
-                            var17.var_f87 = Class_2b8.var_248[var17.var_f3a];
+                            warrior.var_f87 = Warrior.var_248[warrior.var_f3a];
                         }
 
                         this.var_25c8[this.var_257a] = 100;
@@ -637,41 +636,41 @@ public class MyCanvas extends Canvas3 implements Runnable {
                     }
                 }
 
-                var17.var_98b = this.var_28fd;
-                if (var17.var_aaf) {
+                warrior.var_98b = this.var_28fd;
+                if (warrior.var_aaf) {
                     try {
-                        for (var5 = 0; var5 < this.var_1db7.size(); ++var5) {
+                        for (i = 0; i < this.var_1db7.size(); ++i) {
                             Fallings var6 = (Fallings) this.var_1db7
-                                    .elementAt(var5);
-                            if (var6.sprite.sub_1cc(var17.var_e6d, true)) {
-                                var6.sub_36(var17);
+                                    .elementAt(i);
+                            if (var6.sprite.sub_1cc(warrior.var_e6d, true)) {
+                                var6.sub_36(warrior);
                             }
                         }
                     } catch (Exception var11) {
                         ;
                     }
 
-                    for (var5 = 0; var5 < this.var_24b6; ++var5) {
-                        if (this.var_2445[var5].var_3ab != var17
-                                && this.sub_5f7(this.var_2445[var5].sprite,
-                                var17.var_e6d)) {
-                            this.var_2445[var5].sub_bb(var17);
+                    for (i = 0; i < this.var_24b6; ++i) {
+                        if (this.var_2445[i].warrior != warrior
+                                && this.sub_5f7(this.var_2445[i].sprite,
+                                warrior.var_e6d)) {
+                            this.var_2445[i].sub_bb_hit(warrior);
                         }
                     }
 
-                    if (var17.var_822) {
-                        var17.var_e6d.defineCollisionRectangle(0, 2,
-                                var17.var_feb, var17.var_ff9 - 10);
-                        var17.var_e6d.setPosition(var17.var_48e,
-                                var17.var_4dc + 8);
-                        var17.var_ea2.setPosition(var17.var_48e, var17.var_4dc
-                                + var17.var_e6d.sub_96());
+                    if (warrior.var_822) {
+                        warrior.var_e6d.defineCollisionRectangle(0, 2,
+                                warrior.var_feb, warrior.var_ff9 - 10);
+                        warrior.var_e6d.setPosition(warrior.var_48e,
+                                warrior.var_4dc + 8);
+                        warrior.var_ea2.setPosition(warrior.var_48e, warrior.var_4dc
+                                + warrior.var_e6d.sub_96());
                     } else {
-                        var17.var_e6d.defineCollisionRectangle(0, 0,
-                                var17.var_feb, var17.var_ff9);
-                        var17.var_e6d.setPosition(var17.var_48e, var17.var_4dc);
-                        var17.var_ea2.setPosition(var17.var_48e, var17.var_4dc
-                                + var17.var_e6d.sub_96());
+                        warrior.var_e6d.defineCollisionRectangle(0, 0,
+                                warrior.var_feb, warrior.var_ff9);
+                        warrior.var_e6d.setPosition(warrior.var_48e, warrior.var_4dc);
+                        warrior.var_ea2.setPosition(warrior.var_48e, warrior.var_4dc
+                                + warrior.var_e6d.sub_96());
                     }
                 }
             } catch (Exception var13) {
@@ -679,32 +678,32 @@ public class MyCanvas extends Canvas3 implements Runnable {
             }
         }
 
-        var5 = 0;
+        i = 0;
         int var7;
         int var8;
         for (var7 = this.var_1efb.length; var7 > 0; --var7) {
-            Class_2b8 var18 = this.var_1efb[var5++];
-            int var21 = var5;
+            Warrior var18 = this.var_1efb[i++];
+            int var21 = i;
             if (var18.var_aaf) {
-                for (var8 = this.var_1efb.length - var5; var8 > 0; --var8) {
-                    var17 = this.var_1efb[var21++];
-                    if (var17.var_aaf
-                            && this.sub_5f7(var18.var_e6d, var17.var_e6d)) {
-                        var18.var_5ef = var18.var_48e < var17.var_48e ? -8 : 8;
-                        var17.var_5ef = var17.var_48e < var18.var_48e ? -8 : 8;
-                        var17.var_53c = var17.var_5ef / 4;
+                for (var8 = this.var_1efb.length - i; var8 > 0; --var8) {
+                    warrior = this.var_1efb[var21++];
+                    if (warrior.var_aaf
+                            && this.sub_5f7(var18.var_e6d, warrior.var_e6d)) {
+                        var18.var_5ef = var18.var_48e < warrior.var_48e ? -8 : 8;
+                        warrior.var_5ef = warrior.var_48e < var18.var_48e ? -8 : 8;
+                        warrior.var_53c = warrior.var_5ef / 4;
                         var18.var_53c = var18.var_5ef / 4;
                         if (var18.var_a35 == -1) {
-                            var18.var_a35 = var17.var_b9b;
+                            var18.var_a35 = warrior.var_b9b;
                             var18.var_a79 = 20;
                         }
 
-                        if (var17.var_a35 == -1) {
-                            var17.var_a35 = var18.var_b9b;
-                            var17.var_a79 = 20;
+                        if (warrior.var_a35 == -1) {
+                            warrior.var_a35 = var18.var_b9b;
+                            warrior.var_a79 = 20;
                         }
 
-                        if ((!var17.var_bd6 || !var18.var_bd6)
+                        if ((!warrior.var_bd6_is_enemy || !var18.var_bd6_is_enemy)
                                 && this.settings[2]) {
                             this.makeVibrate(40);
                         }
@@ -758,9 +757,8 @@ public class MyCanvas extends Canvas3 implements Runnable {
                 }
             }
         } catch (Exception var10) {
-            ;
+            var10.printStackTrace();
         }
-
     }
 
     @Override
@@ -779,7 +777,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
         } else {
             if (!this.var_a17) {
                 try {
-                    this.sub_1ef(var3);
+                    this.update(var3);
                 } catch (Exception var9) {
                     var9.printStackTrace();
                 }
@@ -792,7 +790,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
                     && var5 > this.var_151f + 2000L) {
                 if (this.var_891 == 3) {
                     for (var8 = 0; var8 < this.var_1efb.length; ++var8) {
-                        Class_2b8 var7 = this.var_1efb[var8];
+                        Warrior var7 = this.var_1efb[var8];
                         if (var7.var_4dc + var7.var_ff9 <= this.var_1504 + 15
                                 && var7.var_4dc + var7.var_ff9 >= this.var_1504 - 45
                                 && var7.var_48e + var7.var_feb / 2 >= this.var_146d
@@ -811,7 +809,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
             this.var_2a04[17] = System.currentTimeMillis() - var3;
             if (this.var_9b6 > -1L) {
                 this.var_a17 = var5 - this.var_9dd > this.var_9b6;
-                if (!this.var_a17 && !this.var_2717 && this.var_26b0_soundPlay
+                if (!this.var_a17 && !this.var_2717 && this.isSoundPlay
                         && var5 - this.var_9dd + 30000L > this.var_9b6) {
                     this.var_2717 = true;
                 }
@@ -1289,10 +1287,10 @@ public class MyCanvas extends Canvas3 implements Runnable {
             this.var_1c70.paint(g);
             ++this.var_2ced;
             this.var_2ced %= 57;
-            int var3 = Math.max(2, 6 - 6 * this.var_1f25.var_b81
-                    / this.var_1f25.var_af7);
+            int var3 = Math.max(2, 6 - 6 * this.var_1f25_player.var_b81_hp
+                    / this.var_1f25_player.var_af7);
             int var15;
-            if (this.var_1f25.var_aaf) {
+            if (this.var_1f25_player.var_aaf) {
                 var15 = this.var_2ced % 12 < var3 ? this.var_2ced % (var3 * 2)
                         : Math.max(0, var3 * 2 - this.var_2ced % 12);
             } else {
@@ -1313,7 +1311,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
 
             this.sub_21e(this.var_fb7, g, this.var_2c78, this.var_2cdb);
 
-            Class_2b8 var4;
+            Warrior var4;
             int var5;
             int var6;
             int var7;
@@ -1371,7 +1369,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
             g.setClip(0, 0, this.width, this.height);
 
             for (var7 = 0; var7 < this.var_1efb.length; ++var7) {
-                if (this.var_1efb[var7].var_bd6 && this.var_1efb[var7].var_aaf) {
+                if (this.var_1efb[var7].var_bd6_is_enemy && this.var_1efb[var7].var_aaf) {
                     g.setColor(0, 200, 0);
                     g.fillRect(this.var_1efb[var7].var_48e + this.var_2c78,
                             this.var_1efb[var7].var_4dc - 5 + this.var_2cdb,
@@ -1387,15 +1385,15 @@ public class MyCanvas extends Canvas3 implements Runnable {
             g.setColor(0, 0, 0);
 
             try {
-                if (this.var_1f25 != null && this.var_1f25.var_aaf && !this.var_a17) {
+                if (this.var_1f25_player != null && this.var_1f25_player.var_aaf && !this.var_a17) {
                     this.var_30a = Math.min(this.var_33e++ + this.var_30a, 0);
                     if (this.var_30a >= 0) {
                         this.var_33e = -4;
                     }
 
                     g.drawImage(this.arrowImage,
-                            this.var_1f25.var_48e + this.var_2c78 + this.var_40e,
-                            this.var_1f25.var_4dc - this.arrowParam + this.var_30a + this.var_2cdb,
+                            this.var_1f25_player.var_48e + this.var_2c78 + this.var_40e,
+                            this.var_1f25_player.var_4dc - this.arrowParam + this.var_30a + this.var_2cdb,
                             0);
                 }
             } catch (Exception var12) {
@@ -1564,7 +1562,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
 
     public void initLogo() {
         Effects.sub_2c(this);
-        Class_2b8.sub_3eb(arena);
+        Warrior.sub_3eb(arena);
         this.fonts[0] = Font.getFont(32, arena.getParameter(401) == 0 ? 0
                 : 1, this.sub_587(arena.getParameter(400)));
         this.fonts[1] = Font.getFont(64, arena.getParameter(403) == 0 ? 0
@@ -1734,8 +1732,8 @@ public class MyCanvas extends Canvas3 implements Runnable {
 
     private void gameLoading(int var1) {
         if (isMusicPlay) {
-            music.stopPlayers(); //
-            music.beginPlay(0, 65, -1, true);
+            music.closePlayer(64); //
+            playMusic(0, 65, -1, true);
         }
 
         this.threadToNull();
@@ -1774,7 +1772,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
         this.sub_1d7(this.var_1074);
         this.var_1efb = null;
         this.var_11c8 = this.width - 1;
-        Class_2b8.var_452 = 0;
+        Warrior.var_452 = 0;
         this.var_a89 = 0;
         this.setPercentGameProgressBar(16);
         if (this.tilesImage == null) {
@@ -1788,10 +1786,10 @@ public class MyCanvas extends Canvas3 implements Runnable {
             this.bgImage = this.openImage(163);
         }
 
-        this.sub_f23();
+        this.soundAndMusicSetup();
         System.gc();
         this.setPercentGameProgressBar(23);
-        this.var_1efb = new Class_2b8[4];
+        this.var_1efb = new Warrior[4];
 
         try {
             DataInputStream var2 = new DataInputStream(arena.getAssets().
@@ -1847,7 +1845,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
 
             this.setPercentGameProgressBar(30);
             this.var_3103 = var4 > 0;
-            this.var_1e04 = new Class_308[var4];
+            this.var_1e04 = new Tiled[var4];
             this.var_10c6 = new int[var5];
             this.var_1f77 = new int[var6];
             this.var_25c8 = new int[var7];
@@ -1872,7 +1870,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
                 byte var23 = this.var_1c98[var12];
                 if (var23 != 0) {
                     if (var23 == -1) {
-                        this.var_1e04[var4] = new Class_308(var2.readByte(),
+                        this.var_1e04[var4] = new Tiled(var2.readByte(),
                                 var2.readByte(), var2.readByte(),
                                 var2.readByte(), var2.readByte(),
                                 var2.readByte(), var2.readByte(), this, var12);
@@ -1989,7 +1987,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
             }
 
             this.setPercentGameProgressBar(80);
-            this.var_1efb[0] = new Class_2b8(new MySprite(
+            this.var_1efb[0] = new Warrior(new MySprite(
                     this.headsImage[this.var_234[0]], 18, 18), new MySprite(
                     this.var_f8e[this.var_234[1]], 18, 23), 50, 20,
                     this.var_234[2] * 5 + 20, (this.var_234[3] / 2 + 3)
@@ -1997,7 +1995,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
                     (this.var_234[4] / 2 + 5) * this.var_3e7 / this.var_3fd * 3
                             / 4, (this.var_234[5] / 3 + 1) * this.var_3e7
                     / this.var_3fd);
-            this.var_1f25 = this.var_1efb[0];
+            this.var_1f25_player = this.var_1efb[0];
             this.setPercentGameProgressBar(83);
 
             for (var13 = 1; var13 < 4; ++var13) {
@@ -2009,7 +2007,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
                     try {
                         byte var27 = 4;
                         int var26 = this.var_20f8[var13 - 1] / 10 + 2;
-                        this.var_1efb[var13] = new Class_2b8(
+                        this.var_1efb[var13] = new Warrior(
                                 new MySprite(
                                         this.headsImage[this.var_1f6c[this.var_b57[var13] - 1][0] - 1],
                                         18, 18),
@@ -2038,7 +2036,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
                     this.var_1efb[var13].var_a1b = 0;
                 } else {
                     try {
-                        this.var_1efb[var13] = new Class_2b8(
+                        this.var_1efb[var13] = new Warrior(
                                 new MySprite(
                                         this.headsImage[this.var_1f6c[this.var_b57[var13] - 1][0] - 1],
                                         18, 18),
@@ -2096,7 +2094,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
         }
 
         this.setPercentGameProgressBar(100);
-        //this.stopPlayer();
+        //this.stopPlayers();
         this.var_a67 = true;
         this.var_2a41 = 0L;
         this.var_3594 = false;
@@ -2105,11 +2103,9 @@ public class MyCanvas extends Canvas3 implements Runnable {
     }
 
     public void playMusic(int var1, int var2, int var3, boolean var4) {
-        if (Arena.alwaysTrue) {
-            super.arena3._forPlayMus = true;
-            super.arena3._forPlayMus1 = true;
-            this.music.beginPlay(var1, var2, var3, var4);
-        }
+        super.arena3._forPlayMus = true;
+        super.arena3._forPlayMus1 = true;
+        this.music.beginPlay(var1, var2, var3, var4);
     }
 
     public void playSound(int id) {
@@ -2122,7 +2118,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
         }
     }
 
-    public void stopPlayer() {
+    public void stopPlayers() {
         if (Arena.alwaysTrue) {
             this.music.stopPlayers();
         }
@@ -2146,8 +2142,8 @@ public class MyCanvas extends Canvas3 implements Runnable {
             this.var_eb = 20;
             this.var_3559 = false;
             this.setPercentLogo(0);
-            this.sub_e9a();
-            this.sub_f23();
+            this.loadSettings();
+            this.soundAndMusicSetup();
 
             try {
                 this.music = new Music(super.arena3);
@@ -2373,6 +2369,8 @@ public class MyCanvas extends Canvas3 implements Runnable {
 
     public void sub_8ab() {
         if (this.isMusicPlay) {
+            music.closePlayer(65);
+            music.closePlayer(67);
             this.playMusic(0, 64, 1, true);
         }
 
@@ -2397,7 +2395,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
     private void sub_8c4() {
         this.var_29c3 = false;
         this.var_9dd = 0L;
-        Class_2b8.var_452 = 0;
+        Warrior.var_452 = 0;
         System.gc();
         this.var_11c8 = this.width;
         this.var_a67 = false;
@@ -2546,11 +2544,11 @@ public class MyCanvas extends Canvas3 implements Runnable {
         if (this.var_31f0 && this.var_4ee) {
             this.oneTimeLoop();
         }
-
     }
 
-    public void sub_93a(long var1) {
-        super.sub_93a(var1);
+    @Override
+    public void control(long var1) {
+        super.control(var1);
         try {
             if (!this.var_6e8) {
                 this.var_6e8 = true;
@@ -2653,7 +2651,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
 
             if (!this.var_91b) {
                 for (var3 = 0; var3 < this.var_326a.length; ++var3) {
-                    if (this.var_1efb[this.var_326a[var3]] == this.var_1f25) {
+                    if (this.var_1efb[this.var_326a[var3]] == this.var_1f25_player) {
                         this.sub_b1e(Math.max(0, 3 - var3 * 2));
                     }
                 }
@@ -2664,7 +2662,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
 
                 if (this.var_3657.length == 4) {
                     for (var3 = 0; var3 < this.var_326a.length; ++var3) {
-                        if (this.var_1efb[this.var_326a[var3]] == this.var_1f25) {
+                        if (this.var_1efb[this.var_326a[var3]] == this.var_1f25_player) {
                             this.sub_b1e(Math.max(0, 15 - var3 * 5));
                         }
                     }
@@ -2713,7 +2711,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
                                 this.width - 20, 31 + var4 * 20, 15);
                     }
                 } else {
-                    var4 = this.var_1f25.var_a1b
+                    var4 = this.var_1f25_player.var_a1b
                             * (this.var_20f8 != null ? this.var_20f8[0] / 5 + 5
                             : 5) / 5;
                     g.setColor(0, 0, 0);
@@ -2738,7 +2736,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
                         g.setColor(0, 0, 0);
                         this.paintString(g, this.getStr(1) + ": " + var5, 19,
                                 49, this.width - 36);
-                        if (var5 >= this.var_1f25.var_a1b) {
+                        if (var5 >= this.var_1f25_player.var_a1b) {
                             g.setColor(250, 150, 150);
                         } else {
                             g.setColor(150, 250, 150);
@@ -2781,14 +2779,13 @@ public class MyCanvas extends Canvas3 implements Runnable {
 
             this.var_a89 = 0;
         }
-
     }
 
     private void paintPanel(Graphics var1) {
         var1.setClip(0, this.height, this.width, 20);
         var1.drawImage(this.panelImage, 0, this.height, 0);
-        int var2 = this.greenHPImage.getWidth() / 3 * this.var_1f25.var_b81
-                / this.var_1f25.var_af7;
+        int var2 = this.greenHPImage.getWidth() / 3 * this.var_1f25_player.var_b81_hp
+                / this.var_1f25_player.var_af7;
         int var3 = var2 * 3;
         if (var2 > 0) {
             var1.setClip(var_3417, this.height + 3, var3,
@@ -2825,7 +2822,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
             this.mThread = null;
             this.var_2a41 = 0L;
             if (this.isMusicPlay) {
-                this.music.stopPlayers(); //
+                music.closePlayer(65); //
                 this.playMusic(0, 67, 10, true);
             }
         }
@@ -2859,9 +2856,9 @@ public class MyCanvas extends Canvas3 implements Runnable {
         this.var_37be = false;
         System.gc();
         arena.commandManage(13);
-        this.stopPlayer();
-        if (!this.var_26b0_soundPlay && this.isMusicPlay) {
-            music.beginPlay(0, 65, -1, true); //
+        if (this.isMusicPlay) {
+            music.closePlayer(67);
+            playMusic(0, 65, -1, true); //
         }
     }
 
@@ -3143,7 +3140,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
                 try {
                     for (var3 = 1; var3 < this.var_373b.length; ++var3) {
                         do {
-                            var11 = Class_2b8.sub_62(this.var_3657.length);
+                            var11 = Warrior.random(this.var_3657.length);
                         } while (var1[var11]);
 
                         this.var_373b[var3] = var11;
@@ -3158,7 +3155,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
 
                     for (int var5 = 0; var5 < 4; ++var5) {
                         do {
-                            var11 = Class_2b8.sub_62(this.var_3657.length);
+                            var11 = Warrior.random(this.var_3657.length);
                         } while (var1[var11]);
 
                         var4[var5] = var11;
@@ -3170,7 +3167,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
                     int var6;
                     try {
                         for (var6 = 0; var6 < 4; ++var6) {
-                            var12[var6] = Class_2b8.sub_62(15)
+                            var12[var6] = Warrior.random(15)
                                     + this.var_1f6c[var4[var6] - 1][2] / 10
                                     + this.var_1f6c[var4[var6] - 1][3]
                                     + this.var_1f6c[var4[var6] - 1][4]
@@ -3362,30 +3359,32 @@ public class MyCanvas extends Canvas3 implements Runnable {
         return var1;
     }
 
-    private void sub_e41() {
+    private void defaultSettings() {
         this.settings = new boolean[5];
 
         for (int var1 = 0; var1 < 3; ++var1) {
             this.settings[var1] = true;
         }
+        settings[4] = true;
 
-        this.sub_ec7_saveSettings();
+        this.saveSettings();
     }
 
-    public void sub_e9a() {
+    @Override
+    public void loadSettings() {
         try {
-            String var1 = arena.getFromTable(this.recStorages[2]);
-            if (var1 == null) {
-                this.sub_e41();
+            String str = arena.getFromTable(this.recStorages[2]);
+            if (str == null) {
+                this.defaultSettings();
             } else {
-                for (int var2 = 0; var2 < 5; ++var2) {
-                    char var3 = var1.charAt(var2);
-                    if (var3 != 49 && var3 != 48) {
-                        this.sub_e41();
+                for (int i = 0; i < 5; ++i) {
+                    char chr = str.charAt(i);
+                    if (chr != 49 && chr != 48) {
+                        this.defaultSettings();
                         break;
                     }
 
-                    this.settings[var2] = var3 == 49;
+                    this.settings[i] = chr == 49;
                 }
             }
         } catch (Exception var4) {
@@ -3396,7 +3395,7 @@ public class MyCanvas extends Canvas3 implements Runnable {
     }
 
     @Override
-    public void sub_ec7_saveSettings() {
+    public void saveSettings() {
         try {
             StringBuilder var1 = new StringBuilder();
 
@@ -3413,12 +3412,12 @@ public class MyCanvas extends Canvas3 implements Runnable {
             var3.printStackTrace();
         }
 
-        this.sub_f23();
+        this.soundAndMusicSetup();
     }
 
-    private void sub_f23() {
-        this.var_26b0_soundPlay = !this.settings[4] && this.settings[0];
-        this.isMusicPlay = this.settings[4] || this.settings[0];
+    private void soundAndMusicSetup() {
+        this.isSoundPlay = this.settings[0];
+        this.isMusicPlay = this.settings[4];
     }
 
     public void addHeadImage(Image image) {
@@ -3567,9 +3566,9 @@ public class MyCanvas extends Canvas3 implements Runnable {
             ++var16[1 + var2.length() + 1];
             this.setPercentLogoProgressBar(80);
             var16[1 + var2.length()] = var7;
-            var16[7 + var2.length()] = (byte) (60 + Class_2b8.sub_62(80));
-            var16[8 + var2.length()] = (byte) Class_2b8.sub_62(2);
-            var16[9 + var2.length()] = (byte) (Class_2b8.sub_62(2) + 1);
+            var16[7 + var2.length()] = (byte) (60 + Warrior.random(80));
+            var16[8 + var2.length()] = (byte) Warrior.random(2);
+            var16[9 + var2.length()] = (byte) (Warrior.random(2) + 1);
             RecordStore var19 = RecordStore.openRecordStore(this.recStorages[5],
                     true);
             if (var3) {

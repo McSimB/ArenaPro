@@ -16,12 +16,15 @@ public class Display {
     public static final int WIDTH = 132;
     public static final int HEIGHT = 176;
     public static int SCALE = ContextHolder.getDisplayHeight() / HEIGHT;
+
     private static Display instance;
+    //private static Vibrator vibrator;
     private Displayable current;
     private boolean firstDisp;
 
     private Display() {
-
+        /*vibrator = (Vibrator) ContextHolder.getContext()
+                .getSystemService(Context.VIBRATOR_SERVICE);*/
     }
 
     public static Display getDisplay() {
@@ -29,6 +32,16 @@ public class Display {
             instance = new Display();
         }
         return instance;
+    }
+
+    public static void vibrate(int duration) {
+        /*if (vibrator != null) {
+            vibrator.vibrate(duration);
+        }*/
+    }
+
+    public Displayable getCurrent() {
+        return current;
     }
 
     public void setCurrent(final Displayable nextDisplayable) {
@@ -60,15 +73,9 @@ public class Display {
         initButtons(mainLayout);
     }
 
-    public Displayable getCurrent() {
-        return current;
-    }
-
+    @SuppressWarnings("unused")
     public void setCurrent(Alert alert, Displayable nextDisplayable) {
         setCurrent(nextDisplayable);
-    }
-
-    public static void vibrate(int var1) {
     }
 
     private void initButtons(ViewGroup view) {
