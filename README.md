@@ -1,3 +1,2 @@
 # ContestArenaPro
-
-The old game on Siemens mobile phones
+Old game from Siemens mobile phone
